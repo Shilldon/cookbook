@@ -13,9 +13,7 @@ mongo=PyMongo(app)
 @app.route("/")
 
 def index():
-   # return "<h1>Hello world.</h1><h2>This is a recipe book.</h2>"
-
-   return render_template("display_recipe.html",recipes=mongo.db.recipeDB.find())
+   return render_template("index.html",title_text="Perfect dishes on demand")
 
 @app.route('/display_recipe',)
 def display_recipe():

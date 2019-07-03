@@ -1,0 +1,97 @@
+.highlight1-background {
+  background-color: #034AA6; }
+
+.highlight2-background {
+  background-color: #033E8C; }
+
+.highlight3-background {
+  background-color: #F2C6A0; }
+
+.highlight4-background {
+  background-color: #8C5D42; }
+
+.btn-block {
+  width: 100%;
+  font-size: 1rem;
+  background-color: #8C5D42; }
+
+.nav-wrapper {
+  background-color: #0339A6; }
+  .nav-wrapper .brand-logo {
+    font-family: "Abril Fatface", sans; }
+  .nav-wrapper .selected {
+    background-color: white; }
+    .nav-wrapper .selected a {
+      color: #0339A6; }
+  .nav-wrapper li {
+    font-family: "Roboto", sans;
+    font-weight: 500;
+    text-align: center;
+    width: 100px; }
+    .nav-wrapper li a {
+      text-shadow: 0px 0px 10px #000000;
+      font-size: 1.2rem; }
+
+.sidenav {
+  margin-top: 57px;
+  padding-bottom: 0;
+  max-height: 192px;
+  width: 100px; }
+  .sidenav li a {
+    text-shadow: 0px 0px 10px #000000;
+    color: white; }
+
+.title-container {
+  height: 200px;
+  background: url("https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") no-repeat center;
+  background-size: cover; }
+  .title-container .title-text {
+    font-family: "Abril Fatface", sans;
+    color: white;
+    background-color: rgba(3, 57, 166, 0.75);
+    border: solid 1px white;
+    margin: auto; }
+    .title-container .title-text h5 {
+      font-size: 1.5rem;
+      padding: 0px 10px 7px 10px; }
+
+.search-container {
+  height: 200px;
+  background-color: #034AA6;
+  font-family: "Roboto";
+  color: white; }
+  .search-container h6 {
+    padding-top: 20px; }
+  .search-container p {
+    padding-bottom: 20px; }
+  .search-container .row {
+    margin-bottom: 0;
+    height: 50%; }
+
+.information-container {
+  color: #0339A6;
+  padding-top: 20px; }
+  .information-container i {
+    font-size: 2.5rem; }
+
+@media (min-width: 768px) {
+  .title-container {
+    height: 250px; }
+    .title-container .title-text h5 {
+      font-size: 2rem; }
+
+  .search-container {
+    height: 250px; } }
+@media (min-width: 1024px) {
+  .title-container {
+    height: 350px; }
+    .title-container .title-text h5 {
+      font-size: 2.5rem; }
+
+  .search-container {
+    height: 350px; }
+
+  .btn-block {
+    font-size: 1.3rem; } }
+
+/*# sourceMappingURL=style.css.map */

@@ -1,14 +1,75 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Recipe index page</h2>
-    
-    <ul>
-    {% for recipe in recipes %}
-    <li>
-    {{recipe.name}}
-    </li>
-    {% endfor %}
-    </ul>
-    
-    
+
+
+
+  <!--Main page title and background image-->
+  <section>
+    <div class="title-container valign-wrapper">
+      <div class="row">
+      <div class="title-text col s12">
+        <h5 class="center-align">{{title_text}}</h5>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- call to action -->
+  <section>
+    <div class="search-container">
+      <div class="row  valign-wrapper" style="height:50%">
+        <div class="col s8 offset-s2 m6 offset-m3 ">
+          <h6 class="flow-text center-align">Browse hundreds of recipes at the touch of a button</h6>
+        </div>
+      </div>
+      <div class="row valign-wrapper" style="height:50%">
+        <div class="col s6 offset-s3 m2 offset-m5 ">
+            <a class="waves-effect waves-light btn btn-block hide-on-med-and-up">Search</a>
+            <a class="waves-effect waves-light btn-large btn-block hide-on-small-only">Search</a>
+       </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- details and information -->
+  <section>
+    <div class="information-container">
+
+      <div class="row">
+        <div class="col s12">
+          <p class="center-align">
+            <i class="material-icons">add_circle_outline</i>
+          </p>
+          <div class="col s8 offset-s2 m6 offset-m3">
+            <h6 class="flow-text center-align">Add your favourite dishes</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <p class="center-align">
+            <i class="fa fa-hand-paper-o fa-3x" aria-hidden="true"></i>
+          </p>
+          <div class="col s8 offset-s2 m6 offset-m3">
+            <h6 class="flow-text center-align">Avoid allergens</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <p class="center-align">
+            <i class="medium material-icons">edit</i>
+          </p>
+          <div class="col s8 offset-s2 m6 offset-m3">
+            <h6 class="flow-text center-align">Edit your recipes</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  
 {% endblock %}

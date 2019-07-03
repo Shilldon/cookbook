@@ -1,0 +1,141 @@
+$base-color: #0339A6;
+$base-color-opaque: rgba(3, 57, 166, 0.75);
+$highlight1-color: #034AA6;
+$highlight2-color: #033E8C;
+$highlight3-color: #F2C6A0;
+$highlight4-color: #8C5D42;
+
+$highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highlight4-color;
+
+//create background colours 
+@each $color in $highlight-colors {
+    $i: index($highlight-colors, $color);
+    .highlight#{$i}-background {
+        background-color: #{$color}
+    }
+}
+
+.btn-block {
+    width: 100%;
+    font-size: 1rem;
+    background-color: $highlight4-color;    
+}
+
+//----- NAV BAR ----- //
+.nav-wrapper {
+    background-color: $base-color;
+    .brand-logo {
+        font-family: "Abril Fatface", sans;
+    }
+    .selected {
+        background-color: white;
+        a {
+            color: $base-color;
+        }
+    }
+    li {
+        font-family: "Roboto", sans;
+        font-weight: 500;
+        text-align: center;
+        width: 100px;
+        a {
+            text-shadow: 0px 0px 10px #000000;
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.sidenav {
+    margin-top: 57px;
+    padding-bottom: 0;
+    max-height: 192px;
+    width: 100px;
+    li {
+        a {
+            text-shadow: 0px 0px 10px #000000;
+            color: white;
+        }
+    }
+}
+
+
+//----- MAIN TITLE AND BACKGROUND IMAGE -----//
+.title-container {
+    height: 200px;
+    background: url('https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') no-repeat center;
+    background-size: cover;
+    .title-text {
+        font-family: "Abril Fatface", sans;
+        color: white;
+        background-color: $base-color-opaque;
+        border: solid 1px white; //  width: 100%;
+        margin: auto;
+        h5 {
+            font-size: 1.5rem;
+            padding: 0px 10px 7px 10px;
+        }
+    }
+}
+
+
+//----- INDEX SEARCH CONTAINER -----//
+.search-container {
+    height: 200px;
+    background-color: $highlight1-color;
+    font-family: "Roboto";
+    color: white;
+    h6 {
+        padding-top: 20px;
+    }
+    p {
+        padding-bottom: 20px;
+    }
+    .row {
+        margin-bottom: 0;
+        height: 50%;
+    }
+}
+
+//----- INFORMATION SECTION CONTAINER -----//
+.information-container {
+    color: $base-color;
+    padding-top: 20px;
+    i {
+        font-size: 2.5rem;
+    }
+}
+
+
+//-----Media queries -----//
+@media (min-width: 768px) {
+    .title-container {
+        height: 250px;
+        .title-text {
+            h5 {
+                font-size: 2rem;
+            }
+        }
+    }
+    .search-container {
+        height: 250px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .title-container {
+        height: 350px;
+        .title-text {
+            h5 {
+                font-size: 2.5rem;
+            }
+        }
+    }
+    .search-container {
+        height: 350px;
+    }
+    .btn-block {
+            font-size: 1.3rem;
+
+    }
+}
+

@@ -1,18 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Recipebook</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" />
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Recipebook</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
+
+  <!-- <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" /> -->
+
 </head>
+
 <body>
-    <h1>Here is the base element</h1>
-      {% block content %}
-      {% endblock %}
+
+  <!-- Nav Bar -->
+  <section>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo left">Cookbook</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+        <a href="#" class="sidenav-trigger right"><i class="material-icons">search</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li class="highlight3-background"><a href="#">Search</a></li>
+          <li class="highlight1-background"><a href="#">Add</a></li>
+          <li class="highlight2-background"><a href="#">Edit</a></li>
+          <li class="highlight4-background"><a href="#">Delete</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+      <li class="highlight3-background"><a href="#">Search</a></li>
+      <li class="highlight1-background"><a href="#">Add</a></li>
+      <li class="highlight2-background"><a href="#">Edit</a></li>
+      <li class="highlight4-background"><a href="#">Delete</a></li>
+    </ul>
+  </section>
+
+
+
+  {% block content %} {% endblock %}
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.sidenav').sidenav();
+      console.log("running")
+    });
+  </script>
+
 </body>
+
 </html>
