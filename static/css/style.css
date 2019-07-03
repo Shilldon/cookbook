@@ -10,11 +10,6 @@
 .highlight4-background {
   background-color: #8C5D42; }
 
-.btn-block {
-  width: 100%;
-  font-size: 1rem;
-  background-color: #8C5D42; }
-
 .nav-wrapper {
   background-color: #0339A6; }
   .nav-wrapper .brand-logo {
@@ -55,18 +50,24 @@
       font-size: 1.5rem;
       padding: 0px 10px 7px 10px; }
 
-.search-container {
-  height: 200px;
+.splash-container {
   background-color: #034AA6;
   font-family: "Roboto";
   color: white; }
-  .search-container h6 {
+
+.index-splash {
+  height: 200px; }
+  .index-splash h6 {
     padding-top: 20px; }
-  .search-container p {
-    padding-bottom: 20px; }
-  .search-container .row {
+  .index-splash .row {
     margin-bottom: 0;
     height: 50%; }
+
+.search-splash {
+  height: 100px; }
+  .search-splash .row {
+    margin-bottom: 0;
+    height: 100%; }
 
 .information-container {
   color: #0339A6;
@@ -74,22 +75,70 @@
   .information-container i {
     font-size: 2.5rem; }
 
+.search-container {
+  font-family: "Roboto";
+  color: white;
+  height: 240px; }
+  .search-container .col {
+    color: white;
+    line-height: 80px;
+    border: 1px solid white;
+    padding: 0; }
+    .search-container .col p {
+      margin: 0; }
+  .search-container .row {
+    margin-bottom: 0;
+    height: 80px; }
+  .search-container .btn-flat {
+    color: white; }
+  .search-container a {
+    margin-top: 30px; }
+
+.page-dividers .col {
+  padding: 0;
+  margin: 0; }
+
+.page-divider {
+  height: 10px;
+  margin: 0 30px 0 30px; }
+
+.btn-block {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem; }
+
 @media (min-width: 768px) {
   .title-container {
     height: 250px; }
     .title-container .title-text h5 {
       font-size: 2rem; }
 
-  .search-container {
-    height: 250px; } }
+  .information-container p {
+    color: #5A6978;
+    font-size: 1.2rem; }
+
+  .search-container .col {
+    line-height: 120px; }
+
+  .index-splash {
+    height: 250px; }
+
+  .search-splash {
+    height: 125px; } }
 @media (min-width: 1024px) {
   .title-container {
     height: 350px; }
     .title-container .title-text h5 {
       font-size: 2.5rem; }
 
-  .search-container {
-    height: 350px; }
+  .search-container .col {
+    line-height: 170px; }
+
+  .index-splash {
+    height: 275px; }
+
+  .search-splash {
+    height: 175px; }
 
   .btn-block {
     font-size: 1.3rem; } }

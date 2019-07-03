@@ -1,0 +1,77 @@
+{% extends 'base.html' %} {% block content %}
+
+
+
+<!--Main page title and background image-->
+<section>
+    <div class="title-container valign-wrapper">
+        <div class="row">
+            <div class="title-text col s12">
+                <h5 class="center-align">{{title_text}}</h5>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- call to action -->
+<section>
+    <div class="splash-container search-splash">
+        <div class="row  valign-wrapper">
+            <div class="col s8 offset-s2 m6 offset-m3 ">
+                <h6 class="flow-text center-align">Search for recipes by category</h6>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- details and information -->
+<section>
+    <div class="search-container">
+        <div class="row">
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light highlight4-background">
+                <p class="center-align flow-text ">
+                    Calories
+                </p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light highlight4-background">
+                <p class="center-align flow-text">
+                    Cook Time
+                </p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light highlight4-background">
+                <p class="center-align flow-text ">
+                    Allergies
+                </p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light highlight4-background">
+                <p class="center-align flow-text ">
+                    Difficulty
+                </p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light highlight4-background">
+                <p class="center-align flow-text ">
+                    Meal
+                </p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light highlight4-background">
+                <p class="center-align flow-text ">
+                    Country
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 offset-s1 m2 offset-m3 ">
+                <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Home</a>
+                <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
+            </div>
+            <div class="col s4 offset-s2 m2 offset-m2 ">
+                <a class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Search</a>
+                <a class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Search</a>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}

@@ -1,40 +1,40 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 
 
-  <!--Main page title and background image-->
-  <section>
-    <div class="title-container valign-wrapper">
-      <div class="row">
+<!--Main page title and background image-->
+<section>
+  <div class="title-container valign-wrapper">
+    <div class="row">
       <div class="title-text col s12">
         <h5 class="center-align">{{title_text}}</h5>
       </div>
     </div>
-    </div>
-  </section>
+  </div>
+</section>
 
-  <!-- call to action -->
-  <section>
-    <div class="search-container">
-      <div class="row  valign-wrapper" style="height:50%">
-        <div class="col s8 offset-s2 m6 offset-m3 ">
-          <h6 class="flow-text center-align">Browse hundreds of recipes at the touch of a button</h6>
-        </div>
-      </div>
-      <div class="row valign-wrapper" style="height:50%">
-        <div class="col s6 offset-s3 m2 offset-m5 ">
-            <a class="waves-effect waves-light btn btn-block hide-on-med-and-up">Search</a>
-            <a class="waves-effect waves-light btn-large btn-block hide-on-small-only">Search</a>
-       </div>
+<!-- call to action -->
+<section>
+  <div class="splash-container index-splash">
+    <div class="row  valign-wrapper">
+      <div class="col s8 offset-s2 m6 offset-m3 ">
+        <h6 class="flow-text center-align">Browse hundreds of recipes at the touch of a button</h6>
       </div>
     </div>
-  </section>
+    <div class="row valign-wrapper">
+      <div class="col s6 offset-s3 m2 offset-m5 ">
+        <a href="{{url_for('search')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Search</a>
+        <a href="{{url_for('search')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Search</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- details and information -->
-  <section>
-    <div class="information-container">
-
+<!-- details and information -->
+<section>
+  <div class="information-container">
+    <div class="hide-on-med-and-up">
+      <!-- mobile screen information section -->
       <div class="row">
         <div class="col s12">
           <p class="center-align">
@@ -69,7 +69,116 @@
       </div>
     </div>
 
-  </section>
+    <div class="hide-on-small-only">
+      <!-- tablet and desktop screen information section -->
+      <div class="row">
+        <div class="col m10 offset-m1">
+          <div class="col center-align m3">
+            <div class="left-align page-divider highlight3-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class="center-align page-divider highlight1-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class=" center-align page-divider highlight2-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class="center-align page-divider highlight4-background"></div>
+          </div>
+        </div>
+      </div>
 
-  
+      <div class="row">
+        <div class="col s12">
+          <h5 class="center-align">Find your perfect dish</h5>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s10 offset-s1">
+          <p class="left-align">At the touch of a button you can have access to hundreds of recipes from across the world. With detailed instructions from reknowned chefs you can easily create your perfect meal. You can easily check the ingredients for your ideal meal. Each
+            recipe also contains vital information about allergies so you can easily check what to avoid. Whether you are after a light snack or a full blown dinner party there will be something for you.</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col m4 offset-m4">
+          <div class="center-align page-divider highlight3-background"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h5 class="center-align">Search</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s10 offset-s1">
+          <p class="left-align">Browse through the collection of recipes. If you are pressed for time you can search by how long the dish takes to cook. Watching the waistline? Filter results by the number of calories. Take a culinary trip around the world and search for recipes based on their country of origin. Worried about allergies? Review search results to filter out recipes containing allergens. If you are a kitchen novice you can browse recipes by how difficult they are to cook. After a quick snack? Narrow down your search by finding specific meals. Or simply mark those recipes you love as your favourites.</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col m4 offset-m4">
+          <div class="center-align page-divider highlight1-background"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h5 class="center-align">Add</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s10 offset-s1">
+          <p class="left-align">Do you have a special recipe that you come back to time and again? Add your own creation to the collection of recipes. You can specify ingredients, cooking time, calories and many other options to make cooking your favourite dish even easier.</h5>
+        </div>
+      </div>    
+      <div class="row">
+        <div class="col m4 offset-m4">
+          <div class="center-align page-divider highlight2-background"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h5 class="center-align">Edit</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s10 offset-s1">
+          <p class="left-align">Found a dish you like but it just needs that certain something extra? Simply edit the recipe to hone it to your taste. The changes you can make are limitless. Add extra ingredients, or go low carbs and reduce the number of calories. It is entirely up to you to customise.</h5>
+        </div>
+      </div>     
+      <div class="row">
+        <div class="col m4 offset-m4">
+          <div class="center-align page-divider highlight4-background"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <h5 class="center-align">Delete</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s10 offset-s1">
+          <p class="left-align">Bored with a recipe or you just do not like fish? Delete recipes from the cookbook to avoid seeing them again. </h5>
+        </div>
+      </div>        
+      <div class="row">
+        <div class="col m10 offset-m1">
+          <div class="col center-align m3">
+            <div class="left-align page-divider highlight3-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class="center-align page-divider highlight1-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class=" center-align page-divider highlight2-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class="center-align page-divider highlight4-background"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</section>
+
+
 {% endblock %}
