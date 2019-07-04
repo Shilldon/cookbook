@@ -28,7 +28,7 @@
         <a href="{{ url_for('search') }}" class="sidenav-trigger right"><i class="material-icons">search</i></a>
         <ul class="right hide-on-med-and-down">
           <li class="highlight3-background"><a href="{{ url_for('search') }}">Search</a></li>
-          <li class="highlight1-background"><a href="#">Add</a></li>
+          <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}, title_text='Perfect dishes on demand'">Add</a></li>
           <li class="highlight2-background"><a href="#">Edit</a></li>
           <li class="highlight4-background"><a href="#">Delete</a></li>
         </ul>
@@ -37,16 +37,11 @@
 
     <ul class="sidenav" id="mobile-demo">
       <li class="highlight3-background"><a href="{{ url_for('search') }}">Search</a></li>
-      <li class="highlight1-background"><a href="#">Add</a></li>
+      <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
       <li class="highlight2-background"><a href="#">Edit</a></li>
       <li class="highlight4-background"><a href="#">Delete</a></li>
     </ul>
   </section>
-
-
-
-  {% block content %} 
-  
   
   <!--Main page title and background image-->
   <section>
@@ -58,6 +53,12 @@
     </div>
     </div>
   </section>
+
+
+  {% block content %} 
+  
+  
+
 
   <!-- call to action -->
   <section>
@@ -125,7 +126,7 @@
   <script>
     $(document).ready(function() {
       $('.sidenav').sidenav();
-      console.log("running")
+      $('select').formSelect();
     });
   </script>
 

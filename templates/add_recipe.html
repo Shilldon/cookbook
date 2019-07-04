@@ -1,0 +1,135 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- call to action -->
+<!-- Add recipe form -->
+<section>
+  <div class="row">
+    <form action="{{url_for('insert_recipe') }}" method="POST" class="col s12">
+
+      <div class="row">
+        <div class="col s12">
+          <label>Name</label>
+          <input id="name" type="text" label="Name"></input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <label>Country of origin</label>
+          <input id="country" type="text"></input>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <label>Picture</label>
+          <input id="picture" type="text" placeholder="type in full URL of image"></input>
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col s6">
+          <label>Meal</label>
+          <div class="input-field">
+            <select>
+              <option value="" disabled selected>Select</option>
+              <option value="1">BREAKFAST</option>
+              <option value="2">DINNER</option>
+              <option value="3">SNACK</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="col s6">
+          <label>Difficulty</label>
+          <div class="input-field">
+            <select>
+              <option value="" disabled selected>Select</option>
+              <option value="1">EASY</option>
+              <option value="2">MEDIUM</option>
+              <option value="3">HARD</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s3">
+          <label>Cooking time</label>
+          <input id="cook_hours" type="number" placeholder="hours"></input>
+        </div>
+        <div class="col s3">
+          <label>&nbsp</label>
+          <input id="cook_minutes" type="number" placeholder="minutes"></input>
+        </div>
+        <div class="col s3 offset-s3">
+          <label>Calories</label>
+          <input id="cook_minutes" type="number" placeholder="calories"></input>
+        </div>
+      </div>
+
+      <div class="row ">
+        <div class="col s12">Ingredients</div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <label>Ingredient</label>
+          <input id="ingredient" type="text"></input>
+        </div>
+        <div class="col s2">
+          <label>Quantity</label>
+          <input id="amount" type="number">
+        </div>
+        <div class="col s2">
+          <label>Unit</label>
+            <div id="unit" class="input-field">
+              <select>
+              <option value=" "> </option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="ltr">ltr</option>
+              <option value="tsp">tsp</option>
+              <option value="tbsp">tbsp</option>
+            </select>
+            </div>
+        </div>
+        <div class="col s1">
+           <a id="add_ingredient" class="btn-floating btn waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
+        </div>
+      </div>  
+      <div id="ingredients">
+      </div>
+      <div class="row ">
+        <div class="col s12">
+          <label>Allergens</label>
+            <div class="input-field">
+              <select id="select_allergens" multiple>
+              <option value="dairy">DAIRY</option>
+              <option value="fish">FISH</option>
+              <option value="gluten">GLUTEN</option>
+              <option value="nuts">NUTS</option>
+              <option value="shellfish">SHELLFISH</option>
+              <option value="eggs">EGGS</option>
+            </select>
+            </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $("#add_ingredient").on("click", function() {
+    console.log("clicked")
+    var currentIngredient = $("#ingredient").val();
+    var currentAmount=$("#amount").val();
+    var currentUnit=$("#unit option:selected").val()
+    var currentIngredients=$("#ingredients").html()
+    $("#ingredients").html(currentIngredients+"<div class='row'><div class='col s1'>"+currentAmount+"</div><div class='col s2'>"+currentUnit+"</div><div class='col s7'>"+currentIngredient+"</div></div>")
+
+  })
+</script>
+
+{% endblock %}

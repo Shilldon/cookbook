@@ -1,16 +1,58 @@
-{% extends 'base.html' %}
-{% block content %}
-    <h2>Recipe page</h2>
-    <ul>
-    {% for recipe in recipes %}
-    <li>
-    name={{recipe.name}}
-    allergens={{recipe.allergens}}
-    ingredients=
-    {% for ingredient in recipe.ingredients %}
-        name={{ingredient.type}}
-    {% endfor %}
-    </li>
-    {% endfor %}
-    </ul>
+{% extends 'base.html' %} {% block content %}
+<section>
+    <!---List of recipes returned from DB --->
+    <div class="recipe-list-header">
+        <div class="row">
+            <div class="col s2 offset-s1 ">
+                <p class="center-align"></p>
+            </div>
+            <div class="col s4 valign_wrapper">
+                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Name</p>
+            </div>
+            <div class="col s2">
+                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Time</p>
+            </div>
+            <div class="col s3">
+                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Difficulty</p>
+            </div>
+        </div>
+    </div>
+    <div class="recipe_list">
+
+        {% for recipe in recipes %}
+        <div class="row">
+            <div class="col s1 valign_wrapper">
+                {% if recipe.favourite==true %}
+                <p><i class="material-icons gold-star">star</i></p>
+                {% else %}
+                <p><i class="material-icons">star_border</i></p>
+                {% endif %}
+            </div>
+            <div class="col s2 valign_wrapper">
+                <p><img src="{{recipe.picture}}"></p>
+            </div>
+            <div class="col s4 valign_wrapper">
+
+                <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
+            </div>
+            <div class="col s2 valign_wrapper">
+
+                <p class="center-align">
+                    {% if recipe.cooking_time[0] > 0 %} 
+                    {{recipe.cooking_time[0]}}h 
+                    {%endif%} 
+                    {% if recipe.cooking_time[1] > 0 %} 
+                    {{recipe.cooking_time[1]}}m
+                </p>
+                {% endif %}
+            </div>
+            <div class="col s3 valign_wrapper">
+
+                <p class="center-align">{{ recipe.difficulty[0]|upper }}{{ recipe.difficulty[1:]}}</p>
+            </div>
+        </div>
+
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}

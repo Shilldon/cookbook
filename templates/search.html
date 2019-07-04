@@ -1,18 +1,5 @@
 {% extends 'base.html' %} {% block content %}
 
-
-
-<!--Main page title and background image-->
-<section>
-    <div class="title-container valign-wrapper">
-        <div class="row">
-            <div class="title-text col s12">
-                <h5 class="center-align">{{title_text}}</h5>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- call to action -->
 <section>
     <div class="splash-container search-splash">
@@ -65,8 +52,8 @@
                 <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
             </div>
             <div class="col s4 offset-s2 m2 offset-m2 ">
-                <a class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Search</a>
-                <a class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Search</a>
+                <a href="{{url_for('display_recipe')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Search</a>
+                <a href="{{url_for('display_recipe')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Search</a>
             </div>
         </div>
     </div>
