@@ -69,7 +69,7 @@
       </div>
 
       <div class="row ">
-        <div class="col s12">Ingredients</div>
+        <div class="col s12"><p>Ingredients</p></div>
       </div>
       <div class="row">
         <div class="col s6">
@@ -78,13 +78,13 @@
         </div>
         <div class="col s2">
           <label>Quantity</label>
-          <input id="amount" type="number">
+          <input id="amount" type="number" min="0">
         </div>
-        <div class="col s2">
+        <div class="col s2" style="padding-right:2px">
           <label>Unit</label>
-            <div id="unit" class="input-field">
-              <select>
-              <option value=" "> </option>
+          <div id="unit" class="input-field">
+            <select>
+              <option value="0"> </option>
               <option value="g">g</option>
               <option value="kg">kg</option>
               <option value="ml">ml</option>
@@ -92,19 +92,19 @@
               <option value="tsp">tsp</option>
               <option value="tbsp">tbsp</option>
             </select>
-            </div>
+          </div>
         </div>
         <div class="col s1">
-           <a id="add_ingredient" class="btn-floating btn waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
+          <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
         </div>
-      </div>  
+      </div>
       <div id="ingredients">
       </div>
       <div class="row ">
         <div class="col s12">
-          <label>Allergens</label>
-            <div class="input-field">
-              <select id="select_allergens" multiple>
+          <label for="select_allergens">Allergens</label>
+          <div class="input-field">
+            <select id="select_allergens" multiple>
               <option value="dairy">DAIRY</option>
               <option value="fish">FISH</option>
               <option value="gluten">GLUTEN</option>
@@ -112,24 +112,53 @@
               <option value="shellfish">SHELLFISH</option>
               <option value="eggs">EGGS</option>
             </select>
-            </div>
+          </div>
         </div>
       </div>
+      
+      <div class="row">
+        <div class="col s12 input-field">
+          <label for="method">Method</label>
+          <textarea id="method" class="materialize-textarea" label="method"></textarea>
+        </div>
+      </div>      
     </form>
   </div>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
-  $("#add_ingredient").on("click", function() {
-    console.log("clicked")
-    var currentIngredient = $("#ingredient").val();
-    var currentAmount=$("#amount").val();
-    var currentUnit=$("#unit option:selected").val()
-    var currentIngredients=$("#ingredients").html()
-    $("#ingredients").html(currentIngredients+"<div class='row'><div class='col s1'>"+currentAmount+"</div><div class='col s2'>"+currentUnit+"</div><div class='col s7'>"+currentIngredient+"</div></div>")
 
-  })
+  $("#add_ingredient").on("click", function() {
+    var totalIngredients = $("#ingredients").data("total_ingredients");
+    totalIngredients++;
+
+    $("#ingredients").data("total_ingredients", totalIngredients);
+    var currentIngredient = $("#ingredient").val();
+    var currentAmount = $("#amount").val();
+    var currentUnit = $("#unit option:selected").val()
+    var currentIngredients = $("#ingredients").html()
+    if(isNaN(currentAmount)){
+      //display error modal
+      alert("not a number")
+    }
+    else if(currentIngredient=="" || currentIngredient==undefined) {
+      //display error modal
+      alert("ingredient not defined")
+    }
+    else {
+      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + "</p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div>")
+      $("#ingredient").val('');
+      $("#amount").val('');
+      $("#unit").val("0");
+    }
+  });
+  
+  $('body').on("click", "#remove_ingredient", function() {
+
+    $(this).parent().parent().slideUp(500);
+    setTimeout(function() { $(this).parent().parent().remove(); }, 500);
+  });
 </script>
 
 {% endblock %}

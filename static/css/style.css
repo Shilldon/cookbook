@@ -94,7 +94,7 @@
     margin-top: 30px; }
 
 .recipe-list-header {
-  font-family: "Roboto",sans;
+  font-family: "Roboto", sans;
   padding-top: 10px;
   font-size: 0.75rem; }
   .recipe-list-header .col {
@@ -103,7 +103,7 @@
     margin-bottom: 0; }
 
 .recipe_list {
-  font-family: "Roboto",sans; }
+  font-family: "Roboto", sans; }
   .recipe_list .col {
     padding: 0 5px 0 5px; }
   .recipe_list .row {
@@ -117,34 +117,53 @@
 
 input {
   border-bottom: 1px solid #0339A6 !important;
-  font-family: "Roboto",sans !important;
+  font-family: "Roboto", sans !important;
   font-size: 14px !important; }
 
 input:focus {
   border-bottom: 1px solid #0339A6 !important;
   box-shadow: 0 1px 0 0 #0339A6 !important; }
 
+textarea {
+  border-bottom: 1px solid #0339A6 !important;
+  font-family: "Roboto", sans !important;
+  font-size: 14px !important; }
+
+textarea:focus {
+  border-bottom: 1px solid #0339A6 !important;
+  box-shadow: 0 1px 0 0 #0339A6 !important; }
+
 .input-field {
   margin-top: 0; }
+  .input-field label {
+    color: #0339A6;
+    font-family: "Roboto",sans; }
 
 .select-wrapper li span {
+  font-size: 12px !important;
   color: #0339A6; }
 
 .select-dropdown {
   color: #0339A6;
-  font-family: "Roboto",sans !important;
-  font-size: 14px !important; }
+  font-family: "Roboto", sans !important;
+  font-size: 12px !important;
+  padding-left: 2px; }
   .select-dropdown span {
-    font-size: 14px !important; }
+    font-size: 12px !important; }
 
 form {
   margin-top: 10px;
-  font-family: "Roboto",sans; }
+  font-family: "Roboto", sans; }
   form .row {
     margin-bottom: 0; }
-  form a {
+  form #add_ingredient {
     margin-top: 20px; }
+  form #remove_ingredient {
+    margin-top: 6px;
+    background-color: #8C5D42 !important; }
   form label {
+    color: #0339A6; }
+  form p {
     color: #0339A6; }
 
 .page-dividers .col {
