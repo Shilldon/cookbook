@@ -4,26 +4,26 @@
 <!-- Add recipe form -->
 <section>
   <div class="row">
-    <form action="{{url_for('insert_recipe') }}" method="POST" class="col s12">
+    <form action="{{url_for('insertrecipe') }}" method="POST" class="col s12">
 
       <div class="row">
         <div class="col s12">
           <label>Name</label>
-          <input id="name" type="text" label="Name"></input>
+          <input id="name" name="name" type="text" label="Name" required></input>
         </div>
       </div>
 
       <div class="row">
         <div class="col s12">
           <label>Country of origin</label>
-          <input id="country" type="text"></input>
+          <input id="country" name="country" type="text"></input>
         </div>
       </div>
 
       <div class="row">
         <div class="col s12">
           <label>Picture</label>
-          <input id="picture" type="text" placeholder="type in full URL of image"></input>
+          <input id="picture" name="picture" type="text" placeholder="type in full URL of image"></input>
         </div>
       </div>
 
@@ -31,11 +31,11 @@
         <div class="col s6">
           <label>Meal</label>
           <div class="input-field">
-            <select>
+            <select name="meal">
               <option value="" disabled selected>Select</option>
-              <option value="1">BREAKFAST</option>
-              <option value="2">DINNER</option>
-              <option value="3">SNACK</option>
+              <option value="BREAKFAST">BREAKFAST</option>
+              <option value="DINNER">DINNER</option>
+              <option value="SNACK">SNACK</option>
             </select>
           </div>
         </div>
@@ -43,11 +43,11 @@
         <div class="col s6">
           <label>Difficulty</label>
           <div class="input-field">
-            <select>
+            <select name="difficulty">
               <option value="" disabled selected>Select</option>
-              <option value="1">EASY</option>
-              <option value="2">MEDIUM</option>
-              <option value="3">HARD</option>
+              <option value="EASY">EASY</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="HARD">HARD</option>
             </select>
           </div>
         </div>
@@ -56,25 +56,27 @@
       <div class="row">
         <div class="col s3">
           <label>Cooking time</label>
-          <input id="cook_hours" type="number" placeholder="hours"></input>
+          <input name="hours" type="number" placeholder="hours"></input>
         </div>
         <div class="col s3">
           <label>&nbsp</label>
-          <input id="cook_minutes" type="number" placeholder="minutes"></input>
+          <input name="minutes" type="number" placeholder="minutes"></input>
         </div>
         <div class="col s3 offset-s3">
           <label>Calories</label>
-          <input id="cook_minutes" type="number" placeholder="calories"></input>
+          <input name="calories" type="number" placeholder="calories"></input>
         </div>
       </div>
 
       <div class="row ">
-        <div class="col s12"><p>Ingredients</p></div>
+        <div class="col s12">
+          <p>Ingredients</p>
+        </div>
       </div>
       <div class="row">
         <div class="col s6">
           <label>Ingredient</label>
-          <input id="ingredient" type="text"></input>
+          <input id="ingredient"  type="text"></input>
         </div>
         <div class="col s2">
           <label>Quantity</label>
@@ -104,7 +106,7 @@
         <div class="col s12">
           <label for="select_allergens">Allergens</label>
           <div class="input-field">
-            <select id="select_allergens" multiple>
+            <select name="allergens" id="select_allergens" multiple>
               <option value="dairy">DAIRY</option>
               <option value="fish">FISH</option>
               <option value="gluten">GLUTEN</option>
@@ -115,45 +117,53 @@
           </div>
         </div>
       </div>
-      
+
       <div class="row">
         <div class="col s12 input-field">
           <label for="method">Method</label>
-          <textarea id="method" class="materialize-textarea" label="method"></textarea>
+          <textarea name="method" class="materialize-textarea" label="method" required></textarea>
         </div>
-      </div>      
+      </div>
+  <div class="row valign-wrapper">
+    <div class="col s6 offset-s3 m2 offset-m5 ">
+      <button id="submit_recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background"type="submit">Add</button>
+      <button id="submit_recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background" type="submit">Add</button>
+    </div>
+  </div>      
     </form>
   </div>
+  
+
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
-
   $("#add_ingredient").on("click", function() {
     var totalIngredients = $("#ingredients").data("total_ingredients");
     totalIngredients++;
-
     $("#ingredients").data("total_ingredients", totalIngredients);
     var currentIngredient = $("#ingredient").val();
     var currentAmount = $("#amount").val();
     var currentUnit = $("#unit option:selected").val()
     var currentIngredients = $("#ingredients").html()
-    if(isNaN(currentAmount)){
+    if (isNaN(currentAmount)) {
       //display error modal
       alert("not a number")
     }
-    else if(currentIngredient=="" || currentIngredient==undefined) {
+    else if (currentIngredient == "" || currentIngredient == undefined) {
       //display error modal
       alert("ingredient not defined")
     }
     else {
-      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + "</p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div>")
+
+
+      if(currentUnit==="0") { currentUnit="" }
+      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + "</p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input type='hidden' name='type' value="+currentIngredient+"></input><input type='hidden' name='amount' value="+currentAmount+"></input><input type='hidden' name='unit' value="+currentUnit+"></input>")
       $("#ingredient").val('');
       $("#amount").val('');
-      $("#unit").val("0");
+      $("#unit").val('');
     }
   });
-  
   $('body').on("click", "#remove_ingredient", function() {
 
     $(this).parent().parent().slideUp(500);
