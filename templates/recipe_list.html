@@ -1,0 +1,72 @@
+{% extends 'base.html' %} {% block content %}
+<section>
+    <!---List of recipes returned from DB --->
+    <div class="recipe-list-header">
+        <div class="row">
+            <div class="col s2 offset-s1 ">
+                <p class="center-align"></p>
+            </div>
+            <div class="col s4 valign_wrapper">
+                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Name</p>
+            </div>
+            <div class="col s2">
+                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Time</p>
+            </div>
+            <div class="col s3">
+                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Difficulty</p>
+            </div>
+        </div>
+    </div>
+    <div class="recipe_list row-effect">
+        {% for recipe in recipes %}
+        {% if action=="edit" %}
+        <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
+        {% else if action=="search" %}        
+        <a href="{{url_for('show_recipe', recipe_id=recipe._id)}}">
+        {% endif %}
+        <div class="row valign-wrapper">
+            <div class="col s1">
+                {% if edit %}
+                  <p><i class="material-icons">edit</i></p>
+                {% elif delete %}
+                  <p><i class="material-icons">delete_forever</i></p>              
+                {% elif recipe.favourite %}
+                    <p><i class="material-icons gold-star">star</i></p>
+                {% else %}
+                    <p><i class="material-icons">star_border</i></p>
+                {% endif %}
+            </div>
+            <div class="col s2">
+                {% if recipe.picture %}
+                <p class="center-align"><img src="{{recipe.picture}}"></p>
+                {% else %}
+                <p class="center-align"><i class="fa fa-cutlery fa-2x" aria-hidden="true"></i></p>
+                {% endif %}
+            </div>
+            <div class="col s4">
+
+                <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
+            </div>
+            <div class="col s2">
+
+                <p class="center-align">
+                    {% if recipe.hours > 0 %} 
+                    {{recipe.hours}}h 
+                    {%endif%} 
+                    {% if recipe.minutes > 0 %} 
+                    {{recipe.minutes}}m
+                </p>
+                {% endif %}
+            </div>
+            <div class="col s3">
+                {% if recipe.difficulty %}
+                <p class="center-align">{{ recipe.difficulty[0]|upper }}{{ recipe.difficulty[1:]|lower}}</p>
+                {%endif%}
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}

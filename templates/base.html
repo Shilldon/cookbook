@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto: 300,400,600,700" rel="stylesheet">
   <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
 
   <!-- <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" /> -->
@@ -128,6 +128,27 @@
       $('.sidenav').sidenav();
       $('select').formSelect();
     });
+    
+  $("#favourite").on("click", function (){
+    //ensure the favourite variable is a boolean value
+    var favourite=$("#favourite_input").val();
+console.log("favourite "+favourite)
+    if(typeof(favourite)!=Boolean) {
+      favourite=(favourite.toLowerCase()=="true");
+    }
+    if(favourite==false) {
+      $("i",this).text("star");
+      $("i",this).addClass("gold-star");      
+      $("#favourite_input").val(true);
+    }
+    else {
+      $("i",this).text("star_border");
+      $("i",this).removeClass("gold-star");      
+      $("#favourite_input").val(false);
+      favourite=$("#favourite_input").val();
+console.log("updated favourite "+favourite)
+    }  
+  })    
   </script>
 
 </body>

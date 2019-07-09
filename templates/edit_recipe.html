@@ -4,37 +4,40 @@
 <!-- Add recipe form -->
 <section>
   <div class="row">
-    <form action="{{url_for('insertrecipe', recipe_id='',edit=False) }}" method="POST" class="col s12">
-
+    <form action="{{url_for('insertrecipe',recipe_id=recipe._id,edit=True) }}" method="POST" class="col s12">
       <div class="row">
         <div class="col s10">
           <label>Name</label>
-          <input id="name" name="name" type="text" label="Name" required></input>
+          <input id="name" name="name" type="text" label="Name" value="{{recipe.name[0]|upper}}{{recipe.name[1:]|lower}}" required></input>
         </div>
         <div class="col s2 valign-wrapper">
+          {%if recipe.favourite %}
+          <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
+          {% else %}
           <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
-          <input type="hidden" id="favourite_input" name="favourite" value=false></input>
+          {% endif %}
+          <input type="hidden" id="favourite_input" name="favourite" value={{recipe.favourite}}></input>
         </div>
       </div>
 
       <div class="row">
         <div class="col s12">
           <label>Country of origin</label>
-          <input id="country" name="country" type="text"></input>
+          <input id="country" name="country" type="text" value="{{recipe.country}}"></input>
         </div>
       </div>
 
       <div class="row">
         <div class="col s12">
           <label>Recipe Author</label>
-          <input id="country" name="author" type="text" placeholder="Firstname Lastname"></input>
+          <input id="country" name="author" type="text" placeholder="Firstname Lastname" value="{{recipe.author}}"></input>
         </div>
       </div>
 
       <div class="row">
         <div class="col s12">
           <label>Picture</label>
-          <input id="picture" name="picture" type="text" placeholder="type in full URL of image"></input>
+          <input id="picture" name="picture" type="text" value="{{recipe.picture}}" placeholder="type in full URL of image"></input>
         </div>
       </div>
 
@@ -44,10 +47,10 @@
           <div class="input-field">
             <select name="meal">
               <option value="" disabled selected>Select</option>
-              <option value="BREAKFAST">BREAKFAST</option>
-              <option value="LUNCH">DINNER</option>
-              <option value="DINNER">DINNER</option>
-              <option value="SNACK">SNACK</option>
+              <option value="BREAKFAST" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
+              <option value="LUNCH" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
+              <option value="DINNER" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
+              <option value="SNACK" {% if recipe.meal|upper=="SNACK" %} selected="selected" {% endif %}>SNACK</option>
             </select>
           </div>
         </div>
@@ -57,9 +60,9 @@
           <div class="input-field">
             <select name="difficulty">
               <option value="" disabled selected>Select</option>
-              <option value="EASY">EASY</option>
-              <option value="MEDIUM">MEDIUM</option>
-              <option value="HARD">HARD</option>
+              <option value="EASY" {% if recipe.difficulty|upper=="EASY" %} selected="selected" {% endif %}>EASY</option>
+              <option value="MEDIUM" {% if recipe.difficulty|upper=="MEDIUM" %} selected="selected" {% endif %}>MEDIUM</option>
+              <option value="HARD" {% if recipe.difficulty|upper=="HARD" %} selected="selected" {% endif %}>HARD</option>
             </select>
           </div>
         </div>
@@ -68,15 +71,15 @@
       <div class="row">
         <div class="col s3">
           <label>Cooking time</label>
-          <input name="hours" type="number" value="0" placeholder="hours"></input>
+          <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours"></input>
         </div>
         <div class="col s3">
           <label>&nbsp</label>
-          <input name="minutes" type="number" value="0" placeholder="minutes"></input>
+          <input name="minutes" type="number" value="{{recipe.minutes}}" placeholder="minutes"></input>
         </div>
         <div class="col s3 offset-s3">
           <label>Calories</label>
-          <input name="calories" type="number" placeholder="calories"></input>
+          <input name="calories" type="number" value="{{recipe.calories}}" placeholder="calories"></input>
         </div>
       </div>
 
@@ -113,18 +116,34 @@
         </div>
       </div>
       <div id="ingredients">
+        {% for ingredient in recipe.ingredients %}
+        <div class="row">
+          <div class="col s10 valign-wrapper">
+            <p>
+                {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of 
+                {% endif %}
+                {{ingredient.type[0]|upper}}{{ingredient.type[1:]|lower}}
+            </p>
+          </div> 
+          <div class="col s1">
+            <a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a>
+              <input type='hidden' name='type' value="{{ingredient.type}}"></input><input type='hidden' name='amount' value="{{ingredient.amount}}"></input><input type='hidden' name='unit' value="{{ingredient.unit}}"></input>      
+          </div>  
+        </div>  
+        {%endfor%}  
       </div>
+      
       <div class="row ">
         <div class="col s12">
           <label for="select_allergens">Allergens</label>
           <div class="input-field">
             <select name="allergens" id="select_allergens" multiple>
-              <option value="dairy">DAIRY</option>
-              <option value="fish">FISH</option>
-              <option value="gluten">GLUTEN</option>
-              <option value="nuts">NUTS</option>
-              <option value="shellfish">SHELLFISH</option>
-              <option value="eggs">EGGS</option>
+              <option value="dairy" {% if recipe.allergens and 'dairy' in recipe.allergens|lower %} selected="selected" {% endif %}>DAIRY</option>
+              <option value="fish" {% if recipe.allergens and 'fish' in recipe.allergens|lower %} selected="selected" {% endif %}>FISH</option>
+              <option value="gluten" {% if recipe.allergens and 'gluten' in recipe.allergens|lower %} selected="selected" {% endif %}>GLUTEN</option>
+              <option value="nuts" {% if recipe.allergens and 'nuts' in recipe.allergens|lower %} selected="selected" {% endif %}>NUTS</option>
+              <option value="shellfish" {% if recipe.allergens and 'shellfish' in recipe.allergens|lower %} selected="selected" {% endif %}>SHELLFISH</option>
+              <option value="eggs" {% if recipe.allergens and 'eggs' in recipe.allergens|lower %} selected="selected" {% endif %}>EGGS</option>
             </select>
           </div>
         </div>
@@ -133,13 +152,13 @@
       <div class="row">
         <div class="col s12 input-field">
           <label for="method">Method</label>
-          <textarea name="method" class="materialize-textarea" label="method" required></textarea>
+          <textarea name="method" class="materialize-textarea" label="method" required>{{recipe.method}}</textarea>
         </div>
       </div>
   <div class="row valign-wrapper">
     <div class="col s6 offset-s3 m2 offset-m5 ">
-      <button id="submit_recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background"type="submit">Add</button>
-      <button id="submit_recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background" type="submit">Add</button>
+      <button id="submit_recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background"type="submit">Update</button>
+      <button id="submit_recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background" type="submit">Update</button>
     </div>
   </div>      
     </form>

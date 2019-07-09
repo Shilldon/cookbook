@@ -85,8 +85,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     height: 200px;
     h6 {
         padding-top: 20px;
-    }
-    //    p {
+    } //    p {
     //        padding-bottom: 20px;
     //    }
     .row {
@@ -126,6 +125,9 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
             margin: 0;
         }
     }
+    .col:hover {
+        background-color:white;
+    }
     .row {
         margin-bottom: 0;
         height: 80px;
@@ -135,6 +137,14 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
     a {
         margin-top: 30px;
+    }
+    .search-button {
+        transition-duration:0.5s;
+        background-color: $highlight4-color;
+    }    
+    .search-button:hover {
+
+        background-color: $highlight2-color;    
     }
 }
 
@@ -160,12 +170,37 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     .row {
         margin-bottom: 0;
     }
+    a {
+        color: $font-color;
+    }
     img {
+        border: solid 4px $highlight4-color;
         width: 100%;
-
         object-fit: cover;
     }
 }
+
+.row-effect {
+    
+    .row {
+        transition-duration: 0.5s;
+    }
+    img {
+        transition-duration: 0.5s;
+        
+    }
+    .row:hover {
+        background-color: $highlight1-color;
+        p {
+            color: white;
+        }
+        img {
+            transform: scale(1.15, 1.15);
+        }
+    }
+
+}
+
 
 .gold-star {
     color: #FFBF57;
@@ -196,126 +231,142 @@ textarea:focus {
     box-shadow: 0 1px 0 0 $base-color !important;
 }
 
-    .input-field {
-        margin-top: 0;
-        label {
-            color: $base-color;
-            font-family: "Roboto",sans;
-        }
-    }
-
-    .select-wrapper {
-
-        li {
-            span {
-                font-size:12px !important;
-                color: $base-color;
-            }
-        }
-    }
-    .select-dropdown {
+.input-field {
+    margin-top: 0;
+    label {
         color: $base-color;
-        font-family: "Roboto", sans !important;
-        font-size: 12px !important;padding-left:2px;
+        font-family: "Roboto", sans;
+    }
+}
+
+.select-wrapper {
+
+    li {
         span {
             font-size: 12px !important;
-
-        }
-    }
-
-    //----- GENERAL STYLES -----//
-    form {
-        margin-top: 10px;
-        font-family: "Roboto", sans;
-        .row {
-            margin-bottom: 0;
-        }
-        #add_ingredient {
-            margin-top: 20px;
-        }
-        #remove_ingredient {
-            margin-top: 6px;
-            background-color: $highlight4-color !important;
-        }
-        label {
-            color: $base-color;
-        }
-        p {
             color: $base-color;
         }
     }
-    .page-dividers {
-        .col {
-            padding: 0;
-            margin: 0;
-        }
-    }
-    .page-divider {
-        height: 10px;
-        margin: 0 30px 0 30px;
-    }
+}
 
-    .btn-block {
-        width: 100%;
-        height: 100%;
-        font-size: 1rem;
-    }
+.select-dropdown {
+    color: $base-color;
+    font-family: "Roboto", sans !important;
+    font-size: 12px !important;
+    padding-left: 2px;
+    span {
+        font-size: 12px !important;
 
-    .btn:active {
+    }
+}
+
+//----- DISPLAY RECIPE -----//
+.recipe-contents-list {
+    margin-bottom: 20px;
+    p {
+        margin: 0;
+    }
+}
+
+.recipe-subject {
+    font-weight: 700;
+    color: $font-color;
+}
+
+
+//----- GENERAL STYLES -----//
+form {
+    margin-top: 10px;
+    font-family: "Roboto", sans;
+    .row {
+        margin-bottom: 0;
+    }
+    #add_ingredient {
+        margin-top: 20px;
+    }
+    #remove_ingredient {
+        margin-top: 6px;
         background-color: $highlight4-color !important;
     }
+    label {
+        color: $base-color;
+    }
+    p {
+        color: $base-color;
+    }
+}
 
-    //-----Media queries -----//
-    @media (min-width: 768px) {
-        .title-container {
-            height: 250px;
-            .title-text {
-                h5 {
-                    font-size: 2rem;
-                }
+.page-dividers {
+    .col {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.page-divider {
+    height: 10px;
+    margin: 0 30px 0 30px;
+}
+
+.btn-block {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+}
+
+.btn:active {
+    background-color: $highlight4-color !important;
+} //-----Media queries -----//
+@media (min-width: 768px) {
+    .title-container {
+        height: 250px;
+        .title-text {
+            h5 {
+                font-size: 2rem;
             }
-        }
-        .information-container {
-            p {
-                color: $font-color;
-                font-size: 1.2rem;
-            }
-        }
-        .search-container {
-            .col {
-                line-height: 120px;
-            }
-        }
-        .index-splash {
-            height: 250px;
-        }
-        .search-splash {
-            height: 125px;
         }
     }
-
-    @media (min-width: 1024px) {
-        .title-container {
-            height: 350px;
-            .title-text {
-                h5 {
-                    font-size: 2.5rem;
-                }
-            }
-        }
-        .search-container {
-            .col {
-                line-height: 170px;
-            }
-        }
-        .index-splash {
-            height: 275px;
-        }
-        .search-splash {
-            height: 175px;
-        }
-        .btn-block {
-            font-size: 1.3rem;
-
+    .information-container {
+        p {
+            color: $font-color;
+            font-size: 1.2rem;
         }
     }
+    .search-container {
+        .col {
+            line-height: 120px;
+        }
+    }
+    .index-splash {
+        height: 250px;
+    }
+    .search-splash {
+        height: 125px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .title-container {
+        height: 350px;
+        .title-text {
+            h5 {
+                font-size: 2.5rem;
+            }
+        }
+    }
+    .search-container {
+        .col {
+            line-height: 170px;
+        }
+    }
+    .index-splash {
+        height: 275px;
+    }
+    .search-splash {
+        height: 175px;
+    }
+    .btn-block {
+        font-size: 1.3rem;
+
+    }
+}

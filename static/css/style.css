@@ -85,6 +85,8 @@
     padding: 0; }
     .search-container .col p {
       margin: 0; }
+  .search-container .col:hover {
+    background-color: white; }
   .search-container .row {
     margin-bottom: 0;
     height: 80px; }
@@ -92,6 +94,11 @@
     color: white; }
   .search-container a {
     margin-top: 30px; }
+  .search-container .search-button {
+    transition-duration: 0.5s;
+    background-color: #8C5D42; }
+  .search-container .search-button:hover {
+    background-color: #033E8C; }
 
 .recipe-list-header {
   font-family: "Roboto", sans;
@@ -108,9 +115,23 @@
     padding: 0 5px 0 5px; }
   .recipe_list .row {
     margin-bottom: 0; }
+  .recipe_list a {
+    color: #5A6978; }
   .recipe_list img {
+    border: solid 4px #8C5D42;
     width: 100%;
     object-fit: cover; }
+
+.row-effect .row {
+  transition-duration: 0.5s; }
+.row-effect img {
+  transition-duration: 0.5s; }
+.row-effect .row:hover {
+  background-color: #034AA6; }
+  .row-effect .row:hover p {
+    color: white; }
+  .row-effect .row:hover img {
+    transform: scale(1.15, 1.15); }
 
 .gold-star {
   color: #FFBF57; }
@@ -137,7 +158,7 @@ textarea:focus {
   margin-top: 0; }
   .input-field label {
     color: #0339A6;
-    font-family: "Roboto",sans; }
+    font-family: "Roboto", sans; }
 
 .select-wrapper li span {
   font-size: 12px !important;
@@ -150,6 +171,15 @@ textarea:focus {
   padding-left: 2px; }
   .select-dropdown span {
     font-size: 12px !important; }
+
+.recipe-contents-list {
+  margin-bottom: 20px; }
+  .recipe-contents-list p {
+    margin: 0; }
+
+.recipe-subject {
+  font-weight: 700;
+  color: #5A6978; }
 
 form {
   margin-top: 10px;
