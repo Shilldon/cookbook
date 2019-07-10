@@ -124,14 +124,6 @@
 
 .row-effect .row {
   transition-duration: 0.5s; }
-.row-effect img {
-  transition-duration: 0.5s; }
-.row-effect .row:hover {
-  background-color: #034AA6; }
-  .row-effect .row:hover p {
-    color: white; }
-  .row-effect .row:hover img {
-    transform: scale(1.15, 1.15); }
 
 .gold-star {
   color: #FFBF57; }
@@ -181,6 +173,10 @@ textarea:focus {
   font-weight: 700;
   color: #5A6978; }
 
+.selected-for-deletion {
+  background-color: red;
+  color: white; }
+
 form {
   margin-top: 10px;
   font-family: "Roboto", sans; }
@@ -212,6 +208,19 @@ form {
 .btn:active {
   background-color: #8C5D42 !important; }
 
+.modal {
+  font-family: "Roboto",sans;
+  color: #5A6978; }
+  .modal h4 {
+    color: #0339A6; }
+  .modal button {
+    color: white; }
+
+@media (hover: hover) {
+  .row-effect .row:hover {
+    background-color: #034AA6; }
+    .row-effect .row:hover p {
+      color: white; } }
 @media (min-width: 768px) {
   .title-container {
     height: 250px; }

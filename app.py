@@ -20,9 +20,15 @@ def index():
 def add_recipe():
     return render_template("add_recipe.html", title_text='Add recipe')
 
-@app.route("/insertrecipe/<recipe_id>", methods=['POST'])
-def insertrecipe(recipe_id):
+@app.route("/insertrecipe/", methods=['POST'])
+def insertrecipe():
+    #check whether the user is adding a new recipe or editting a recipe
     edit=request.args.get('edit',None)
+    
+    #if editing a recipe get the ID of the recipe to edit
+    if edit=='True':
+        recipe_id=request.args.get('recipe_id',None)
+    
     recipes=mongo.db.recipeDB
     #request form data not in flat format - arrays are created in the form for ingredients and allergen information
     new_recipe=request.form.to_dict(flat=False)
@@ -71,10 +77,11 @@ def insertrecipe(recipe_id):
     except KeyError:
         pass    
     
-    if edit==False:
-        recipes.insert_one(new_recipe)
-    else:
+    if edit=='True':
         recipes.update({'_id':ObjectId(recipe_id)},new_recipe)
+    else:
+        recipes.insert_one(new_recipe)
+        print("New recipe added",new_recipe)
     return render_template('display_recipe.html',title_text='Your recipe',recipe=new_recipe)
 
 @app.route("/search")
@@ -84,23 +91,36 @@ def search():
 
 @app.route('/recipe_list')
 def recipe_list():
-    _action=request.args.get('action',None)
-    return render_template("recipe_list.html",title_text="Your recipes",recipes=mongo.db.recipeDB.find(), action=_action)
+    _todo=request.args.get('action',None)
+    if _todo=="delete":
+        title_text_value="Delete recipes"
+    elif _todo=="edit":
+        title_text_value="Edit recipes"
+    else:
+        title_text_value="Your recipes"
+    return render_template("recipe_list.html",title_text=title_text_value,recipes=mongo.db.recipeDB.find(), action=_todo)
 
-#@app.route('/show_recipe/<recipe_id>')
-#def show_recipe(recipe_id):
-#   _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
-#   return render_template('display_recipe.html',title_text="Your recipe",recipe=_recipe)
+@app.route('/show_recipe/<recipe_id>')
+def show_recipe(recipe_id):
+    _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+    return render_template('display_recipe.html',title_text="Your recipe",recipe=_recipe)
 
 @app.route('/edit_recipe/<recipe_id>')
 def edit_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
-    return render_template('edit_recipe.html',title_text="Edit your recipe",recipe=_recipe)
+    return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe)
 
-@app.route('/update_recipe')
-def update_recipe():
-    return True
+#@app.route('/update_recipe')
+#def update_recipe():
+#    return True
 
+@app.route('/delete_recipe',methods=['POST'])
+def delete_recipe():
+    recipe_id=request.form.get('recipe_id')
+    _recipe=mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
+    print("delete ",recipe_id)
+    return redirect('recipe_list')
+    
 
 if __name__ =="__main__":
     app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True)    

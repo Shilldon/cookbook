@@ -21,14 +21,16 @@
         {% for recipe in recipes %}
         {% if action=="edit" %}
         <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
-        {% else if action=="search" %}        
+        {% elif action=="delete" %}        
+        <a href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
+        {% else %}        
         <a href="{{url_for('show_recipe', recipe_id=recipe._id)}}">
         {% endif %}
         <div class="row valign-wrapper">
             <div class="col s1">
-                {% if edit %}
+                {% if action=="edit" %}
                   <p><i class="material-icons">edit</i></p>
-                {% elif delete %}
+                {% elif action=="delete" %}
                   <p><i class="material-icons">delete_forever</i></p>              
                 {% elif recipe.favourite %}
                     <p><i class="material-icons gold-star">star</i></p>
@@ -66,7 +68,53 @@
         </div>
         </a>
         {% endfor %}
-
     </div>
 </section>
+
+<!--Deletion modal -->
+<section>
+  <div id="delete_modal" class="modal">
+    <div class="modal-content">
+      <h4>Confirm deletion</h4>
+      <p>Are you sure you want to delete this recipe?</p>
+
+        <form action="{{url_for('delete_recipe') }}"method="POST">
+            <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
+            <div class="row">
+                <div class="col s5">
+                    <button type="reset" id="modal_reset" class="modal-close waves-effect waves-green btn-flat highlight1-background" style="padding: 0 6px 0 6px; width:100px">
+                        <i class="fa fa-times-circle" class="float:left"aria-hidden="true"></i>
+                        <p style="margin:0; padding:0 6px 0 6px; float:right; color:white"> Cancel</p>
+                    </button>
+                </div>
+                <div class="col s5 offset-s1">
+                    <button type="submit" class="modal-close waves-effect waves-green btn-flat" style="background-color: red; padding: 0 6px 0 6px; width:100px">
+                        <i class="fa fa-times-circle" class="float:left"aria-hidden="true"></i>
+                        <p style="margin:0; padding:0 6px 0 6px; float:right; color:white"> Delete</p>
+                    </button>
+            </div>
+        </form>      
+    </div>
+  </div>
+</section>  
+ 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script>
+
+    $('body').on('click','.delete_button', function() {
+        recipe_id=$(this).attr("recipe_id");
+        $('#recipe_id_input').val(recipe_id)
+        $(this).find(".row").addClass("selected-for-deletion")
+   //     $(this).find(".row").css({"background-color":"red","color":"white"})
+        $('#modal_reset').data("row_to_delete",$(this).find(".row"))
+    })   
+    
+    $('#modal_reset').on('click', function() {
+        var row=$(this).data("row_to_delete");
+        console.log(row)
+        row.removeClass("selected-for-deletion");
+    })
+    
+ </script>
+
 {% endblock %}

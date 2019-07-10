@@ -27,19 +27,19 @@
         <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
         <a href="{{ url_for('search') }}" class="sidenav-trigger right"><i class="material-icons">search</i></a>
         <ul class="right hide-on-med-and-down">
-          <li class="highlight3-background"><a href="{{ url_for('search') }}">Search</a></li>
+          <li class="highlight3-background"><a href="{{ url_for('search', action='search') }}">Search</a></li>
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
-          <li class="highlight2-background"><a href="#">Edit</a></li>
-          <li class="highlight4-background"><a href="#">Delete</a></li>
+          <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
+          <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
         </ul>
       </div>
     </nav>
 
     <ul class="sidenav" id="mobile-demo">
-      <li class="highlight3-background"><a href="{{ url_for('search') }}">Search</a></li>
+      <li class="highlight3-background"><a href="{{ url_for('search', action='search') }}">Search</a></li>
       <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
-      <li class="highlight2-background"><a href="#">Edit</a></li>
-      <li class="highlight4-background"><a href="#">Delete</a></li>
+      <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
+      <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
     </ul>
   </section>
   
@@ -127,12 +127,15 @@
     $(document).ready(function() {
       $('.sidenav').sidenav();
       $('select').formSelect();
+      $('.modal').modal({
+      //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
+        dismissible : false,
+      });
     });
     
   $("#favourite").on("click", function (){
     //ensure the favourite variable is a boolean value
     var favourite=$("#favourite_input").val();
-console.log("favourite "+favourite)
     if(typeof(favourite)!=Boolean) {
       favourite=(favourite.toLowerCase()=="true");
     }
@@ -146,7 +149,6 @@ console.log("favourite "+favourite)
       $("i",this).removeClass("gold-star");      
       $("#favourite_input").val(false);
       favourite=$("#favourite_input").val();
-console.log("updated favourite "+favourite)
     }  
   })    
   </script>

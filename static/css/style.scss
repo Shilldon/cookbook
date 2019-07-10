@@ -185,20 +185,6 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     .row {
         transition-duration: 0.5s;
     }
-    img {
-        transition-duration: 0.5s;
-        
-    }
-    .row:hover {
-        background-color: $highlight1-color;
-        p {
-            color: white;
-        }
-        img {
-            transform: scale(1.15, 1.15);
-        }
-    }
-
 }
 
 
@@ -273,6 +259,11 @@ textarea:focus {
     color: $font-color;
 }
 
+//----- DELETE RECIPE -----//
+.selected-for-deletion {
+    background-color:red;
+    color:white;
+}
 
 //----- GENERAL STYLES -----//
 form {
@@ -316,7 +307,32 @@ form {
 
 .btn:active {
     background-color: $highlight4-color !important;
-} //-----Media queries -----//
+} 
+
+//----- MODAL STYLES -----//
+.modal {
+    font-family: "Roboto",sans;
+    color: $font-color;
+    h4 {
+        color: $base-color;
+    }
+    button {
+        color:white;
+    }
+}
+
+//-----Media queries -----//
+@media (hover: hover) {
+    .row-effect {
+        .row:hover {
+        background-color: $highlight1-color;
+        p {
+            color: white;
+        }
+    }
+    }
+}
+
 @media (min-width: 768px) {
     .title-container {
         height: 250px;
