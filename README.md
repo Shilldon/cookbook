@@ -11,3 +11,5 @@ background:
 Photo by Brooke Lark on Unsplash
 
 Change re: edit and delete - input on display
+
+defensive - list of authors and countries tested before displaying filter

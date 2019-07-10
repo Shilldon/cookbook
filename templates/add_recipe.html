@@ -5,7 +5,7 @@
 <section>
   <div class="row">
     <!--set the edit variable to false to tell flask this is a new recipe being added so no need to request the recipe_id-->
-    <form action="{{url_for('insertrecipe', edit=False) }}" method="POST" class="col s10 offset-s1">
+    <form action="{{url_for('insertrecipe', edit='False') }}" method="POST" class="col s10 offset-s1">
 
       <div class="row">
         <div class="col s10">
@@ -28,7 +28,7 @@
       <div class="row">
         <div class="col s12">
           <label>Recipe Author</label>
-          <input id="country" name="author" type="text" placeholder="Firstname Lastname"></input>
+          <input id="author" name="author" type="text" placeholder="Firstname Lastname"></input>
         </div>
       </div>
 

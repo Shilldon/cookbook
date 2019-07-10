@@ -25,9 +25,9 @@
       <div class="nav-wrapper">
         <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-        <a href="{{ url_for('search') }}" class="sidenav-trigger right"><i class="material-icons">search</i></a>
+        <a href="{{ url_for('recipe_list', action='search') }}" class="sidenav-trigger right"><i class="material-icons">search</i></a>
         <ul class="right hide-on-med-and-down">
-          <li class="highlight3-background"><a href="{{ url_for('search', action='search') }}">Search</a></li>
+          <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
           <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
           <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
@@ -36,7 +36,7 @@
     </nav>
 
     <ul class="sidenav" id="mobile-demo">
-      <li class="highlight3-background"><a href="{{ url_for('search', action='search') }}">Search</a></li>
+      <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
       <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
       <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
       <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
@@ -127,6 +127,7 @@
     $(document).ready(function() {
       $('.sidenav').sidenav();
       $('select').formSelect();
+      $('.collapsible').collapsible();
       $('.modal').modal({
       //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
         dismissible : false,

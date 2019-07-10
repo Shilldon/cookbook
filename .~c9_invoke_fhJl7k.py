@@ -36,8 +36,6 @@ def insertrecipe():
     new_recipe=request.form.to_dict(flat=False)
     ingredients=[]
     ingredient={}
-    #initialise cook time variable to convert hours and minutes to minutes total for ease of search DB in recipe_list
-    cook_time=0
     for key, key_name in new_recipe.items():
         #flatten dict for non-array items which have become arrays through request object
         if key!='type' and key!='amount' and key!='unit' and key!='allergens':
@@ -49,17 +47,11 @@ def insertrecipe():
                 else:
                     new_recipe[key]=False    
             if key=='hours' or key=='minutes' or key=='calories':
-                #convert from string to int, if needed
+                #convert from string to int, if needed, for processing in jinja on display_recipe
                 try:
                     new_recipe[key]=int(new_recipe[key])
                 except ValueError:
                     pass
-            if key=='hours':
-                #convert hours to minutes and add to cook time
-                cook_time=new_recipe[key]*60
-            if key=='minutes':
-                cook_time=cook_time+new_recipe[key]
-            
         elif key=='type':
             #cycle through the ingredient information and create objects for each ingredient with key values of ingredient type, amount and units
             i=0
@@ -69,8 +61,6 @@ def insertrecipe():
                 #insert ingredient object into array of ingredients
                 ingredients.append(ingredient)
                 i+=1       
-    #insert the new cook_time key into the new_recipe dict
-    new_recipe["cook_time"]=cook_time
     #insert the new ingredients array into the new_receipe dict
     new_recipe['ingredients']=ingredients            
     
@@ -99,30 +89,23 @@ def insertrecipe():
 @app.route("/search")
 
 def search():
+    session["filters"]=""
     return render_template("search.html",title_text="Find your favourites")
 
-@app.route("/recipe_list", methods=['POST','GET'])
+@app.route('/recipe_list')
 def recipe_list():
-   # print("recipe list form",session["filters"])
+    print("recipe list form",session["filters"])
     
-    dict=request.form.to_dict()
-    if dict:
-        for key, value in dict.items():
-            if value=='false':
-                dict[key]=False
-            elif value=='true':
-                dict[key]=True
-            elif key=="calories":
-                print("upddate calories in dict")
-                if int(value)==999:
-                    dict[key]={'$gt':int(value)}
-                else:
-                    dict[key]={'$lt':int(value)}    
-            elif key=="cook_time":
-                if int(value)==179:
-                    dict[key]={'$gt':int(value)}
-                else:
-                    dict[key]={'$lt':int(value)}                 
+    dict=session["filters"]
+    for key, value in dict.items():
+        if value=='false':
+            dict[key]=False
+        elif value=='true':
+            dict[key]=True
+        elif key=="calories":
+            print("upddate calories in dict")
+            if int(value)>0:
+                dict[key]={'$ne':'','$lt':value}
 
 
     print("dict updated",dict)
@@ -132,32 +115,14 @@ def recipe_list():
     except KeyError:
         pass
     
+    _countries_list=mongo.db.countriesDB.find()
+
     if dict:
         print("search dictionary exists, therefore searching against it")
         _recipe_list=mongo.db.recipeDB.find(dict)
     else:
         _recipe_list=mongo.db.recipeDB.find()    
 
-    #create a list of countries and authors referred to in recipe db to generate filters in recipe_list
-    full_list_of_country_recipes=mongo.db.recipeDB.find({"country":{'$exists':True}})
-    full_list_of_author_recipes=mongo.db.recipeDB.find({ "author":{'$exists':True}})
-    
-    unsorted_country_list=[]
-    unsorted_author_list=[]
-    
-    for recipe in full_list_of_country_recipes:
-        #if the country key value is not blank add it to the list
-        if recipe["country"]:
-            unsorted_country_list.append(recipe["country"]) 
-            
-    for recipe in full_list_of_author_recipes:
-        #if the author key value is not blank add it to the list
-        if recipe["author"]:
-            unsorted_author_list.append(recipe["author"]) 
-    
-    #remove duplicates from the lists
-    _country_list=list(dict.fromkeys(unsorted_country_list))
-    _author_list=list(dict.fromkeys(unsorted_author_list))
 
     
     _todo=request.args.get('action',None)
@@ -167,13 +132,8 @@ def recipe_list():
         title_text_value="Edit recipes"
     else:
         title_text_value="Your recipes"
-    
-    try:
-        del request.session['filters']
-    except AttributeError:
-        pass
-    
-    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_country_list,authors=_author_list,action=_todo)
+        
+    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_countries_list, action=_todo)
 
 @app.route('/show_recipe/<recipe_id>')
 def show_recipe(recipe_id):

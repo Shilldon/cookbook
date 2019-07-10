@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <section>
     <!---List of recipes returned from DB --->
-    <div class="recipe-list-header">
+    <!--    <div class="recipe-list-header">
         <div class="row">
             <div class="col s2 offset-s1 ">
                 <p class="center-align"></p>
@@ -16,10 +16,136 @@
                 <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Difficulty</p>
             </div>
         </div>
+    </div>-->
+    <div class="">
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header ">
+                    <div class="col s3">
+                        <a href="#" class="waves-effect waves-light btn btn_small highlight2-background">Show Filters</a>
+                    </div>
+                </div>
+                <div class="row collapsible-body " style="padding:0px !important; padding-top:0 !important; margin:0">
+                    <div class="col s10 offset-s1">
+                        <form id="filters_form" action="{{url_for('recipe_list')}}" method="POST">
+                            <ul>
+                                <li>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <p>Favourites</p>
+                                        </div>
+                                        <div class="col s7  input-field">
+                                            <select name="favourite">
+                                            <option value="">Not filtered</option>
+                                            <option value=true>Yes</option>
+                                            <option value=false>No</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <p>Meal</p>
+                                        </div>
+                                        <div class="col s7  input-field">
+                                            <select name="meal">
+                                            <option value="">Not filtered</option>
+                                            <option value="SNACK">Snack</option>
+                                            <option value="BREAKFAST">Breakfast</option>
+                                            <option value="LUNCH">Lunch</option>
+                                            <option value="DINNER">Dinner</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <p>Calories</p>
+                                        </div>
+                                        <div class="col s7  input-field">
+                                            <select name="calories">
+                                            <option value="">Not filtered</option>
+                                            <option value=100>< 100</option>
+                                            <option value=200>< 200</option>
+                                            <option value=300>< 300</option>
+                                            <option value=500>< 500</option>
+                                            <option value=750>< 750</option>
+                                            <option value=1000>< 1000</option>
+                                            <option value=999>> 1000</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <p>Cooking time</p>
+                                        </div>
+                                        <div class="col s7  input-field">
+                                            <select name="cook_time">
+                                            <option value="">Not filtered</option>
+                                            <option value=10>< 10 minutes</option>
+                                            <option value=20>< 20 minutes</option>
+                                            <option value=30>< 30 minutes</option>
+                                            <option value=60>< 1 hour</option>
+                                            <option value=120>< 2 hours</option>
+                                            <option value=180>< 3 hours</option>
+                                            <option value=179>> 3 hours</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- check if there is a list of countries to display in the filter. If not, skip -->
+                                {% if countries[0] is defined %}
+                                <li>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <p>Country</p>
+                                        </div>
+                                        <div class="col s7  input-field">
+                                            <select name="country">
+                                            <option value="">Not filtered</option>
+                                            {% for country in countries %}
+                                            <option value="{{country}}">{{country}}</option>
+                                            {%endfor%}
+                                            </select>
+                                       </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                                <!-- check if a list of authors has been retrieved, if not do not display this filter -->
+                                {% if authors[0] is defined %}
+                                <li>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <p>Author</p>
+                                        </div>
+                                        <div class="col s7  input-field">
+                                            <select name="country">
+                                            <option value="">Not filtered</option>
+                                            {% for author in authors %}
+                                            <option value="{{author}}">{{author}}</option>
+                                            {%endfor%}
+                                            </select>
+                                       </div>
+                                    </div>
+                                </li>
+                                {%endif%}
+                                <button class="waves-effect waves-light btn btn_small highlight2-background" id="apply-filters" type="">Apply Filters</button>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
     <div class="recipe_list row-effect">
-        {% for recipe in recipes %}
-        {% if action=="edit" %}
+        <!--check if any recipes have been found - if the dict is empty, display message that no recipes were found with the search criteria-->
+        {% if recipes[0] is not defined %}
+        <p>No recipes found</p>
+        {% endif %} {% for recipe in recipes %} {% if action=="edit" %}
         <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
         {% elif action=="delete" %}        
         <a href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
@@ -66,55 +192,75 @@
                 {%endif%}
             </div>
         </div>
-        </a>
-        {% endfor %}
+        </a> {% endfor %}
     </div>
 </section>
 
 <!--Deletion modal -->
 <section>
-  <div id="delete_modal" class="modal">
-    <div class="modal-content">
-      <h4>Confirm deletion</h4>
-      <p>Are you sure you want to delete this recipe?</p>
+    <div id="delete_modal" class="modal">
+        <div class="modal-content">
+            <h4>Confirm deletion</h4>
+            <p>Are you sure you want to delete this recipe?</p>
 
-        <form action="{{url_for('delete_recipe') }}"method="POST">
-            <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
-            <div class="row">
-                <div class="col s5">
-                    <button type="reset" id="modal_reset" class="modal-close waves-effect waves-green btn-flat highlight1-background" style="padding: 0 6px 0 6px; width:100px">
+            <form action="{{url_for('delete_recipe') }}" method="POST">
+                <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
+                <div class="row">
+                    <div class="col s5" style="padding:0">
+                        <button type="reset" id="modal_reset" class="valign-center modal-close waves-effect waves-green highlight1-background" style="padding: 0 6px; font-size:15px; width:100%; height:36px; border:none">
                         <i class="fa fa-times-circle" class="float:left"aria-hidden="true"></i>
-                        <p style="margin:0; padding:0 6px 0 6px; float:right; color:white"> Cancel</p>
+                        <span style="padding:0px 0px 3px">Cancel</span> 
                     </button>
+                    </div>
+                    <div class="col s5 offset-s2" style="padding:0">
+                        <button type="submit" class="modal-close waves-effect waves-green red" style="padding: 0 6px; font-size:15px; width:100%; height:36px; border:none">
+                        <i class="fa fa-check-circle" class="float:left"aria-hidden="true"></i>
+                        <span style="padding:0px 0px 3px"> Delete</span>
+                    </button>
+                    </div>
                 </div>
-                <div class="col s5 offset-s1">
-                    <button type="submit" class="modal-close waves-effect waves-green btn-flat" style="background-color: red; padding: 0 6px 0 6px; width:100px">
-                        <i class="fa fa-times-circle" class="float:left"aria-hidden="true"></i>
-                        <p style="margin:0; padding:0 6px 0 6px; float:right; color:white"> Delete</p>
-                    </button>
-            </div>
-        </form>      
+            </form>
+        </div>
     </div>
-  </div>
-</section>  
- 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- <script>
+</section>
 
-    $('body').on('click','.delete_button', function() {
-        recipe_id=$(this).attr("recipe_id");
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $('body').on('click', '.delete_button', function() {
+        //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to flask if deletion is confirmed
+        recipe_id = $(this).attr("recipe_id");
         $('#recipe_id_input').val(recipe_id)
         $(this).find(".row").addClass("selected-for-deletion")
-   //     $(this).find(".row").css({"background-color":"red","color":"white"})
-        $('#modal_reset').data("row_to_delete",$(this).find(".row"))
-    })   
-    
-    $('#modal_reset').on('click', function() {
-        var row=$(this).data("row_to_delete");
-        console.log(row)
-        row.removeClass("selected-for-deletion");
+        //need to set the row object on the reset modal button to remove the red highlight if cancelling deletion
+        $('#modal_reset').data("row_to_delete", $(this).find(".row"))
     })
-    
- </script>
+
+    $('#modal_reset').on('click', function() {
+        var row = $(this).data("row_to_delete");
+        //on cancelling deletion remove the red highlight on the row
+        row.removeClass("selected-for-deletion");
+        //reset the row variable
+        $(this).data("row_to_delete", "");
+    })
+
+    $('body').on('click', 'option', function() {
+        console.log("clicked")
+        console.log($(option, this))
+    })
+
+
+    $('#apply-filters').on("click", function() {
+        //disable all empty form fields to avoid sending blank fields for filter search in flask against DB
+        $(".collapsible-header").removeClass(function() {
+            return "active";
+        });
+        $(".collapsible").collapsible({ accordion: true });
+        $(".collapsible").collapsible({ accordion: false });
+        $("#filters_form option[value='']").attr("disabled", "disabled");
+        $("#filters_form input[value='']").attr("disabled", "disabled");
+        //setTimeout(function() { $('#filters_form').submit()}, 1000);
+        // return true; 
+    });
+</script>
 
 {% endblock %}
