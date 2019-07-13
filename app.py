@@ -103,40 +103,67 @@ def search():
 
 @app.route("/recipe_list", methods=['POST','GET'])
 def recipe_list():
-   # print("recipe list form",session["filters"])
+
+    #get details of any filters applied
+    _filter_dict=request.form.to_dict(flat=False)
     
-    dict=request.form.to_dict()
-    if dict:
-        for key, value in dict.items():
-            if value=='false':
-                dict[key]=False
-            elif value=='true':
-                dict[key]=True
-            elif key=="calories":
-                print("upddate calories in dict")
-                if int(value)==999:
-                    dict[key]={'$gt':int(value)}
-                else:
-                    dict[key]={'$lt':int(value)}    
-            elif key=="cook_time":
-                if int(value)==179:
-                    dict[key]={'$gt':int(value)}
-                else:
-                    dict[key]={'$lt':int(value)}                 
 
 
-    print("dict updated",dict)
     
-    try:
-        print("recipe list form",session["filters"])
-    except KeyError:
-        pass
+    #check if the results list is to be filtered in order to return appropriate list in mongo request
+    _sort=_filter_dict.get("sort_by","none")
+    if _sort!="none":
+        #need to remove sort_by from the dictionary befor applying filters - sort_by is not a valid filter
+        del _filter_dict["sort_by"]
+        
+
+    allergen_list=[]
+
+
+    #check if the results are to be filtered using variable passed from recipe_list
+    filter=request.args.get('filter',None)
+    #if so cycle through the dictionary and convert form results to mongo search strings to enable the mongo request to run correctly.
+
+    if filter=='true':
+        if _filter_dict:
+            for key, value in _filter_dict.items():
+                #flatten dictionary as all results but allergens should not be lists:
+                if key !="allergens":
+                    _filter_dict[key]=_filter_dict[key][0]
+                if value=='false':
+                    _filter_dict[key]=False
+                elif value=='true':
+                    _filter_dict[key]=True
+                elif key=="calories":
+                    if int(value)==999:
+                        _filter_dict[key]={'$gt':int(value)}
+                    else:
+                        _filter_dict[key]={'$lt':int(value)}    
+                elif key=="cook_time":
+                    if int(value)==179:
+                        _filter_dict[key]={'$gt':int(value)}
+                    else:
+                        _filter_dict[key]={'$lt':int(value)}  
+                elif key=="allergens":
+                    allergen_list=[]
+                    loop=0
+                    for allergen in _filter_dict[key]:
+                        allergen_list.append(allergen)
+                    _filter_dict[key]={  '$nin' : allergen_list }   
+
     
-    if dict:
-        print("search dictionary exists, therefore searching against it")
-        _recipe_list=mongo.db.recipeDB.find(dict)
+                
+    if filter=='true':
+    #do the appropriate search and sort against the mongoDB depending on inpout from form
+        if _sort!="none":
+            _recipe_list=mongo.db.recipeDB.find(_filter_dict).sort(_sort,1) 
+        else:
+            _recipe_list=mongo.db.recipeDB.find(_filter_dict)
     else:
-        _recipe_list=mongo.db.recipeDB.find()    
+        if _sort!="none":
+            _recipe_list=mongo.db.recipeDB.find().sort(_sort,1) 
+        else:      
+            _recipe_list=mongo.db.recipeDB.find()
 
     #create a list of countries and authors referred to in recipe db to generate filters in recipe_list
     full_list_of_country_recipes=mongo.db.recipeDB.find({"country":{'$exists':True}})
@@ -160,6 +187,7 @@ def recipe_list():
     _author_list=list(dict.fromkeys(unsorted_author_list))
 
     
+    #check the list being shown - search, delete or edit, to ensure the correct options are applied when the page is rendered.
     _todo=request.args.get('action',None)
     if _todo=="delete":
         title_text_value="Delete recipes"
@@ -167,13 +195,8 @@ def recipe_list():
         title_text_value="Edit recipes"
     else:
         title_text_value="Your recipes"
-    
-    try:
-        del request.session['filters']
-    except AttributeError:
-        pass
-    
-    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_country_list,authors=_author_list,action=_todo)
+
+    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort)
 
 @app.route('/show_recipe/<recipe_id>')
 def show_recipe(recipe_id):

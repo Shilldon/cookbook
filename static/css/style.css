@@ -128,6 +128,22 @@
 .gold-star {
   color: #FFBF57; }
 
+.collapsible {
+  margin-top: 0; }
+
+.input-field {
+  margin-bottom: 0; }
+
+.collapsible-body {
+  padding-top: 0; }
+
+.filter_button {
+  border: none;
+  background-color: white; }
+
+.order-list .select-wrapper {
+  display: inline-block; }
+
 input {
   border-bottom: 1px solid #0339A6 !important;
   font-family: "Roboto", sans !important;

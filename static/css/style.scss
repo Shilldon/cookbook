@@ -192,6 +192,29 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     color: #FFBF57;
 }
 
+.collapsible {
+    margin-top: 0;
+}
+
+.input-field {
+    margin-bottom:0;
+}
+
+.collapsible-body {
+    padding-top:0;
+}
+
+.filter_button {
+    border: none;
+    background-color:white;
+}
+
+.order-list {
+    .select-wrapper {
+        display:inline-block;
+    }
+}
+
 //----- ADD RECIPES -----//
 input {
     border-bottom: 1px solid $base-color !important;
