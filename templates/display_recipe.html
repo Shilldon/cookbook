@@ -8,15 +8,12 @@
         <div class="col s8 offset-s2">
           {% set name = recipe.name.split(' ') %}
           <h5 class="center-align">
-            {% for word in name %}
-            {{ word[0]|upper }}{{ word[1:]|lower}}
-            {% endfor %}
+            {% for word in name %} {{ word[0]|upper }}{{ word[1:]|lower}} {% endfor %}
           </h5>
         </div>
         <div class="col s2">
-            {% if recipe.favourite %}
-              <i class="material-icons gold-star">star</i>
-            {% endif %}
+          {% if recipe.favourite %}
+          <i class="material-icons gold-star">star</i> {% endif %}
         </div>
       </div>
 
@@ -28,35 +25,23 @@
           </p>
         </div>
       </div>
-      {% endif %}
-
-      {% if recipe.country %}
+      {% endif %} {% if recipe.country %}
       <div class="row">
         <div class="col s10 offset-s1">
           {% set country_name=recipe.country.split(' ') %}
-          <p class="center-align">From 
-            {% for word in country_name %}
-              {{word[0]|upper}}{{word[1:]|lower}}
-            {%endfor%}
+          <p class="center-align">From {% for word in country_name %} {{word[0]|upper}}{{word[1:]|lower}} {%endfor%}
           </p>
         </div>
       </div>
-      {% endif %}
-
-      {% if recipe.author %}
+      {% endif %} {% if recipe.author %}
       <div class="row">
         <div class="col s10 offset-s1">
           {% set author_name=recipe.author.split(' ') %}
-          <p class="center-align">by 
-            {% for word in author_name %}
-              {{word[0]|upper}}{{word[1:]|lower}}
-            {%endfor%}
-          </p>        
+          <p class="center-align">by {% for word in author_name %} {{word[0]|upper}}{{word[1:]|lower}} {%endfor%}
+          </p>
         </div>
       </div>
-      {% endif %}
-
-      {% if recipe.meal %}
+      {% endif %} {% if recipe.meal %}
       <div class="row">
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Meal</p>
@@ -65,35 +50,25 @@
           <p>{{ recipe.meal[0]|upper }}{{recipe.meal[1:]|lower}}</p>
         </div>
       </div>
-      {% endif %}
-
-      {% if recipe.difficulty %}
+      {% endif %} {% if recipe.difficulty %}
       <div class="row">
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Difficulty</p>
         </div>
         <div class="col s3">
           <p>{{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
-        </div>   
-      </div>  
-      {% endif %}
-      
-      {% if recipe.hours>0 or recipe.minutes>0%}
-      <div class="row">
-          <div class="col s3 offset-s1">
-            <p class="recipe-subject">Cooking time</p>
-          </div>
-          <div class="col s5">
-            <p>{% if recipe.hours>0 %}
-            {{ recipe.hours }} hour
-            {% endif %}
-            {% if recipe.minutes>0 %}
-            {{ recipe.minutes }} minutes{% endif %}</p>
         </div>
       </div>
-      {% endif %}
-        
-      {% if recipe.calories %}
+      {% endif %} {% if recipe.hours>0 or recipe.minutes>0%}
+      <div class="row">
+        <div class="col s3 offset-s1">
+          <p class="recipe-subject">Cooking time</p>
+        </div>
+        <div class="col s5">
+          <p>{% if recipe.hours>0 %} {{ recipe.hours }} hour {% endif %} {% if recipe.minutes>0 %} {{ recipe.minutes }} minutes{% endif %}</p>
+        </div>
+      </div>
+      {% endif %} {% if recipe.calories %}
       <div class="row">
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Calories</p>
@@ -106,47 +81,38 @@
 
       <!-- check to see if ingredients is populated in the dictionary, if so lay out ingredients.
       NB ingredients is highly unlikely to be unpopulated, but it is possbile -->
-      
-      {% if recipe.ingredients %}  
+
+      {% if recipe.ingredients %}
       <div class="recipe-contents-list">
-      <div class="row">
-        <div class="col s3 offset-s1">
-          <p class="recipe-subject">Ingredients</p>
-        </div>
-        {% for ingredient in recipe.ingredients %}
-          {% if loop.first %}
+        <div class="row">
+          <div class="col s3 offset-s1">
+            <p class="recipe-subject">Ingredients</p>
+          </div>
+          {% for ingredient in recipe.ingredients %} {% if loop.first %}
           <div class="col s6">
             <p>
-                {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of 
-                {% endif %}
-                {{ingredient.type}}
+              {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ingredient.type}}
             </p>
-          </div>  
+          </div>
           {% else %}
           <div class="row">
             <div class="col s6 offset-s4">
               <p>
-                {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of 
-                {% endif %}
-                {{ingredient.type}}
-              </p>  
+                {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ingredient.type}}
+              </p>
             </div>
-          </div>  
-          {% endif %}          
-        {% endfor %}
+          </div>
+          {% endif %} {% endfor %}
+        </div>
       </div>
-      </div>
-      {% endif %}
-      
-      {% if recipe.allergens %}
+      {% endif %} {% if recipe.allergens %}
       <div class=" recipe-contents-list">
         <div class="row">
           <div class="col s2 offset-s1">
             <p class="recipe-subject">Allergens</p>
           </div>
-          {% for allergen in recipe.allergens %}
-          {% if loop.first %}
-          
+          {% for allergen in recipe.allergens %} {% if loop.first %}
+
           <div class="col s3 offset-s1">
             <p>{{ allergen[0]|upper }}{{ allergen[1:]|lower }}</p>
           </div>
@@ -156,13 +122,10 @@
               <p>{{ allergen[0]|upper }}{{ allergen[1:]|lower }}</p>
             </div>
           </div>
-          {% endif %}
-          {% endfor %}
+          {% endif %} {% endfor %}
         </div>
       </div>
-      {% endif %}
-      
-      {% if recipe.method %}
+      {% endif %} {% if recipe.method %}
       <div class="row">
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Method</p>
@@ -173,7 +136,18 @@
       </div>
       {% endif %}
     </div>
-  </div>  
+  </div>
+  
+      <div class="row">
+        <div class="col s4 offset-s1 m2 offset-m3 ">
+          <a href="{{ url_for('recipe_list', action='search') }}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Back</a>
+          <a href="{{ url_for('recipe_list', action='search') }}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Back</a>    
+        </div>
+        <div class="col s4 offset-s2 m2 offset-m2 ">
+          <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Home</a>
+          <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>          
+        </div>
+      </div>
 </section>
 
 
