@@ -169,6 +169,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 
     .row {
         margin-bottom: 0;
+
     }
     a {
         color: $font-color;
@@ -178,6 +179,10 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
         width: 100%;
         object-fit: cover;
     }
+}
+
+.recipe-list-right-col {
+    margin-right:auto;
 }
 
 .row-effect {

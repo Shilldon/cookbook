@@ -135,7 +135,7 @@
           <div class="row">
             <div class="col s12 input-field" style="margin-top:10px">
               <label for="method">Method</label>
-              <textarea name="method" class="materialize-textarea" label="method" required></textarea>
+              <textarea id="method" name="method" class="materialize-textarea" label="method" required></textarea>
             </div>
           </div>
 
@@ -147,8 +147,8 @@
           <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
         </div>
         <div class="col s4 offset-s2 m2 offset-m2 ">
-          <button class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Add</button>
-          <button class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Add</button>
+          <a id="submit-recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Add</a>
+          <a id="submit-recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Add</a>
         </div>
       </div>
     </form>
@@ -209,6 +209,28 @@
     $(this).parent().parent().slideUp(500);
     setTimeout(function() { $(this).parent().parent().remove(); }, 500);
   });
+  
+  $("#submit-recipe").on("click", function() {
+    var name=$("#name").val();
+    var ingredient=$('#ingredients').find('input').filter(':hidden:first').val();
+    var method=$('#method').val();
+    console.log("ingredient="+ingredient)
+    if(name=="") {
+      $("#error-modal p").text("You need to name your receipe")
+      $("#error-modal").modal('open');
+    }
+    else if(ingredient==undefined || ingredient==""){
+      $("#error-modal p").text("You need at least one ingredient for your recipe")
+      $("#error-modal").modal('open');      
+    }
+    else if(method==""){
+      $("#error-modal p").text("You need to provide instructions as to how to make your recipe")
+      $("#error-modal").modal('open');      
+    }
+    else {
+      $("form").submit();  
+    }
+  })
 </script>
 
 {% endblock %}

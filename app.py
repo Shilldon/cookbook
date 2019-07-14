@@ -15,7 +15,8 @@ mongo=PyMongo(app)
 @app.route("/")
 
 def index():
-   return render_template("index.html",title_text='Perfect dishes on demand')
+    session["filters"]={}
+    return render_template("index.html",title_text='Perfect dishes on demand')
 
 @app.route("/add_recipe")
 
@@ -106,14 +107,14 @@ def recipe_list():
 
     #get details of any filters applied
     _filter_dict=request.form.to_dict(flat=False)
-    
 
-
-    
     #check if the results list is to be filtered in order to return appropriate list in mongo request
     _sort=_filter_dict.get("sort_by","none")
+    print("sort=",_sort)
     if _sort!="none":
         #need to remove sort_by from the dictionary befor applying filters - sort_by is not a valid filter
+        _sort=str(_filter_dict["sort_by"][0])
+        print("amended sort=",_sort)
         del _filter_dict["sort_by"]
         
 
@@ -126,35 +127,43 @@ def recipe_list():
 
     if filter=='true':
         if _filter_dict:
+            #flatten dictionary as all results but allergens should not be lists:
             for key, value in _filter_dict.items():
-                #flatten dictionary as all results but allergens should not be lists:
                 if key !="allergens":
                     _filter_dict[key]=_filter_dict[key][0]
-                if value=='false':
-                    _filter_dict[key]=False
-                elif value=='true':
-                    _filter_dict[key]=True
-                elif key=="calories":
-                    if int(value)==999:
-                        _filter_dict[key]={'$gt':int(value)}
-                    else:
-                        _filter_dict[key]={'$lt':int(value)}    
-                elif key=="cook_time":
-                    if int(value)==179:
-                        _filter_dict[key]={'$gt':int(value)}
-                    else:
-                        _filter_dict[key]={'$lt':int(value)}  
-                elif key=="allergens":
-                    allergen_list=[]
-                    loop=0
-                    for allergen in _filter_dict[key]:
-                        allergen_list.append(allergen)
-                    _filter_dict[key]={  '$nin' : allergen_list }   
+            #if the filters have been submitted from the form, apply them to a session variable to retrieve later
+            session["filters"]=_filter_dict        
+        else:
+            #if filters not retrieved from the form, apply from session variable.
+            #This ensures if the user presses 'back' from display recipe the filters on the search list are retained
+            _filter_dict=session["filters"]
+        
+        #iterate through the filter dictionary and standardise the values for mongoDB search    
+        for key, value in _filter_dict.items():
+            if value=='false':
+                _filter_dict[key]=False
+            elif value=='true':
+                _filter_dict[key]=True
+            elif key=="calories":
+                if int(value)==999:
+                    _filter_dict[key]={'$gt':int(value)}
+                else:
+                    _filter_dict[key]={'$lt':int(value)}    
+            elif key=="cook_time":
+                if value==179:
+                    _filter_dict[key]={'$gt':int(value)}
+                else:
+                    _filter_dict[key]={'$lt':int(value)}  
+            elif key=="allergens":
+                allergen_list=[]
+                loop=0
+                for allergen in _filter_dict[key]:
+                    allergen_list.append(allergen)
+                _filter_dict[key]={  '$nin' : allergen_list }   
 
-    
-                
+
     if filter=='true':
-    #do the appropriate search and sort against the mongoDB depending on inpout from form
+    #do the appropriate search and sort against the mongoDB depending on input from form/session variable
         if _sort!="none":
             _recipe_list=mongo.db.recipeDB.find(_filter_dict).sort(_sort,1) 
         else:
@@ -208,16 +217,11 @@ def edit_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
     return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe)
 
-#@app.route('/update_recipe')
-#def update_recipe():
-#    return True
-
 @app.route('/delete_recipe',methods=['POST'])
 def delete_recipe():
     recipe_id=request.form.get('recipe_id')
     _recipe=mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
-    print("delete ",recipe_id)
-    return redirect('recipe_list')
+    return redirect(url_for('.recipe_list',action='delete'))
 
 @app.route('/filter_recipes', methods=['POST'])
 def filter_recipes():
@@ -225,7 +229,6 @@ def filter_recipes():
     calories=request.form["calories"]
     if calories:
         session["filters"]["calories"]=calories
-    print("calories:",calories)
     return redirect('recipe_list')
     
 if __name__ =="__main__":

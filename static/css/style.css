@@ -122,6 +122,9 @@
     width: 100%;
     object-fit: cover; }
 
+.recipe-list-right-col {
+  margin-right: auto; }
+
 .row-effect .row {
   transition-duration: 0.5s; }
 
