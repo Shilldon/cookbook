@@ -96,7 +96,7 @@ def insertrecipe():
     else:
         recipes.insert_one(new_recipe)
         print("New recipe added",new_recipe)
-    return render_template('display_recipe.html',title_text='Your recipe',recipe=new_recipe)
+    return render_template('display_recipe.html',title_text='Your recipe',recipe=new_recipe,added="true")
 
 @app.route("/search")
 
