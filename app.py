@@ -15,6 +15,7 @@ mongo=PyMongo(app)
 @app.route("/")
 
 def index():
+    print("blanking session variable")
     session["filters"]={}
     return render_template("index.html",title_text='Perfect dishes on demand')
 
@@ -105,71 +106,101 @@ def search():
 @app.route("/recipe_list", methods=['POST','GET'])
 def recipe_list():
 
-    #get details of any filters applied
-    _filter_dict=request.form.to_dict(flat=False)
-
-    #check if the results list is to be filtered in order to return appropriate list in mongo request
-    _sort=_filter_dict.get("sort_by","none")
-    print("sort=",_sort)
-    if _sort!="none":
-        #need to remove sort_by from the dictionary befor applying filters - sort_by is not a valid filter
-        _sort=str(_filter_dict["sort_by"][0])
-        print("amended sort=",_sort)
-        del _filter_dict["sort_by"]
+    _sort=session["sort"]
+    _filter_dict=session["filters"]
+    if _filter_dict==None:
+        _filter_dict={}
         
-
     allergen_list=[]
+    #get the action request from the page to determine what sort of list is to be displayed and display appropriate title text 
+    _todo=request.args.get('action',None)
+    if _todo=="delete":
+        title_text_value="Delete recipes"
+    elif _todo=="edit":
+        title_text_value="Edit recipes"
+    else:
+        title_text_value="Your recipes"
 
-
-    #check if the results are to be filtered using variable passed from recipe_list
+    #check if the results are to be filtered/sorted using variable passed from recipe_list
     filter=request.args.get('filter',None)
-    #if so cycle through the dictionary and convert form results to mongo search strings to enable the mongo request to run correctly.
 
-    if filter=='true':
-        if _filter_dict:
-            #flatten dictionary as all results but allergens should not be lists:
-            for key, value in _filter_dict.items():
-                if key !="allergens":
-                    _filter_dict[key]=_filter_dict[key][0]
-            #if the filters have been submitted from the form, apply them to a session variable to retrieve later
-            session["filters"]=_filter_dict        
+    if filter=='true':    
+        _currentsort=request.form.get('sort_by')
+        print("_sort=",_sort)
+        if _currentsort!=None and _currentsort!="none":
+            _sort=_currentsort
+            session["sort"]=_sort
         else:
-            #if filters not retrieved from the form, apply from session variable.
-            #This ensures if the user presses 'back' from display recipe the filters on the search list are retained
-            _filter_dict=session["filters"]
-        
-        #iterate through the filter dictionary and standardise the values for mongoDB search    
-        for key, value in _filter_dict.items():
-            if value=='false':
-                _filter_dict[key]=False
-            elif value=='true':
-                _filter_dict[key]=True
-            elif key=="calories":
-                if int(value)==999:
-                    _filter_dict[key]={'$gt':int(value)}
-                else:
-                    _filter_dict[key]={'$lt':int(value)}    
-            elif key=="cook_time":
-                if value==179:
-                    _filter_dict[key]={'$gt':int(value)}
-                else:
-                    _filter_dict[key]={'$lt':int(value)}  
-            elif key=="allergens":
-                allergen_list=[]
+            filter_favourites=request.form.get('favourite')
+            if filter_favourites:
+                if filter_favourites=='false':
+                    filter_favourites=False
+                elif filter_favourites=='true':
+                    filter_favourites=True 
+                _filter_dict.update({"favourite" : filter_favourites })
+            else:
+                _filter_dict.pop("favourite",None)            
+                    
+            filter_meal=request.form.get('meal')
+            print("filter meal ",filter_meal)
+            if filter_meal!="" and filter_meal!=None:
+                _filter_dict.update({"meal":filter_meal})
+            else:
+                _filter_dict.pop("meal",None)
+            
+            filter_allergens=request.form.getlist('allergens')
+            if filter_allergens:
                 loop=0
-                for allergen in _filter_dict[key]:
+                for allergen in filter_allergens:
                     allergen_list.append(allergen)
-                _filter_dict[key]={  '$nin' : allergen_list }   
+                filter_allergens={  '$nin' : allergen_list }   
+                _filter_dict.update({"allergens" : filter_allergens}) 
+            else:
+                _filter_dict.pop("allergens",None)
+                
+            filter_calories=request.form.get('calories')
+            if filter_calories!="" and filter_calories!=None:
+                if filter_calories==999:
+                    filter_calories={'$gt':filter_calories}
+                else:
+                    filter_calories={'$lt':filter_calories}  
+                _filter_dict.update({"calories":filter_calories})
+            else:
+                _filter_dict.pop("calories",None)
+                
+            filter_cooktime=request.form.get('cook_time')
+            if filter_cooktime!="" and filter_cooktime!=None:
+                if filter_cooktime==179:
+                    filter_cooktime={'$gt':filter_cooktime}
+                else:
+                    filter_cooktime={'$lt':filter_cooktime}  
+                _filter_dict.update({"cook_time" : filter_cooktime})
+            else:
+                _filter_dict.pop("cook_time",None)
+                
+            filter_country=request.form.get('country')
+            if filter_country!="" and filter_country!=None:
+                _filter_dict.update({"country" : filter_country})
+            else:
+                _filter_dict.pop("country",None)
+            
+            filter_author=request.form.get('author')
+            if filter_author!="" and filter_author!=None:
+                _filter_dict.update({"author" : filter_author})
+            else:
+                _filter_dict.pop("author",None)
+                
+            session["filters"]=_filter_dict
 
-
+        
     if filter=='true':
     #do the appropriate search and sort against the mongoDB depending on input from form/session variable
-        if _sort!="none":
+        if _sort!=None and _sort!="none":
             _recipe_list=mongo.db.recipeDB.find(_filter_dict).sort(_sort,1) 
         else:
             _recipe_list=mongo.db.recipeDB.find(_filter_dict)
     else:
-        if _sort!="none":
+        if _sort!="none" and _sort!=None:
             _recipe_list=mongo.db.recipeDB.find().sort(_sort,1) 
         else:      
             _recipe_list=mongo.db.recipeDB.find()
@@ -194,22 +225,82 @@ def recipe_list():
     #remove duplicates from the lists
     _country_list=list(dict.fromkeys(unsorted_country_list))
     _author_list=list(dict.fromkeys(unsorted_author_list))
-
     
-    #check the list being shown - search, delete or edit, to ensure the correct options are applied when the page is rendered.
-    _todo=request.args.get('action',None)
-    if _todo=="delete":
-        title_text_value="Delete recipes"
-    elif _todo=="edit":
-        title_text_value="Edit recipes"
+    _total_results=_recipe_list.count()
+
+    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
+'''
+    _sort=request.form.get('sort_by')
+    print("sort=",_sort)
+    
+    #get details of any filters applied
+    if _sort==None:
+        _filter_dict=request.form.to_dict(flat=False)
+        print("got filter dict from form")
     else:
-        title_text_value="Your recipes"
+        _filter_dict=session["filters"]
+        print("got filter dict from session")
+    
+    allergen_list=[]
 
-    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort)
+    #check if the results are to be filtered using variable passed from recipe_list
+    filter=request.args.get('filter',None)
+    
+    #if so cycle through the dictionary and convert form results to mongo search strings to enable the mongo request to run correctly.
 
+    if filter=='true':
+        if _filter_dict:
+            #if the filters have been submitted from the form, apply them to a session variable to retrieve later
+            session["filters"]=_filter_dict 
+            #flatten dictionary as all results but allergens should not be lists:
+            for key, value in _filter_dict.items():
+                if key !="allergens":
+                    _filter_dict[key]=_filter_dict[key][0]
+        else:
+            #if filters not retrieved from the form, apply from session variable.
+            #This ensures if the user presses 'back' from display recipe the filters on the search list are retained
+            _filter_dict=session["filters"]
+            print("_filter_dict updated from session ",_filter_dict)
+        
+        #check if the results list is to be filtered in order to return appropriate list in mongo request
+        _sort=_filter_dict.get("sort_by","none")
+        
+        if _sort!="none":
+            #need to remove sort_by from the dictionary before applying filters - sort_by is not a valid filter
+            _sort=str(_filter_dict["sort_by"])
+            del _filter_dict["sort_by"]
+            session["sort"]=_sort
+      #  else:
+      #      _sort=session["sort"]
+        
+        #iterate through the filter dictionary and standardise the values for mongoDB search    
+        for key, value in _filter_dict.items():
+            if value=='false':
+                _filter_dict[key]=False
+            elif value=='true':
+                _filter_dict[key]=True
+            elif key=="calories":
+                if int(value)==999:
+                    _filter_dict[key]={'$gt':int(value)}
+                else:
+                    _filter_dict[key]={'$lt':int(value)}    
+            elif key=="cook_time":
+                if value==179:
+                    _filter_dict[key]={'$gt':int(value)}
+                else:
+                    _filter_dict[key]={'$lt':int(value)}  
+            elif key=="allergens":
+                allergen_list=[]
+                loop=0
+                for allergen in _filter_dict[key]:
+                    allergen_list.append(allergen)
+                _filter_dict[key]={  '$nin' : allergen_list }   
+
+'''
 @app.route('/show_recipe/<recipe_id>')
 def show_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+    print("checking session variable=",session["filters"])    
     return render_template('display_recipe.html',title_text="Your recipe",recipe=_recipe)
 
 @app.route('/edit_recipe/<recipe_id>')

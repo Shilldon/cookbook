@@ -21,7 +21,8 @@
         <ul class="collapsible">
             <li>
                 <div class="collapsible-header ">
-                    <a href="#" class="waves-effect waves-light btn btn_small highlight2-background align-left">Show Filters</a>
+                    <i class="material-icons">arrow_drop_down</i>
+                    <a href="#" class="align-left font-color">Filter options</a>
                 </div>
                 <div class="row collapsible-body " style="padding:0px !important; padding-top:0 !important; margin:0">
                     <div class="col s10 offset-s1">
@@ -56,7 +57,7 @@
                                         </div>
                                     </div>
                                 </li>
-                               <li>
+                                <li>
                                     <div class="row">
                                         <div class="col s5">
                                             <p>Allergens</p>
@@ -72,7 +73,7 @@
                                             <option value="eggs" {% if 'eggs' is in allergens %} selected="selected" {%endif%}>Egg-free</option>                                        </select>
                                         </div>
                                     </div>
-                                </li>                                
+                                </li>
                                 <li>
                                     <div class="row">
                                         <div class="col s5">
@@ -81,13 +82,13 @@
                                         <div class="col s7  input-field">
                                             <select name="calories">
                                             <option value="">Not filtered</option>
-                                            <option value=100 {% if filters.calories=={'$lt' : 100} %} selected="selected" {% endif%}>< 100</option>
-                                            <option value=200 {% if filters.calories=={'$lt' : 200} %} selected="selected" {% endif%}>< 200</option>
-                                            <option value=300 {% if filters.calories=={'$lt' : 300} %} selected="selected" {% endif%}>< 300</option>
-                                            <option value=500 {% if filters.calories=={'$lt' : 500} %} selected="selected" {% endif%}>< 500</option>
-                                            <option value=750 {% if filters.calories=={'$lt' : 750} %} selected="selected" {% endif%}>< 750</option>
-                                            <option value=1000 {% if filters.calories=={'$lt' : 1000} %} selected="selected" {% endif%}>< 1000</option>
-                                            <option value=999 {% if filters.calories=={'$gt' : 999} %}selected="selected" {% endif%}>> 1000</option>
+                                            <option value=100 {% if filters.calories=={'$lt' : '100'} %} selected="selected" {% endif%}>< 100</option>
+                                            <option value=200 {% if filters.calories=={'$lt' : '200'} %} selected="selected" {% endif%}>< 200</option>
+                                            <option value=300 {% if filters.calories=={'$lt' : '300'} %} selected="selected" {% endif%}>< 300</option>
+                                            <option value=500 {% if filters.calories=={'$lt' : '500'} %} selected="selected" {% endif%}>< 500</option>
+                                            <option value=750 {% if filters.calories=={'$lt' : '750'} %} selected="selected" {% endif%}>< 750</option>
+                                            <option value=1000 {% if filters.calories=={'$lt' : '1000'} %} selected="selected" {% endif%}>< 1000</option>
+                                            <option value=999 {% if filters.calories=={'$gt' : '999'} %}selected="selected" {% endif%}>> 1000</option>
                                         </select>
                                         </div>
                                     </div>
@@ -100,13 +101,13 @@
                                         <div class="col s7  input-field">
                                             <select name="cook_time">
                                             <option value="">Not filtered</option>
-                                            <option value=10 {% if filters.cook_time=={'$lt' : 10} %} selected="selected" {% endif%}>< 10 minutes</option>
-                                            <option value=20 {% if filters.cook_time=={'$lt' : 20} %} selected="selected" {% endif%}>< 20 minutes</option>
-                                            <option value=30 {% if filters.cook_time=={'$lt' : 30} %} selected="selected" {% endif%}>< 30 minutes</option>
-                                            <option value=60 {% if filters.cook_time=={'$lt' : 60} %} selected="selected" {% endif%}>< 1 hour</option>
-                                            <option value=120 {% if filters.cook_time=={'$lt' : 120} %} selected="selected" {% endif%}>< 2 hours</option>
-                                            <option value=180 {% if filters.cook_time=={'$lt' : 180} %} selected="selected" {% endif%}>< 3 hours</option>
-                                            <option value=179 {% if filters.cook_time=={'$gt' : 179} %} selected="selected" {% endif%}>> 3 hours</option>
+                                            <option value=10 {% if filters.cook_time=={'$lt' : '10'} %} selected="selected" {% endif%}>< 10 minutes</option>
+                                            <option value=20 {% if filters.cook_time=={'$lt' : '20'} %} selected="selected" {% endif%}>< 20 minutes</option>
+                                            <option value=30 {% if filters.cook_time=={'$lt' : '30'} %} selected="selected" {% endif%}>< 30 minutes</option>
+                                            <option value=60 {% if filters.cook_time=={'$lt' : '60'} %} selected="selected" {% endif%}>< 1 hour</option>
+                                            <option value=120 {% if filters.cook_time=={'$lt' : '120'} %} selected="selected" {% endif%}>< 2 hours</option>
+                                            <option value=180 {% if filters.cook_time=={'$lt' : '180'} %} selected="selected" {% endif%}>< 3 hours</option>
+                                            <option value=179 {% if filters.cook_time=={'$gt' : '179'} %} selected="selected" {% endif%}>> 3 hours</option>
                                         </select>
                                         </div>
                                     </div>
@@ -125,7 +126,7 @@
                                             <option value="{{country}}" {% if filters.country==country %} selected="selected" {% endif%}>{{country}}</option>
                                             {%endfor%}
                                             </select>
-                                       </div>
+                                        </div>
                                     </div>
                                 </li>
                                 {% endif %}
@@ -143,43 +144,68 @@
                                             <option value="{{author}}" {% if filters.author==author %} selected="selected" {% endif%}>{{author}}</option>
                                             {%endfor%}
                                             </select>
-                                       </div>
+                                        </div>
                                     </div>
                                 </li>
                                 {%endif%}
                                 <button class="waves-effect waves-light btn btn_small highlight2-background filter_button" type="submit">Apply Filters</button>
                             </ul>
-                        </form>                            
+                        </form>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header ">
+                    <i class="material-icons">arrow_drop_down</i>
+                    <a href="#" class="align-left">Sort options</a>
+                </div>
+                <div class="row collapsible-body " style="padding:0px !important; padding-top:0 !important; margin:0">
+                    <div class="col s10 offset-s1">
+                        <form id="sort-form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
+                            <div class="row">
+                                <div class="col s5">
+                                    <p>Sort by:</p>
+                                </div>
+                                <div class="col s7">
+                                    <div class="input-field order-list">
+                                        <select class="sort_by" name="sort_by">
+                                            <option value="none">Not sorted</option>
+                                            <option value="name"  {% if sort=="name" %}selected="selected" {% endif %}>Name</option>
+                                            <option value="cook_time" {% if sort=="cook_time" %}selected="selected" {% endif %}>Cooking Time</option>
+                                            <option value="calories" {% if sort=="calories" %}selected="selected" {% endif %}>Calories</option>
+                                            <option value="meal" {% if sort=="meal" %}selected="selected" {% endif %}>Meal</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </li>
         </ul>
     </div>
-    <form id="sort-form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
-    <div class="row">
-                    <div class="col s10">
-                        <div class="input-field order-list">
-                            <label name="Sort by"></label>
-                            <select class="sort_by" name="sort_by">
-                                <option value="" disabled selected>Sort by:</option>
-                                <option value="name">Name</option>
-                                <option value="cook_time">Cooking Time</option>
-                                <option value="calories">Calories</option>
-                                <option value="meal">Meal</option>
-                            </select>
-                        </div>  
-                    </div>
-    </div>
-    </form>
 
-    
     <div class="recipe_list row-effect">
-        <!--check if any recipes have been found - if the dict is empty, display message that no recipes were found with the search criteria-->
-        {% if recipes[0] is not defined %}
-        <p>No recipes found</p>
-        {% endif %} 
-        {% for recipe in recipes %} 
-        {% if action=="edit" %}
+        <!--display the total number of search results-->
+        <div class="row">
+            <div class="col s10 offset-s1">
+                <p>Number of recipes found: {{total_results}}</p>                
+            </div>
+        </div>
+ <!--       {% if sort!="none" and sort!=None %}
+        <div class="row valign-wrapper">
+            <div class="col s4 offset-s3">
+                <p >Name</p>
+            </div>
+            <div class="col s2">
+                {%if sort=="cook_time"%}<p class="left-align">Cook Time</p>{% endif %}
+                {%if sort=="calories"%}<p class="center-align">Calories</p>{% endif %}
+                {%if sort=="meal"%}<p class="center-align">Meal</p>{% endif %}
+            </div>
+        </div>
+        {% endif %}-->
+        {% for recipe in recipes %} {% if action=="edit" %}
         <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
         {% elif action=="delete" %}        
         <a href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
@@ -240,8 +266,7 @@
             </div>
             
         </div>
-        </a> 
-        {% endfor %}
+        </a> {% endfor %}
     </div>
     <div class="row">
         <div class="col s4 offset-s4">
@@ -260,15 +285,15 @@
             <form action="{{url_for('delete_recipe') }}" method="POST">
                 <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
                 <div class="row">
-        <div class="col s5 offset-s1 m3 offset-m2 ">
-          <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Cancel</button>
-          <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Cancel</button>
-        </div>
-        <div class="col s5 offset-s1 m3 offset-m2 ">
-          <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
-          <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
-        </div>
-<!--
+                    <div class="col s5 offset-s1 m3 offset-m2 ">
+                        <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Cancel</button>
+                        <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Cancel</button>
+                    </div>
+                    <div class="col s5 offset-s1 m3 offset-m2 ">
+                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
+                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
+                    </div>
+                    <!--
                     
                     <div class="col s5" style="padding:0">
                         <button type="reset" id="modal_reset" class="valign-center modal-close waves-effect waves-green highlight1-background" style="padding: 0 6px; font-size:15px; width:100%; height:36px; border:none">
@@ -318,21 +343,18 @@
         $("#filters_form option[value='']").attr("disabled", "disabled");
         $("#filters_form input[value='']").attr("disabled", "disabled");
     });
-    
+
     $(".sort_by").change(function() {
-        $("#sort-form").submit()    
+        $("#sort-form").submit()
     })
 
     $("#allergens_list").change(function() {
-        if($("#allergens_list").val()!="") {
-            $("#allergens-unfiltered").prop("selected",false)  
+        if ($("#allergens_list").val() != "") {
+            $("#allergens-unfiltered").prop("selected", false)
         }
-        else 
-        {
-            $("#allergens-unfiltered").prop("selected","selected")  
+        else {
+            $("#allergens-unfiltered").prop("selected", "selected")
         }
-        console.log("value for allergens="+$("#allergens_list").val())
-
     })
 </script>
 
