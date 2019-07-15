@@ -186,87 +186,84 @@
         </ul>
     </div>
 
-    <div class="recipe_list row-effect">
+    <div class="recipe-book">
         <!--display the total number of search results-->
         <div class="row">
             <div class="col s10 offset-s1">
-                <p>Number of recipes found: {{total_results}}</p>                
+                <p>Number of recipes found: {{total_results}}</p>
             </div>
         </div>
- <!--       {% if sort!="none" and sort!=None %}
-        <div class="row valign-wrapper">
-            <div class="col s4 offset-s3">
-                <p >Name</p>
-            </div>
-            <div class="col s2">
-                {%if sort=="cook_time"%}<p class="left-align">Cook Time</p>{% endif %}
-                {%if sort=="calories"%}<p class="center-align">Calories</p>{% endif %}
-                {%if sort=="meal"%}<p class="center-align">Meal</p>{% endif %}
-            </div>
-        </div>
-        {% endif %}-->
-        {% for recipe in recipes %} {% if action=="edit" %}
-        <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
-        {% elif action=="delete" %}        
-        <a href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
-        {% else %}        
-        <a href="{{url_for('show_recipe', recipe_id=recipe._id)}}">
-        {% endif %}
-        <div class="row valign-wrapper">
-            <div class="col s2">
-                {% if recipe.picture %}
-                <p class="center-align"><img src="{{recipe.picture}}"></p>
-                {% else %}
-                <p class="center-align"><i class="fa fa-cutlery fa-2x" aria-hidden="true"></i></p>
-                {% endif %}
-            </div>
-            <div class="col s4">
-                <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
-            </div>
-            <div class="col s2">
-            {% if sort=="cook_time" %}
-                <p class="center-align">
-                    {% if recipe.hours > 0 %} 
-                    {{recipe.hours}}h 
-                    {%endif%} 
-                    {% if recipe.minutes > 0 %} 
-                    {{recipe.minutes}}m
-                    {% endif %}
-                </p>
-            {% elif sort=="calories" %}  
-                <p class="center-align">
-                    {% if recipe.calories %}
-                    {{recipe.calories}} kCal
-                    {%endif%}
-                </p>
-            {% elif sort=="difficulty" %}  
-                <p class="center-align">
-                    {% if recipe.difficulty %}
-                    {{recipe.difficulty}}
-                    {%endif%}
-                </p>  
-            {% elif sort=="meal" %}  
-                <p class="center-align">
-                    {% if recipe.meal %}
-                    {{recipe.meal[0]|upper}}{{recipe.meal[1:]|lower}}
-                    {%endif%}
-                </p>                    
-            {% endif %}
-            </div>
-            <div class="col s1 recipe-list-right-col">
+        {% for recipe in recipes %} {% if loop.index % 10 == 1 or loop.first %} {% set page=loop.index/10 %} {% set page=page | round | int %}
+        <div class="recipe-page" id="recipepage{{page+1}}" {%if loop.first %}style="display:block" {%else%} style="display:none" {%endif%}>
+            {%endif%}
+            <div class="recipe_list row-effect">
                 {% if action=="edit" %}
-                  <p><i class="material-icons">edit</i></p>
-                {% elif action=="delete" %}
-                  <p><i class="material-icons">delete_forever</i></p>              
-                {% elif recipe.favourite %}
-                    <p><i class="material-icons gold-star">star</i></p>
-                {% else %}
-                    <p><i class="material-icons">star_border</i></p>
+                <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
+            {% elif action=="delete" %}        
+            <a href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
+            {% else %}        
+            <a href="{{url_for('show_recipe', recipe_id=recipe._id)}}">
+            {% endif %}
+            <div class="row valign-wrapper">
+                <div class="col s2">
+                    {% if recipe.picture %}
+                    <p class="center-align"><img src="{{recipe.picture}}"></p>
+                    {% else %}
+                    <p class="center-align"><i class="fa fa-cutlery fa-2x" aria-hidden="true"></i></p>
+                    {% endif %}
+                </div>
+                <div class="col s4">
+                    <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
+                </div>
+                <div class="col s2">
+                {% if sort=="cook_time" %}
+                    <p class="center-align">
+                        {% if recipe.hours > 0 %} 
+                        {{recipe.hours}}h 
+                        {%endif%} 
+                        {% if recipe.minutes > 0 %} 
+                        {{recipe.minutes}}m
+                        {% endif %}
+                    </p>
+                {% elif sort=="calories" %}  
+                    <p class="center-align">
+                        {% if recipe.calories %}
+                        {{recipe.calories}} kCal
+                        {%endif%}
+                    </p>
+                {% elif sort=="difficulty" %}  
+                    <p class="center-align">
+                        {% if recipe.difficulty %}
+                        {{recipe.difficulty}}
+                        {%endif%}
+                    </p>  
+                {% elif sort=="meal" %}  
+                    <p class="center-align">
+                        {% if recipe.meal %}
+                        {{recipe.meal[0]|upper}}{{recipe.meal[1:]|lower}}
+                        {%endif%}
+                    </p>                    
                 {% endif %}
+                </div>
+                <div class="col s1 recipe-list-right-col">
+                    {% if action=="edit" %}
+                      <p><i class="material-icons">edit</i></p>
+                    {% elif action=="delete" %}
+                      <p><i class="material-icons">delete_forever</i></p>              
+                    {% elif recipe.favourite %}
+                        <p><i class="material-icons gold-star">star</i></p>
+                    {% else %}
+                        <p><i class="material-icons">star_border</i></p>
+                    {% endif %}
+                </div>
+            </div> 
+            </a>
             </div>
-            
+            {% if loop.index % 10 == 0 or loop.last%}
         </div>
-        </a> {% endfor %}
+        {%endif%} {% endfor %}
+        <div id="pagination">
+        </div>
     </div>
     <div class="row">
         <div class="col s4 offset-s4">
@@ -293,21 +290,6 @@
                         <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
                         <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
                     </div>
-                    <!--
-                    
-                    <div class="col s5" style="padding:0">
-                        <button type="reset" id="modal_reset" class="valign-center modal-close waves-effect waves-green highlight1-background" style="padding: 0 6px; font-size:15px; width:100%; height:36px; border:none">
-                        <i class="fa fa-times-circle" class="float:left"aria-hidden="true"></i>
-                        <span style="padding:0px 0px 3px">Cancel</span> 
-                    </button>
-                    </div>
-                    <div class="col s5 offset-s2" style="padding:0">
-                        <button type="submit" class="modal-close waves-effect waves-green red" style="padding: 0 6px; font-size:15px; width:100%; height:36px; border:none">
-                        <i class="fa fa-check-circle" class="float:left"aria-hidden="true"></i>
-                        <span style="padding:0px 0px 3px"> Delete</span>
-                    </button>
-                    </div>
-                    -->
                 </div>
             </form>
         </div>
@@ -315,6 +297,8 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/materialize-pagination.js"></script>
+
 <script>
     $('body').on('click', '.delete_button', function() {
         //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to flask if deletion is confirmed
@@ -356,6 +340,22 @@
             $("#allergens-unfiltered").prop("selected", "selected")
         }
     })
+    $('#pagination').materializePagination({
+        align: 'center',
+        lastPage:  $(".recipe-book").children(".recipe-page").length,
+        firstPage:  1,
+        urlParameter: 'page',
+        useUrlParameter: true,
+        onClickCallback: function(requestedPage){
+            $(".recipe-book").children(".recipe-page").hide();
+            gotoPage="#recipepage"+requestedPage;
+            $(gotoPage).show();
+            $('html, body').animate({
+                scrollTop: $("body").offset().top
+            }, 1000);        
+        }
+    });     
+    
 </script>
 
 {% endblock %}

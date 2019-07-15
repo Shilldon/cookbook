@@ -127,7 +127,7 @@ def recipe_list():
     if filter=='true':    
         _currentsort=request.form.get('sort_by')
         print("_sort=",_sort)
-        if _currentsort!=None and _currentsort!="none":
+        if _currentsort!=None:
             _sort=_currentsort
             session["sort"]=_sort
         else:
