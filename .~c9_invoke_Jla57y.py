@@ -258,6 +258,7 @@ def recipe_list():
             filter_country=request.form.get('country')
             if filter_country!="" and filter_country!=None:
                 country=mongo.db.countriesDB.find_one({"name" : filter_country})
+                country_id=country["_id"]
                 _filter_dict.update({"country" : str(country["_id"])})
             else:
                 _filter_dict.pop("country",None)
@@ -265,12 +266,15 @@ def recipe_list():
             filter_author=request.form.get('author')
             if filter_author!="" and filter_author!=None:
                 author=mongo.db.authorDB.find_one({"name" : filter_author})
-                _filter_dict.update({"author" : str(author["_id"])})
+                author_id=author["_id"]
+                _filter_dict.update({"author" : str(author_id)})
             else:
                 _filter_dict.pop("author",None)
                 
             session["filters"]=_filter_dict
-
+    print("filter dict ",_filter_dict)
+    print("filter=",filter)
+    print("sort=",_sort)
     if filter=='true':
     #do the appropriate search and sort against the mongoDB depending on input from form/session variable
         if _sort!=None and _sort!="none":
@@ -294,8 +298,8 @@ def recipe_list():
     
     
     _total_results=_recipe_list.count()
-    print("selected author=",filter_author)
-    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,selected_country=filter_country, selected_author=filter_author,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
+
+    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
 
 
 @app.route('/show_recipe/<recipe_id>')

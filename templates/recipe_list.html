@@ -123,7 +123,7 @@
                                             <select name="country">
                                             <option value="">Not filtered</option>
                                             {% for country in countries %}
-                                            <option value="{{country}}" {% if filters.country==country %} selected="selected" {% endif%}>{{country}}</option>
+                                            <option value="{{country}}" {% if selected_country==country %} selected="selected" {% endif%}>{{country}}</option>
                                             {%endfor%}
                                             </select>
                                         </div>
@@ -141,7 +141,7 @@
                                             <select name="author">
                                             <option value="">Not filtered</option>
                                             {% for author in authors %}
-                                            <option value="{{author}}" {% if filters.author==author %} selected="selected" {% endif%}>{{author}}</option>
+                                            <option value="{{author}}" {% if selected_author==author %} selected="selected" {% endif%}>{{author}}</option>
                                             {%endfor%}
                                             </select>
                                         </div>
