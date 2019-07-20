@@ -220,7 +220,8 @@
 
   $('body').on("click", "#remove_ingredient", function() {
     $(this).parent().parent().slideUp(500);
-    setTimeout(function() { $(this).parent().parent().remove(); }, 500);
+    var ingredientLine=$(this).parent().parent();
+    setTimeout(function() { ingredientLine.remove(); }, 500);
   });
 </script>
 

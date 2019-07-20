@@ -69,7 +69,6 @@ def insertrecipe():
             #cycle through the ingredient information and create objects for each ingredient with key values of ingredient type, amount and units
             i=0
             for ingredient_type in key_name:
-
                 ingredient={ 'type' : ingredient_type , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
                 #insert ingredient object into array of ingredients
                 ingredients.append(ingredient)
@@ -87,8 +86,56 @@ def insertrecipe():
             database=mongo.db.authorDB
         update_category_database(edit,recipe_id,recipes,new_recipe,category,database)      
 
+    current_recipe=recipes.find_one({"_id" : ObjectId(recipe_id)})
 
-    #need to remove the type, amount and unit arrays from the dict having imported them into ingredients objects
+    print("new_recipe", new_recipe)
+    print("current_recipe ", current_recipe)
+    
+    new_ingredients=ingredients
+    current_ingredients=current_recipe["ingredients"]
+    
+    ingredientsdb=mongo.db.ingredientsDB
+    print("ingredients db ", ingredientsdb)
+    print("recipes ", recipes)
+    print("current_ingredients", current_ingredients)
+    print("new_ingredients ",new_ingredients)
+    
+    for ingredient in new_ingredients:
+        ingredient_type=ingredient["type"]
+        print("ingredient_type",ingredient_type)
+        if current_recipe!=None:
+            print("current_ingredient", current_ingredients)
+            if ingredient in current_ingredients:
+                ingredient_index=current_ingredients.index(ingredient)
+                print("new ingredient in current ingredients", ingredient)
+                print("location of new ingredients in current ",ingredient_index)
+                current_ingredients.remove(ingredient)
+                print("updated current ingredients ",current_ingredients)
+            
+        new_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"]})
+        if new_ingredient_doc!=None:
+            new_ingredient_id=new_ingredient_doc["_id"]
+        else:
+            new_ingredient_id=ingredientsdb.insert({"name" : ingredient["type"], "recipe":[]})
+            new_ingredient_doc=ingredientsdb.find_one({"_id" : new_ingredient_id})
+        if recipe_id not in new_ingredient_doc["recipe"]:
+            ingredientsdb.update({"_id": new_ingredient_id},{"$push":{"recipe" : recipe_id}})
+    
+
+    if current_recipe!=None:
+        print("current recipe !=None")
+        for ingredient in current_ingredients:
+            print("ingredient being checked=",ingredient)
+            if ingredient not in new_ingredients:
+                print("ingredient not in new ingredients=",ingredient)
+                current_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"]})  
+                current_ingredient_id=current_ingredient_doc["_id"]
+                ingredientsdb.update({"_id": current_ingredient_id},{"$pull":{"recipe" : recipe_id}})
+                current_ingredient_doc=ingredientsdb.find_one({"_id": current_ingredient_id})
+                if len(current_ingredient_doc["recipe"])==0:
+                    ingredientsdb.remove({"_id": current_ingredient_id})   
+                    
+        #need to remove the type, amount and unit arrays from the dict having imported them into ingredients objects
     #done by error testing because ingredients may not have been added via the form
     try:
         del new_recipe['type']
@@ -147,29 +194,19 @@ def update_category_database(edit,recipe_id,recipes,new_recipe,category,category
         current_category_doc={}
         print("current category_doc is now defined as=",current_category_doc)
         
-    print("here?")
     if new_category_doc!=current_category_doc:
-        print("current category_doc=",current_category_doc)
         if current_category_doc!={}:
             if current_category_id!=None:
-                print("current ID is not blank")
                 category_id=ObjectId(current_category_id)
             else:
-                print("current ID is blank")
                 category_id=""
-            print("try to pull recipe")    
             category_db.update({"_id": category_id},{"$pull":{"recipe" : recipe_id}})
-            print("succeeded?")
             current_category_doc=category_db.find_one({"_id": category_id})
-            print("tried to find the doc again")
             if len(current_category_doc["recipe"])==0:
-                print("tested")
                 category_db.remove({"_id": category_id})    
-        print("out of")
     if new_category_doc!={}:
         new_recipe[category]=str(new_category_doc["_id"])
         category_db.update({"_id": new_category_id},{"$push":{"recipe" : recipe_id}})
-        
     return  
 
 @app.route("/search")
