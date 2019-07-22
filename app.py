@@ -28,8 +28,6 @@ def add_recipe():
 def insertrecipe():
     #check whether the user is adding a new recipe or editting a recipe
     edit=request.args.get('edit',None)
-    
-
         
     recipes=mongo.db.recipeDB
     
@@ -72,7 +70,7 @@ def insertrecipe():
             for ingredient_type in key_name:
                 print("key name ",key_name)
                 print('ingredient_Type ',ingredient_type)
-                ingredient={ 'type' : new_recipe['type'][i] , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
+                ingredient={ 'type' : ingredient_type , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
                 #insert ingredient object into array of ingredients
                 ingredients.append(ingredient)
                 print("ingredient added=",ingredient)
@@ -81,14 +79,6 @@ def insertrecipe():
     new_recipe["cook_time"]=cook_time
     #insert the new ingredients array into the new_receipe dict
     new_recipe['ingredients']=ingredients            
-    
-    categories=["country","author"]
-    for category in categories:
-        if category=="country":
-            database=mongo.db.countriesDB
-        elif category=="author":
-            database=mongo.db.authorDB
-        update_category_database(edit,recipe_id,recipes,new_recipe,category,database)      
 
     current_recipe=recipes.find_one({"_id" : ObjectId(recipe_id)})
     print("recipe id ",recipe_id)
@@ -97,16 +87,9 @@ def insertrecipe():
     
     new_ingredients=ingredients
     ingredientsdb=mongo.db.ingredientsDB
-    if "allergens" in new_recipe:
-        new_allergens=new_recipe["allergens"]
-    else:
-        new_allergens=[]
-        
-    allergensdb=mongo.db.allergensDB
-    print("allergens ",new_allergens)
 
     for ingredient in new_ingredients:
-        ingredient_type=ingredient["type"]
+        ingredient_type=ingredient
         print("ingredient_type",ingredient_type)
         if edit=="True":
             current_ingredients=current_recipe["ingredients"]
@@ -115,7 +98,7 @@ def insertrecipe():
                 ingredient_index=current_ingredients.index(ingredient)
                 current_ingredients.remove(ingredient)
             
-        new_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"]})
+        new_ingredient_doc=ingredientsdb.find_one({"name" : ingredient})
         if new_ingredient_doc!=None:
             new_ingredient_id=new_ingredient_doc["_id"]
         else:
@@ -123,23 +106,6 @@ def insertrecipe():
             new_ingredient_doc=ingredientsdb.find_one({"_id" : new_ingredient_id})
         if recipe_id not in new_ingredient_doc["recipe"]:
             ingredientsdb.update({"_id": new_ingredient_id},{"$push":{"recipe" : recipe_id}})
-    
-    for allergen in new_allergens:
-        if edit=="True":
-            if "allergens" in current_recipe:
-                current_allergens=current_recipe["allergens"]
-                if allergen in current_allergens:
-                    allergen_index=current_allergens.index(allergen)
-                    current_allergens.remove(allergen)
-        
-        new_allergen_doc=allergensdb.find_one({"name" : allergen}) 
-        if new_allergen_doc!=None:
-            new_allergen_id=new_allergen_doc["_id"]
-        else:
-            new_allergen_id=allergensdb.insert({"name" : allergen, "recipe":[]})
-            new_allergen_doc=allergensdb.find_one({"_id" : new_allergen_id})
-        if recipe_id not in new_allergen_doc["recipe"]:
-            allergensdb.update({"_id" : new_allergen_id},{"$push":{"recipe":recipe_id}})
 
     if edit=="True":
         print("current recipe !=None")
@@ -152,16 +118,73 @@ def insertrecipe():
                 current_ingredient_doc=ingredientsdb.find_one({"_id": current_ingredient_id})
                 if len(current_ingredient_doc["recipe"])==0:
                     ingredientsdb.remove({"_id": current_ingredient_id})  
+    
+    categories=["allergens","meal","country","author"]
+    for category in categories:
+        if category in new_recipe:
+            if type(new_recipe[category]) is list:
+                new_category=new_recipe[category]
+            else:    
+                new_category=[]
+                new_category.append(new_recipe[category])
+        else:
+            new_category=[]
         
-        if "allergens" in current_recipe:
-            for allergen in current_allergens:
-                if allergen not in new_allergens:
-                    current_allergen_doc=allergensdb.find_one({"name" : allergen})
-                    current_allergen_id=current_allergen_doc["_id"]
-                    allergensdb.update({"_id" : current_allergen_id},{"$pull" : {"recipe" : recipe_id}})
-                    current_allergen_doc=allergensdb.find_one({"_id" : current_allergen_id})
-                    if len(current_allergen_doc["recipe"])==0:
-                        allergensdb.remove({"_id" : current_allergen_id})
+        if category=="allergens":    
+            categorydb=mongo.db.allergensDB
+        elif category=="meal":
+            categorydb=mongo.db.mealDB
+        elif category=="country":
+            categorydb=mongo.db.countriesDB
+        elif category=="author":
+            categorydb=mongo.db.authorDB            
+        elif category=="difficulty":
+            categorydb=mongo.db.difficultyDB   
+            
+        print("new_category=",category)
+        for value in new_category:
+            print("value=",value)
+            #check if we are edtting an existing recipe, if so check whether any values existing in both the updated and current recipes 
+            #if so remove them from the list to later delete the recipe ID from the values that remain in the list
+            if edit=="True":
+                if category in current_recipe:
+                    if type(new_recipe[category]) is list:
+                        current_category=current_recipe[category]
+                    else:    
+                        current_category=[]
+                        current_category.append(new_recipe[category])                    
+                    if value in current_category:
+                        category_index=current_category.index(value)
+                        print("category_index=",category_index)
+                        print("current_Category=",type(current_category))
+                        current_category.remove(value)
+        
+            #get the name of the new value in this category        
+            new_category_doc=categorydb.find_one({"name" : value}) 
+            if new_category_doc!=None:
+                #if the particular object exists then get the associated doc
+                new_category_id=new_category_doc["_id"]
+            else:
+                #if it doesn't exist createa a new doc with the name and the ID of this recipe
+                new_category_id=categorydb.insert({"name" : value, "recipe":[]})
+                new_category_doc=categorydb.find_one({"_id" : new_category_id})
+            if recipe_id not in new_category_doc["recipe"]:
+                #check if the recipe is already in the new doc, if it isn't add the recipe ID to this particular category in the DB
+                categorydb.update({"_id" : new_category_id},{"$push":{"recipe":recipe_id}})
+
+        if edit=="True":
+            #if we are editing a recipe check whether there are any remaining values in the category list
+            if category in current_recipe:
+                #if so, then for all the values remove the recipe ID from the particular category in the DB
+                for value in current_category:
+                    if value not in new_category:
+                        current_category_doc=categorydb.find_one({"name" : value})
+                        current_category_id=current_category_doc["_id"]
+                        categorydb.update({"_id" : current_category_id},{"$pull" : {"recipe" : recipe_id}})
+                        current_category_doc=categorydb.find_one({"_id" : current_category_id})
+                        #if this particular category is empty, delete it from the DB
+                        if len(current_category_doc["recipe"])==0:
+                            categorydb.remove({"_id" : current_category_id})
 
 
                     
@@ -185,8 +208,9 @@ def insertrecipe():
     else:
         recipes.update({'_id':ObjectId(recipe_id)},new_recipe)
         
-    return redirect(url_for('show_recipe',recipe_id=recipe_id,added="true"))
+    return redirect(url_for('show_recipe',recipe_id=recipe_id,added_recipe="true"))
 
+'''
 def update_category_database(edit,recipe_id,recipes,new_recipe,category,category_db):
 
     #Update category database
@@ -209,20 +233,15 @@ def update_category_database(edit,recipe_id,recipes,new_recipe,category,category
 
     if current_recipe_doc!={}:
         current_category_id=current_recipe_doc[category]
-        print("current category ID ",current_category_id)
-        print("type is ", type(current_category_id))
         if current_category_id!="":
             category_id=ObjectId(current_category_id)
-            print("current category is not empty it's ID is ", category_id)
-            current_category_doc=category_db.find_one({"_id" : category_id})
+            current_category_doc=category_db.find_one({"name" : category})
         else:
             category_id=""
             current_category_doc={}
-        print("expeting current category doc to be blank aand it is: ",current_category_doc)
     else:
         current_category_id=""
         current_category_doc={}
-        print("current category_doc is now defined as=",current_category_doc)
         
     if new_category_doc!=current_category_doc:
         if current_category_doc!={}:
@@ -235,9 +254,10 @@ def update_category_database(edit,recipe_id,recipes,new_recipe,category,category
             if len(current_category_doc["recipe"])==0:
                 category_db.remove({"_id": category_id})    
     if new_category_doc!={}:
-        new_recipe[category]=str(new_category_doc["_id"])
+        #new_recipe[category]=str(new_category_doc["_id"])
         category_db.update({"_id": new_category_id},{"$push":{"recipe" : recipe_id}})
     return  
+'''
 
 @app.route("/search")
 def search():
@@ -245,7 +265,11 @@ def search():
 
 @app.route("/recipe_list", methods=['POST','GET'])
 def recipe_list():
-    _sort=session["sort"]
+
+    if session.get('sort')==True:
+        _sort=session["sort"]
+    else:
+        _sort='none'
     _filter_dict=session["filters"]
     if _filter_dict==None:
         _filter_dict={}
@@ -267,7 +291,12 @@ def recipe_list():
     list_of_countries=mongo.db.countriesDB.find()
     list_of_authors=mongo.db.authorDB.find()
 
+    #define filter author and country for passing to filter list in recipe_list.html.
+    #Will check for "" value and if so, not display author/country filter
+    filter_country=""
+    filter_author=""
 
+    print("filter=",filter)
     if filter=='true':    
         _currentsort=request.form.get('sort_by')
         print("_sort=",_sort)
@@ -324,15 +353,17 @@ def recipe_list():
                 
             filter_country=request.form.get('country')
             if filter_country!="" and filter_country!=None:
-                country=mongo.db.countriesDB.find_one({"name" : filter_country})
-                _filter_dict.update({"country" : str(country["_id"])})
+ #               country=mongo.db.countriesDB.find_one({"name" : filter_country})
+  #              _filter_dict.update({"country" : str(country["_id"])})
+                _filter_dict.update({"country" : filter_country })
             else:
                 _filter_dict.pop("country",None)
             
             filter_author=request.form.get('author')
             if filter_author!="" and filter_author!=None:
-                author=mongo.db.authorDB.find_one({"name" : filter_author})
-                _filter_dict.update({"author" : str(author["_id"])})
+   #             author=mongo.db.authorDB.find_one({"name" : filter_author})
+#                _filter_dict.update({"author" : str(author["_id"])})
+                _filter_dict.update({"author" : filter_author})
             else:
                 _filter_dict.pop("author",None)
                 
@@ -345,6 +376,7 @@ def recipe_list():
         else:
             _recipe_list=mongo.db.recipeDB.find(_filter_dict)
     else:
+        print("_sort",_sort)
         if _sort!="none" and _sort!=None:
             _recipe_list=mongo.db.recipeDB.find().sort(_sort,1) 
         else:      
@@ -361,40 +393,42 @@ def recipe_list():
     
     
     _total_results=_recipe_list.count()
-    print("selected author=",filter_author)
+  #  print("selected author=",filter_author)
     return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,selected_country=filter_country, selected_author=filter_author,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
 
 
 @app.route('/show_recipe/<recipe_id>')
 def show_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
-    categories=["country","author"]
-    for category in categories:
-        if category=="country":
-            database=mongo.db.countriesDB
-        elif category=="author":
-            database=mongo.db.authorDB
-        if _recipe[category]:
-            _categorydoc=database.find_one({"_id":ObjectId(_recipe[category])})
-            print("category doc",_categorydoc)
-            _recipe[category]=_categorydoc["name"]
+    _added=request.args.get('added_recipe',None)    
+    print("added=",_added)
+#    categories=["country","author"]
+#    for category in categories:
+#        if category=="country":
+#            database=mongo.db.countriesDB
+#        elif category=="author":
+#            database=mongo.db.authorDB
+#        if _recipe[category]:
+#            _categorydoc=database.find_one({"_id":ObjectId(_recipe[category])})
+#            print("category doc",_categorydoc)
+#            _recipe[category]=_categorydoc["name"]
     title_text='Your recipe'
-    print("checking session variable=",session["filters"])    
-    return render_template('display_recipe.html',title_text='Your recipe',recipe=_recipe,added="true")
+#    print("checking session variable=",session["filters"])    
+    return render_template('display_recipe.html',title_text='Your recipe',recipe=_recipe,added=_added)
 
 @app.route('/edit_recipe/<recipe_id>')
 def edit_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
-    categories=["country","author"]
-    for category in categories:
-        if category=="country":
-            database=mongo.db.countriesDB
-        elif category=="author":
-            database=mongo.db.authorDB
-        if _recipe[category]:
-            _categorydoc=database.find_one({"_id":ObjectId(_recipe[category])})
-            print("category doc",_categorydoc)
-            _recipe[category]=_categorydoc["name"]    
+ #   categories=["country","author"]
+ #   for category in categories:
+ #       if category=="country":
+ #           database=mongo.db.countriesDB
+ #       elif category=="author":
+ #           database=mongo.db.authorDB
+ #       if _recipe[category]:
+ #           _categorydoc=database.find_one({"_id":ObjectId(_recipe[category])})
+ #           print("category doc",_categorydoc)
+ #           _recipe[category]=_categorydoc["name"]    
     return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe)
 
 @app.route('/delete_recipe',methods=['POST'])
