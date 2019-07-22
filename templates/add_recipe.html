@@ -100,7 +100,7 @@
               <label>Unit</label>
               <div id="unit" class="input-field">
                 <select id="select-unit">
-              <option value="none" selected="selected"> </option>
+              <option value="" selected="selected"> </option>
               <option value="g">g</option>
               <option value="kg">kg</option>
               <option value="ml">ml</option>
@@ -127,6 +127,7 @@
               <option value="nuts">NUTS</option>
               <option value="shellfish">SHELLFISH</option>
               <option value="eggs">EGGS</option>
+              <option value="meat">MEAT</option>
             </select>
               </div>
             </div>
@@ -183,7 +184,13 @@
     var currentAmount = $("#amount").val();
     var currentUnit = $("#unit option:selected").val()
     var currentIngredients = $("#ingredients").html()
-    console.log("amount=" + currentAmount)
+    //build an array of current ingredients, to check against the current ingredient being entered to throw an error if a duplicate ingredient is added.
+    var ingredientList=[];
+    $(".ingredient-type").each(function(i,object) {
+      ingredientList[i]=$(object).attr("value");
+    })
+    
+    console.log("ingreidnet list="+ingredientList)
     //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
     if (isNaN(currentAmount) || currentAmount.length == 0 || currentAmount == undefined) {
       //display error modal
@@ -195,12 +202,17 @@
       $("#error-modal p").text("Please enter ingredient name")
       $("#error-modal").modal('open');
     }
+    //check the ingredient being added against the current ingredients. If duplicate, display error modal.
+    else if(ingredientList.indexOf(currentIngredient)!=-1) {
+      $("#error-modal p").text("You have entered a duplicate ingredient. Check and try again.")
+      $("#error-modal").modal('open');      
+    }
     else {
       if (currentUnit === "0") { currentUnit = "" }
-      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + "</p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input type='hidden' name='type' value=" + currentIngredient + "></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
+      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + " </p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input class='ingredient-type' type='hidden' name='type' value=" + currentIngredient + "></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
       $("#ingredient").val('');
       $("#amount").val('');
-      $("#select-unit").val('none');
+      $("#select-unit").val('');
       $('#select-unit').formSelect();
     }
   });
@@ -214,7 +226,6 @@
     var name=$("#name").val();
     var ingredient=$('#ingredients').find('input').filter(':hidden:first').val();
     var method=$('#method').val();
-    console.log("ingredient="+ingredient)
     if(name=="") {
       $("#error-modal p").text("You need to name your receipe")
       $("#error-modal").modal('open');

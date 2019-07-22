@@ -105,7 +105,7 @@
               <label>Unit</label>
               <div id="unit" class="input-field">
                 <select id="select-unit">
-              <option value="0"> </option>
+              <option value=""> </option>
               <option value="g">g</option>
               <option value="kg">kg</option>
               <option value="ml">ml</option>
@@ -124,7 +124,7 @@
             <div class="row">
               <div class="col s10 valign-wrapper">
                 <p>
-                  {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ingredient.type[0]|upper}}{{ingredient.type[1:]|lower}}
+                  {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} {% endif %} {{ingredient.type[0]|upper}}{{ingredient.type[1:]|lower}}
                 </p>
               </div>
               <div class="col s1">
@@ -146,6 +146,7 @@
               <option value="nuts" {% if recipe.allergens and 'nuts' in recipe.allergens|lower %} selected="selected" {% endif %}>NUTS</option>
               <option value="shellfish" {% if recipe.allergens and 'shellfish' in recipe.allergens|lower %} selected="selected" {% endif %}>SHELLFISH</option>
               <option value="eggs" {% if recipe.allergens and 'eggs' in recipe.allergens|lower %} selected="selected" {% endif %}>EGGS</option>
+              <option value="meat" {% if recipe.allergens and 'meat' in recipe.allergens|lower %} selected="selected" {% endif %}>MEAT</option>
             </select>
               </div>
             </div>
@@ -166,8 +167,8 @@
           <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
         </div>
         <div class="col s4 offset-s2 m2 offset-m2 ">
-          <button class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Update</button>
-          <button class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Update</button>
+          <a id="submit-recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Update</a>
+          <a id="submit-recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Update</a>
         </div>
       </div>
     </form>
@@ -210,10 +211,10 @@
     }
     else {
       if (currentUnit === "0") { currentUnit = "" }
-      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + "</p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input type='hidden' name='type' value=" + currentIngredient + "></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
+      $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + " </p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
       $("#ingredient").val('');
       $("#amount").val('');
-      $("#select-unit").val('none');
+      $("#select-unit").val('');
       $('#select-unit').formSelect();
     }
   });
@@ -223,6 +224,28 @@
     var ingredientLine=$(this).parent().parent();
     setTimeout(function() { ingredientLine.remove(); }, 500);
   });
+  
+    $("#submit-recipe").on("click", function() {
+    var name=$("#name").val();
+    var ingredient=$('#ingredients').find('input').filter(':hidden:first').val();
+    var method=$('#method').val();
+    if(name=="") {
+      $("#error-modal p").text("You need to name your receipe")
+      $("#error-modal").modal('open');
+    }
+    else if(ingredient==undefined || ingredient==""){
+      $("#error-modal p").text("You need at least one ingredient for your recipe")
+      $("#error-modal").modal('open');      
+    }
+    else if(method==""){
+      $("#error-modal p").text("You need to provide instructions as to how to make your recipe")
+      $("#error-modal").modal('open');      
+    }
+    else {
+      $("form").submit();  
+    }
+  }) 
+  
 </script>
 
 {% endblock %}

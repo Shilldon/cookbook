@@ -41,6 +41,7 @@ def insertrecipe():
     
     #request form data not in flat format - arrays are created in the form for ingredients and allergen information
     new_recipe=request.form.to_dict(flat=False)
+    print("new_Recipe[type]",new_recipe["type"])
     ingredients=[]
     ingredient={}
     #initialise cook time variable to convert hours and minutes to minutes total for ease of search DB in recipe_list
@@ -69,9 +70,12 @@ def insertrecipe():
             #cycle through the ingredient information and create objects for each ingredient with key values of ingredient type, amount and units
             i=0
             for ingredient_type in key_name:
-                ingredient={ 'type' : ingredient_type , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
+                print("key name ",key_name)
+                print('ingredient_Type ',ingredient_type)
+                ingredient={ 'type' : new_recipe['type'][i] , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
                 #insert ingredient object into array of ingredients
                 ingredients.append(ingredient)
+                print("ingredient added=",ingredient)
                 i+=1       
     #insert the new cook_time key into the new_recipe dict
     new_recipe["cook_time"]=cook_time
@@ -87,30 +91,29 @@ def insertrecipe():
         update_category_database(edit,recipe_id,recipes,new_recipe,category,database)      
 
     current_recipe=recipes.find_one({"_id" : ObjectId(recipe_id)})
-
+    print("recipe id ",recipe_id)
     print("new_recipe", new_recipe)
     print("current_recipe ", current_recipe)
     
     new_ingredients=ingredients
-    current_ingredients=current_recipe["ingredients"]
-    
     ingredientsdb=mongo.db.ingredientsDB
-    print("ingredients db ", ingredientsdb)
-    print("recipes ", recipes)
-    print("current_ingredients", current_ingredients)
-    print("new_ingredients ",new_ingredients)
-    
+    if "allergens" in new_recipe:
+        new_allergens=new_recipe["allergens"]
+    else:
+        new_allergens=[]
+        
+    allergensdb=mongo.db.allergensDB
+    print("allergens ",new_allergens)
+
     for ingredient in new_ingredients:
         ingredient_type=ingredient["type"]
         print("ingredient_type",ingredient_type)
-        if current_recipe!=None:
-            print("current_ingredient", current_ingredients)
+        if edit=="True":
+            current_ingredients=current_recipe["ingredients"]
+            print("current_ingredients", current_ingredients)
             if ingredient in current_ingredients:
                 ingredient_index=current_ingredients.index(ingredient)
-                print("new ingredient in current ingredients", ingredient)
-                print("location of new ingredients in current ",ingredient_index)
                 current_ingredients.remove(ingredient)
-                print("updated current ingredients ",current_ingredients)
             
         new_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"]})
         if new_ingredient_doc!=None:
@@ -121,11 +124,26 @@ def insertrecipe():
         if recipe_id not in new_ingredient_doc["recipe"]:
             ingredientsdb.update({"_id": new_ingredient_id},{"$push":{"recipe" : recipe_id}})
     
+    for allergen in new_allergens:
+        if edit=="True":
+            if "allergens" in current_recipe:
+                current_allergens=current_recipe["allergens"]
+                if allergen in current_allergens:
+                    allergen_index=current_allergens.index(allergen)
+                    current_allergens.remove(allergen)
+        
+        new_allergen_doc=allergensdb.find_one({"name" : allergen}) 
+        if new_allergen_doc!=None:
+            new_allergen_id=new_allergen_doc["_id"]
+        else:
+            new_allergen_id=allergensdb.insert({"name" : allergen, "recipe":[]})
+            new_allergen_doc=allergensdb.find_one({"_id" : new_allergen_id})
+        if recipe_id not in new_allergen_doc["recipe"]:
+            allergensdb.update({"_id" : new_allergen_id},{"$push":{"recipe":recipe_id}})
 
-    if current_recipe!=None:
+    if edit=="True":
         print("current recipe !=None")
         for ingredient in current_ingredients:
-            print("ingredient being checked=",ingredient)
             if ingredient not in new_ingredients:
                 print("ingredient not in new ingredients=",ingredient)
                 current_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"]})  
@@ -133,7 +151,19 @@ def insertrecipe():
                 ingredientsdb.update({"_id": current_ingredient_id},{"$pull":{"recipe" : recipe_id}})
                 current_ingredient_doc=ingredientsdb.find_one({"_id": current_ingredient_id})
                 if len(current_ingredient_doc["recipe"])==0:
-                    ingredientsdb.remove({"_id": current_ingredient_id})   
+                    ingredientsdb.remove({"_id": current_ingredient_id})  
+        
+        if "allergens" in current_recipe:
+            for allergen in current_allergens:
+                if allergen not in new_allergens:
+                    current_allergen_doc=allergensdb.find_one({"name" : allergen})
+                    current_allergen_id=current_allergen_doc["_id"]
+                    allergensdb.update({"_id" : current_allergen_id},{"$pull" : {"recipe" : recipe_id}})
+                    current_allergen_doc=allergensdb.find_one({"_id" : current_allergen_id})
+                    if len(current_allergen_doc["recipe"])==0:
+                        allergensdb.remove({"_id" : current_allergen_id})
+
+
                     
         #need to remove the type, amount and unit arrays from the dict having imported them into ingredients objects
     #done by error testing because ingredients may not have been added via the form
