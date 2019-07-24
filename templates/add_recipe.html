@@ -9,9 +9,9 @@
       <div class="row">
         <div class="col s10 offset-s1">
           <div class="row">
-            <div class="col s10">
-              <label>Name</label>
+            <div class="col s10 input-field">
               <input id="name" name="name" type="text" label="Name" required></input>
+              <label for="name">Name</label>
             </div>
             <div class="col s2 valign-wrapper">
               <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
@@ -20,29 +20,29 @@
           </div>
 
           <div class="row">
-            <div class="col s12">
-              <label>Country of origin</label>
+            <div class="col s12 input-field">
+              <label for="country">Country of origin</label>
               <input id="country" name="country" type="text"></input>
             </div>
           </div>
 
           <div class="row">
-            <div class="col s12">
-              <label>Recipe Author</label>
-              <input id="author" name="author" type="text" placeholder="Firstname Lastname"></input>
+            <div class="col s12 input-field">
+              <label for="author">Recipe Author</label>
+              <input id="author" class="autocomplete" name="author" type="text" placeholder="Firstname Lastname"></input>
             </div>
           </div>
 
           <div class="row">
             <div class="col s12">
-              <label>Picture</label>
+              <label for="picture">Picture</label>
               <input id="picture" name="picture" type="text" placeholder="type in full URL of image"></input>
             </div>
           </div>
 
           <div class="row ">
             <div class="col s6">
-              <label>Meal</label>
+              <label for="meal">Meal</label>
               <div class="input-field">
                 <select name="meal">
               <option value="" disabled selected>Select</option>
@@ -55,7 +55,7 @@
             </div>
 
             <div class="col s6">
-              <label>Difficulty</label>
+              <label for="difficulty">Difficulty</label>
               <div class="input-field">
                 <select name="difficulty">
               <option value="" disabled selected>Select</option>
@@ -68,16 +68,21 @@
           </div>
 
           <div class="row">
-            <div class="col s3">
-              <label>Cooking time</label>
-              <input name="hours" type="number" value="0" placeholder="hours"></input>
-            </div>
-            <div class="col s3">
-              <label>&nbsp</label>
-              <input name="minutes" type="number" value="0" placeholder="minutes"></input>
+            <div class="col s6">
+              <label for="hours">Cooking Time</label>
             </div>
             <div class="col s3 offset-s3">
-              <label>Calories</label>
+              <label for="calories">Calories</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s3">
+              <input name="hours" type="number" placeholder="hours"></input>
+            </div>
+            <div class="col s3">
+              <input name="minutes" type="number" placeholder="minutes"></input>
+            </div>
+            <div class="col s3 offset-s3">
               <input name="calories" type="number" placeholder="calories"></input>
             </div>
           </div>
@@ -88,16 +93,17 @@
             </div>
           </div>
           <div class="row">
-            <div class="col s6">
-              <label>Ingredient</label>
-              <input id="ingredient" type="text"></input>
+            <div class="col s5 input-field">
+                  <input class="autocomplete" id="ingredient" type="text"></input> 
+              <label for="ingredient">Ingredient</label>
+                  
             </div>
-            <div class="col s2">
-              <label>Quantity</label>
+            <div class="col s3 input-field">
               <input id="amount" type="number" min="0">
+              <label for="amount">Quantity</label>
+              
             </div>
             <div class="col s2" style="padding-right:2px">
-              <label>Unit</label>
               <div id="unit" class="input-field">
                 <select id="select-unit">
               <option value="" selected="selected"> </option>
@@ -108,6 +114,7 @@
               <option value="tsp">tsp</option>
               <option value="tbsp">tbsp</option>
             </select>
+            <label>Unit</label>
               </div>
             </div>
             <div class="col s1">
@@ -190,7 +197,6 @@
       ingredientList[i]=$(object).attr("value");
     })
     
-    console.log("ingreidnet list="+ingredientList)
     //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
     if (isNaN(currentAmount) || currentAmount.length == 0 || currentAmount == undefined) {
       //display error modal
@@ -242,6 +248,10 @@
       $("form").submit();  
     }
   })
+  
+    
+
+
 </script>
 
 {% endblock %}

@@ -165,11 +165,9 @@ textarea:focus {
   border-bottom: 1px solid #0339A6 !important;
   box-shadow: 0 1px 0 0 #0339A6 !important; }
 
-.input-field {
-  margin-top: 0; }
-  .input-field label {
-    color: #0339A6;
-    font-family: "Roboto", sans; }
+.input-field label {
+  color: #0339A6;
+  font-family: "Roboto", sans; }
 
 .select-wrapper li span {
   font-size: 12px !important;

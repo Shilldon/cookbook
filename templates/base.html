@@ -42,22 +42,22 @@
       <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
     </ul>
   </section>
-  
+
   <!--Main page title and background image-->
   <section>
     <div class="title-container valign-wrapper">
       <div class="row">
-      <div class="title-text col s12">
-        <h5 class="center-align">{{title_text}}</h5>
+        <div class="title-text col s12">
+          <h5 class="center-align">{{title_text}}</h5>
+        </div>
       </div>
-    </div>
     </div>
   </section>
 
 
-  {% block content %} 
-  
-  
+  {% block content %}
+
+
 
 
   <!-- call to action -->
@@ -70,9 +70,9 @@
       </div>
       <div class="row valign-wrapper" style="height:50%">
         <div class="col s6 offset-s3 m2 offset-m5 ">
-            <a class="waves-effect waves-light btn btn-block hide-on-med-and-up">Search</a>
-            <a class="waves-effect waves-light btn-large btn-block hide-on-small-only">Search</a>
-       </div>
+          <a class="waves-effect waves-light btn btn-block hide-on-med-and-up">Search</a>
+          <a class="waves-effect waves-light btn-large btn-block hide-on-small-only">Search</a>
+        </div>
       </div>
     </div>
   </section>
@@ -116,42 +116,57 @@
     </div>
 
   </section>
-  
+
   {% endblock %}
 
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script type="text/javascript" src="static/js/app.js"></script>
   <script>
     $(document).ready(function() {
       $('.sidenav').sidenav();
       $('select').formSelect();
       $('.collapsible').collapsible();
       $('.modal').modal({
-      //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
-        dismissible : false,
+        //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
+        dismissible: false,
       });
+
+      var ingredient_list={{ingredients_list|tojson}}
+      var author_list={{author_list|tojson}}
+      var country_list={{country_list|tojson}}
+      
+      $('#ingredient').autocomplete({
+        data:ingredient_list,
+      });
+      $('#author').autocomplete({
+        data:author_list,
+      }); 
+      $('#country').autocomplete({
+        data:country_list,
+      });         
     });
-    
-  $("#favourite").on("click", function (){
-    //ensure the favourite variable is a boolean value
-    var favourite=$("#favourite_input").val();
-    if(typeof(favourite)!=Boolean) {
-      favourite=(favourite.toLowerCase()=="true");
-    }
-    if(favourite==false) {
-      $("i",this).text("star");
-      $("i",this).addClass("gold-star");      
-      $("#favourite_input").val(true);
-    }
-    else {
-      $("i",this).text("star_border");
-      $("i",this).removeClass("gold-star");      
-      $("#favourite_input").val(false);
-      favourite=$("#favourite_input").val();
-    }  
-  })    
+
+    $("#favourite").on("click", function() {
+      //ensure the favourite variable is a boolean value
+      var favourite = $("#favourite_input").val();
+      if (typeof(favourite) != Boolean) {
+        favourite = (favourite.toLowerCase() == "true");
+      }
+      if (favourite == false) {
+        $("i", this).text("star");
+        $("i", this).addClass("gold-star");
+        $("#favourite_input").val(true);
+      }
+      else {
+        $("i", this).text("star_border");
+        $("i", this).removeClass("gold-star");
+        $("#favourite_input").val(false);
+        favourite = $("#favourite_input").val();
+      }
+    })
   </script>
 
 </body>

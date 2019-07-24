@@ -15,14 +15,37 @@ mongo=PyMongo(app)
 @app.route("/")
 
 def index():
-    print("blanking session variable")
     session["filters"]={}
     return render_template("index.html",title_text='Perfect dishes on demand')
 
 @app.route("/add_recipe")
 
 def add_recipe():
-    return render_template("add_recipe.html", title_text='Add recipe')
+    #get list of ingredients to display in auto complete form for ingredients in add_recipe.html
+    ingredientsdb=mongo.db.ingredientsDB
+    ingredients=ingredientsdb.find()
+    _ingredients={}
+    for ingredient in ingredients:
+        new_ingredient={ingredient["name"]:None}
+        _ingredients.update(new_ingredient)
+        
+    #get list of authors to display in auto complete form for authors in add_recipe.html
+    authordb=mongo.db.authorDB
+    authors=authordb.find()
+    _authors={}
+    for author in authors:
+        new_author={author["name"]:None}
+        _authors.update(new_author)
+
+    #get list of countries to display in auto complete form for countries in add_recipe.html
+    countrydb=mongo.db.countriesDB
+    countries=countrydb.find()
+    _countries={}
+    for country in countries:
+        new_country={country["name"]:None}
+        _countries.update(new_country)
+
+    return render_template("add_recipe.html", title_text='Add recipe',ingredients_list=_ingredients, author_list=_authors, country_list=_countries)
 
 @app.route("/insertrecipe/", methods=['POST'])
 def insertrecipe():
