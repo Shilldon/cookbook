@@ -181,6 +181,21 @@
 <script type="text/javascript">
   $(document).ready(function() {
     $('select').formSelect();
+    
+    var ingredient_list={{ingredients_list|tojson}}
+    var author_list={{author_list|tojson}}
+    var country_list={{country_list|tojson}}
+      
+    $('#ingredient').autocomplete({
+      data:ingredient_list,
+    });
+    $('#author').autocomplete({
+      data:author_list,
+    }); 
+    $('#country').autocomplete({
+      data:country_list,
+    });         
+      
   })
 
   $("#add_ingredient").on("click", function() {

@@ -12,6 +12,21 @@ app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mo
 
 mongo=PyMongo(app)
 
+@app.route("/check_user",methods=['POST','GET'])
+def check_user():
+    usersdb=mongo.db.usersDB
+    
+    user=request.form.to_dict()
+    if user['username']=="logout":
+        session.pop('user')
+    else:    
+        session["user"]=user['username']
+
+    if user['username'] not in usersdb.find():
+        usersdb.insert({'name':user['username'],'favourites':[], 'liked':[]})  
+        
+    return redirect(url_for('index'))
+
 @app.route("/")
 
 def index():

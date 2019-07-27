@@ -24,9 +24,21 @@
     <nav>
       <div class="nav-wrapper">
         <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
-        <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-        <a href="{{ url_for('recipe_list', action='search') }}" class="sidenav-trigger right"><i class="material-icons">search</i></a>
-        <ul class="right hide-on-med-and-down">
+        <a href="#" data-target="menu-list" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+        <a href="{{ url_for('recipe_list', action='search') }}" class="hide-on-large-only right"><i class="material-icons">search</i></a>
+        <a href="#login-modal" class="right modal-trigger hide-on-large-only" style="padding-right:15px">            
+         {% if session['user'] %}
+            <i class="material-icons">person</i></a>
+          {%else%}
+            <i class="material-icons">person_outline</i></a>
+          {%endif%}  
+        <ul class="right hide-on-med-and-down right">
+          <li><a href="#login-modal" class=" modal-trigger">
+          {% if session['user'] %}
+            <i class="material-icons">person</i></a></li>
+          {%else%}
+            <i class="material-icons">person_outline</i></a></li>
+          {%endif%}  
           <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
           <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
@@ -35,7 +47,7 @@
       </div>
     </nav>
 
-    <ul class="sidenav" id="mobile-demo">
+    <ul class="sidenav" id="menu-list">
       <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
       <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
       <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
@@ -56,70 +68,47 @@
 
 
   {% block content %}
-
-
-
-
-  <!-- call to action -->
-  <section>
-    <div class="search-container">
-      <div class="row  valign-wrapper" style="height:50%">
-        <div class="col s8 offset-s2 m6 offset-m3 ">
-          <h6 class="flow-text center-align">Browse hundreds of recipes at the touch of a button</h6>
-        </div>
-      </div>
-      <div class="row valign-wrapper" style="height:50%">
-        <div class="col s6 offset-s3 m2 offset-m5 ">
-          <a class="waves-effect waves-light btn btn-block hide-on-med-and-up">Search</a>
-          <a class="waves-effect waves-light btn-large btn-block hide-on-small-only">Search</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- details and information -->
-  <section>
-    <div class="information-container">
-
-      <div class="row">
-        <div class="col s12">
-          <p class="center-align">
-            <i class="material-icons">add_circle_outline</i>
-          </p>
-          <div class="col s8 offset-s2 m6 offset-m3">
-            <h6 class="flow-text center-align">Add your favourite dishes</h6>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12">
-          <p class="center-align">
-            <i class="fa fa-hand-paper-o fa-3x" aria-hidden="true"></i>
-          </p>
-          <div class="col s8 offset-s2 m6 offset-m3">
-            <h6 class="flow-text center-align">Avoid allergens</h6>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12">
-          <p class="center-align">
-            <i class="medium material-icons">edit</i>
-          </p>
-          <div class="col s8 offset-s2 m6 offset-m3">
-            <h6 class="flow-text center-align">Edit your recipes</h6>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </section>
-
   {% endblock %}
 
-
+  <div id="login-modal" class="modal">
+    <form id="user-form" action="{{url_for('check_user') }}" method="POST">
+    <div class="modal-content">
+      {%if session['user'] %}
+      <h4>Logout</h4>
+      <h6>Currently logged in as {{session['user']}}</h6>
+      <div class="input-field">
+        <input id="username" type="hidden" name="username" type="text" label="User Name" value="logout"></input>
+      </div>    
+      <div class="row">
+        <div class="col s6 m3 offset-m2 ">
+          <button type="reset" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</button>
+          <button type="reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</button>
+        </div>
+        <div class="col s6 m3 offset-m2">
+          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Logout</button>
+          <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Logout</button>
+        </div>
+      </div>  
+      {%else%}
+      <h4>Login</h4>
+      <p>Enter your username</p>
+      <div class="input-field">
+        <input id="username" name="username" type="text" label="User Name" required></input>
+      </div>
+      <div class="row">
+        <div class="col s6 m3 offset-m2 ">
+          <button type="reset" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</button>
+          <button type="reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</button>
+        </div>
+        <div class="col s6 m3 offset-m2">
+          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Login</button>
+          <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Login</button>
+        </div>
+      </div>  
+      {%endif%}
+    </div>
+    </form>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -134,19 +123,6 @@
         dismissible: false,
       });
 
-      var ingredient_list={{ingredients_list|tojson}}
-      var author_list={{author_list|tojson}}
-      var country_list={{country_list|tojson}}
-      
-      $('#ingredient').autocomplete({
-        data:ingredient_list,
-      });
-      $('#author').autocomplete({
-        data:author_list,
-      }); 
-      $('#country').autocomplete({
-        data:country_list,
-      });         
     });
 
     $("#favourite").on("click", function() {
