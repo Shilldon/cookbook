@@ -1,22 +1,5 @@
 {% extends 'base.html' %} {% block content %}
 <section>
-    <!---List of recipes returned from DB --->
-    <!--    <div class="recipe-list-header">
-        <div class="row">
-            <div class="col s2 offset-s1 ">
-                <p class="center-align"></p>
-            </div>
-            <div class="col s4 valign_wrapper">
-                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Name</p>
-            </div>
-            <div class="col s2">
-                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Time</p>
-            </div>
-            <div class="col s3">
-                <p class="left-align"><i class="material-icons tiny">arrow_drop_down</i>Difficulty</p>
-            </div>
-        </div>
-    </div>-->
     <div class="">
         <ul class="collapsible">
             <li>
@@ -28,6 +11,7 @@
                     <div class="col s10 offset-s1">
                         <form id="filters_form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
                             <ul>
+                                {% if session["user"] %}
                                 <li>
                                     <div class="row">
                                         <div class="col s5">
@@ -41,6 +25,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                {% endif %}
                                 <li>
                                     <div class="row">
                                         <div class="col s5">
@@ -70,8 +55,9 @@
                                             <option value="gluten" {% if 'gluten' is in allergens %} selected="selected" {%endif%}>Gluten-free</option>
                                             <option value="nuts" {% if 'nuts' is in allergens %} selected="selected" {%endif%}>Nut-free</option>
                                             <option value="shellfish" {% if 'shellfish' is in allergens %} selected="selected" {%endif%}>Shellfish-free</option>
-                                            <option value="eggs" {% if 'eggs' is in allergens %} selected="selected" {%endif%}>Egg-free</option>                                        </select>
-                                            <option value="eggs" {% if 'meat' is in allergens %} selected="selected" {%endif%}>Vegetarian</option>                                        </select>
+                                            <option value="eggs" {% if 'eggs' is in allergens %} selected="selected" {%endif%}>Egg-free</option>                                        
+                                            <option value="meat" {% if 'meat' is in allergens %} selected="selected" {%endif%}>Vegetarian</option>  
+                                            </select>
                                         </div>
                                     </div>
                                 </li>
@@ -250,12 +236,14 @@
                     {% if action=="edit" %}
                       <p><i class="material-icons">edit</i></p>
                     {% elif action=="delete" %}
-                      <p><i class="material-icons">delete_forever</i></p>              
-                    {% elif recipe.favourite %}
-                        <p><i class="material-icons gold-star">star</i></p>
-                    {% else %}
-                        <p><i class="material-icons">star_border</i></p>
-                    {% endif %}
+                      <p><i class="material-icons">delete_forever</i></p>  
+                    {% elif session["user"] %}
+                        {%if recipe.favourite %}
+                            <p><i class="material-icons gold-star">star</i></p>
+                        {% else %}
+                            <p><i class="material-icons">star_border</i></p>
+                        {% endif %}
+                    {%endif%}    
                 </div>
             </div> 
             </a>
@@ -279,7 +267,6 @@
         <div class="modal-content">
             <h4>Confirm deletion</h4>
             <p>Are you sure you want to delete this recipe?</p>
-
             <form action="{{url_for('delete_recipe') }}" method="POST">
                 <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
                 <div class="row">

@@ -59,7 +59,8 @@
           <p>{{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
         </div>
       </div>
-      {% endif %} {% if recipe.hours>0 or recipe.minutes>0%}
+      {% endif %} 
+      {% if recipe.hours>0 or recipe.minutes>0%}
       <div class="row">
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Cooking time</p>
@@ -68,7 +69,8 @@
           <p>{% if recipe.hours>0 %} {{ recipe.hours }} hour {% endif %} {% if recipe.minutes>0 %} {{ recipe.minutes }} minutes{% endif %}</p>
         </div>
       </div>
-      {% endif %} {% if recipe.calories %}
+      {% endif %} 
+      {% if recipe.calories %}
       <div class="row">
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Calories</p>
@@ -80,7 +82,7 @@
       {% endif %}
 
       <!-- check to see if ingredients is populated in the dictionary, if so lay out ingredients.
-      NB ingredients is highly unlikely to be unpopulated, but it is possbile -->
+      NB ingredients is highly unlikely to be unpopulated -->
 
       {% if recipe.ingredients %}
       <div class="recipe-contents-list">

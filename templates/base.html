@@ -28,21 +28,33 @@
         <a href="{{ url_for('recipe_list', action='search') }}" class="hide-on-large-only right"><i class="material-icons">search</i></a>
         <a href="#login-modal" class="right modal-trigger hide-on-large-only" style="padding-right:15px">            
          {% if session['user'] %}
-            <i class="material-icons">person</i></a>
-          {%else%}
-            <i class="material-icons">person_outline</i></a>
-          {%endif%}  
+            <i class="material-icons">person</i></a> {%else%}
+        <i class="material-icons">person_outline</i></a>
+        {%endif%}
         <ul class="right hide-on-med-and-down right">
           <li><a href="#login-modal" class=" modal-trigger">
           {% if session['user'] %}
             <i class="material-icons">person</i></a></li>
           {%else%}
-            <i class="material-icons">person_outline</i></a></li>
-          {%endif%}  
+          <i class="material-icons">person_outline</i></a>
+          </li>
+          {%endif%}
           <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
-          <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
-          <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
+          <li class="highlight2-background">
+          {% if recipe %}
+            <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}"></a>
+          {% else %}          
+            <a href="{{url_for('recipe_list', action='edit')}}">Edit</a>
+          {% endif %}
+          </li>
+          <li class="highlight4-background">
+          {% if recipe_id %}
+            <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}"></a>
+          {% else %}
+            <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
+          {% endif %}
+          </li>
         </ul>
       </div>
     </nav>
@@ -50,8 +62,20 @@
     <ul class="sidenav" id="menu-list">
       <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
       <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
-      <li class="highlight2-background"><a href="{{url_for('recipe_list', action='edit')}}">Edit</a></li>
-      <li class="highlight4-background"><a href="{{url_for('recipe_list', action='delete')}}">Delete</a></li>
+      <li class="highlight2-background">
+      {% if recipe %}
+        <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a>
+      {% else %}          
+        <a href="{{url_for('recipe_list', action='edit')}}">Edit</a>
+      {% endif %}
+      </li>
+      <li class="highlight4-background">
+      {% if recipe_id %}
+        <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}">Delete</a>
+      {% else %}
+        <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
+      {% endif %}
+      </li>
     </ul>
   </section>
 
@@ -67,47 +91,46 @@
   </section>
 
 
-  {% block content %}
-  {% endblock %}
+  {% block content %} {% endblock %}
 
   <div id="login-modal" class="modal">
+      <div class="modal-content">
     <form id="user-form" action="{{url_for('check_user') }}" method="POST">
-    <div class="modal-content">
-      {%if session['user'] %}
-      <h4>Logout</h4>
-      <h6>Currently logged in as {{session['user']}}</h6>
-      <div class="input-field">
-        <input id="username" type="hidden" name="username" type="text" label="User Name" value="logout"></input>
-      </div>    
-      <div class="row">
-        <div class="col s6 m3 offset-m2 ">
-          <button type="reset" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</button>
-          <button type="reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</button>
+        {%if session['user'] %}
+        <h4>Logout</h4>
+        <h6>Currently logged in as {{session['user']}}</h6>
+        <div class="input-field">
+          <input id="username" type="hidden" name="username" type="text" label="User Name" value="logout"></input>
         </div>
-        <div class="col s6 m3 offset-m2">
-          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Logout</button>
-          <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Logout</button>
+        <div class="row">
+          <div class="col s6 m3 offset-m2 ">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</a>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</a>
+          </div>
+          <div class="col s6 m3 offset-m2">
+            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Logout</button>
+            <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Logout</button>
+          </div>
         </div>
-      </div>  
-      {%else%}
-      <h4>Login</h4>
-      <p>Enter your username</p>
-      <div class="input-field">
-        <input id="username" name="username" type="text" label="User Name" required></input>
-      </div>
-      <div class="row">
-        <div class="col s6 m3 offset-m2 ">
-          <button type="reset" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</button>
-          <button type="reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</button>
+        {%else%}
+        <h4>Login</h4>
+        <p>Enter your username</p>
+        <div class="input-field">
+          <input id="username" name="username" type="text" label="User Name" required></input>
         </div>
-        <div class="col s6 m3 offset-m2">
-          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Login</button>
-          <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Login</button>
+        <div class="row">
+          <div class="col s6 m3 offset-m2 ">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</a>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</a>
+          </div>
+          <div class="col s6 m3 offset-m2">
+            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Login</button>
+            <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Login</button>
+          </div>
         </div>
-      </div>  
-      {%endif%}
-    </div>
+        {%endif%}
     </form>
+      </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

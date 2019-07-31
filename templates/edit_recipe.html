@@ -5,7 +5,7 @@
 <section>
   <div class="row">
     <!--set the edit variable to true to tell flask this is an existing recipe being editted and pass the id of the recipe-->
-    <form action="{{url_for('insertrecipe',recipe_id=recipe._id,edit='True') }}" method="POST" class="col s12">
+    <form id="recipe-form" action="{{url_for('insertrecipe',recipe_id=recipe._id,edit='True') }}" method="POST" class="col s12">
       <div class="row">
         <div class="col s10 offset-s1">
 
@@ -16,11 +16,13 @@
               <label for="name">Name</label>
             </div>
             <div class="col s2 valign-wrapper">
-              {%if recipe.favourite %}
-              <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
-              {% else %}
-              <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
-              {% endif %}
+              {%if session["user"] %}
+                {%if recipe.favourite %}
+                <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
+                {% else %}
+                <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
+                {% endif %}
+              {%endif%}
               <input type="hidden" id="favourite_input" name="favourite" value={{recipe.favourite}}></input>
             </div>
           </div>
@@ -74,18 +76,23 @@
           </div>
 
           <div class="row">
+            <div class="col s6">
+              <label for="hours">Cooking time</label>
+            </div>
+            <div class="col s3 offset-s3">
+              <label for="calories">Calories</label>
+            </div>
+          </div>  
+          <div class="row">
             <div class="col s3">
-              <label>Cooking time</label>
-              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours"></input>
+              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours"></input>                
             </div>
             <div class="col s3">
-              <label>&nbsp</label>
               <input name="minutes" type="number" value="{{recipe.minutes}}" placeholder="minutes"></input>
             </div>
             <div class="col s3 offset-s3">
-              <label>Calories</label>
               <input name="calories" type="number" value="{{recipe.calories}}" placeholder="calories"></input>
-            </div>
+            </div>              
           </div>
 
           <div class="row ">
@@ -260,7 +267,7 @@
       $("#error-modal").modal('open');      
     }
     else {
-      $("form").submit();  
+      $("#recipe-form").submit();  
     }
   }) 
   
