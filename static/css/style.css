@@ -74,31 +74,38 @@
   .information-container i {
     font-size: 2.5rem; }
 
-.search-container {
+.search-button-container {
   font-family: "Roboto";
   color: white;
   height: 240px; }
-  .search-container .col {
+  .search-button-container .col {
     color: white;
     line-height: 80px;
     border: 1px solid white;
     padding: 0; }
-    .search-container .col p {
+    .search-button-container .col p {
       margin: 0; }
-  .search-container .col:hover {
+  .search-button-container .col:hover {
     background-color: white; }
-  .search-container .row {
+  .search-button-container .row {
     margin-bottom: 0;
     height: 80px; }
-  .search-container .btn-flat {
+  .search-button-container .btn-flat {
     color: white; }
-  .search-container a {
+  .search-button-container a {
     margin-top: 30px; }
-  .search-container .search-button {
+  .search-button-container .search-button {
     transition-duration: 0.5s;
     background-color: #8C5D42; }
-  .search-container .search-button:hover {
+  .search-button-container .search-button:hover {
     background-color: #033E8C; }
+
+.search-container .collapsible {
+  margin-bottom: 0.5rem !important; }
+  .search-container .collapsible .active .expand {
+    transform: rotate(180deg); }
+.search-container #category-search {
+  margin-top: 20px; }
 
 .recipe-list-header {
   font-family: "Roboto", sans;
@@ -226,7 +233,7 @@ form {
   background-color: #8C5D42 !important; }
 
 .modal {
-  font-family: "Roboto",sans;
+  font-family: "Roboto", sans;
   color: #5A6978; }
   .modal h4 {
     color: #0339A6; }

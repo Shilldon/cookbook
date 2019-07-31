@@ -90,17 +90,18 @@
           <div class="col s3 offset-s1">
             <p class="recipe-subject">Ingredients</p>
           </div>
-          {% for ingredient in recipe.ingredients %} {% if loop.first %}
+          {% for ingredient in recipe.ingredients %}
+          {% if loop.first %}
           <div class="col s6">
             <p>
-              {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ingredient.type}}
+              {{ingredient.amount}}{% if ingredient.unit %} {{ingredient.unit}} of {% endif %} {{ ingredient.type[0]|upper}}{{ingredient.type[1:] }}
             </p>
           </div>
           {% else %}
           <div class="row">
             <div class="col s6 offset-s4">
               <p>
-                {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ingredient.type}}
+                {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ ingredient.type[0]|upper}}{{ingredient.type[1:] }}
               </p>
             </div>
           </div>

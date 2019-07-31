@@ -112,7 +112,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 }
 
 //----- SEARCH SECTION CONTAINER -----//
-.search-container {
+.search-button-container {
     font-family: "Roboto";
     color: white;
     height: 240px;
@@ -126,7 +126,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
         }
     }
     .col:hover {
-        background-color:white;
+        background-color: white;
     }
     .row {
         margin-bottom: 0;
@@ -139,12 +139,24 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
         margin-top: 30px;
     }
     .search-button {
-        transition-duration:0.5s;
+        transition-duration: 0.5s;
         background-color: $highlight4-color;
-    }    
+    }
     .search-button:hover {
+        background-color: $highlight2-color;
+    }
+}
 
-        background-color: $highlight2-color;    
+.search-container {
+    .collapsible {
+        margin-bottom:0.5rem !important;
+        .active .expand {
+            transform: rotate(180deg);
+            
+        }
+    }
+    #category-search {
+        margin-top:20px;
     }
 }
 
@@ -182,11 +194,11 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 }
 
 .recipe-list-right-col {
-    margin-right:auto;
+    margin-right: auto;
 }
 
 .row-effect {
-    
+
     .row {
         transition-duration: 0.5s;
     }
@@ -202,21 +214,21 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 }
 
 .input-field {
-    margin-bottom:0;
+    margin-bottom: 0;
 }
 
 .collapsible-body {
-    padding-top:0;
+    padding-top: 0;
 }
 
 .filter_button {
     border: none;
-    background-color:white;
+    background-color: white;
 }
 
 .order-list {
     .select-wrapper {
-        display:inline-block;
+        display: inline-block;
     }
 }
 
@@ -289,8 +301,8 @@ textarea:focus {
 
 //----- DELETE RECIPE -----//
 .selected-for-deletion {
-    background-color:red;
-    color:white;
+    background-color: red;
+    color: white;
 }
 
 //----- GENERAL STYLES -----//
@@ -335,17 +347,17 @@ form {
 
 .btn:active {
     background-color: $highlight4-color !important;
-} 
+}
 
 //----- MODAL STYLES -----//
 .modal {
-    font-family: "Roboto",sans;
+    font-family: "Roboto", sans;
     color: $font-color;
     h4 {
         color: $base-color;
     }
     button {
-        color:white;
+        color: white;
     }
 }
 
@@ -353,11 +365,11 @@ form {
 @media (hover: hover) {
     .row-effect {
         .row:hover {
-        background-color: $highlight1-color;
-        p {
-            color: white;
+            background-color: $highlight1-color;
+            p {
+                color: white;
+            }
         }
-    }
     }
 }
 

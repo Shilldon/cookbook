@@ -10,57 +10,106 @@
         </div>
     </div>
 </section>
+<section class="search-container">
+    <div class="row" id="category-search" style="display:none">
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header"><i class="material-icons expand">expand_more</i><i class="material-icons">search</i>Search Category:&nbsp<span id="search-category"></span></div>
+                    <div class="collapsible-body">
+                        <form method="POST">
+                            <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
+                            <div class="list-category input-field" id="list-element-ingredients">
+                                <select name="ingredients" multiple>
+                                    {%for ingredient in category_list["ingredients"] %}
+                                    <option value="{{ingredient}}">{{ingredient}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
 
+                            <div class="list-category input-field" id="list-element-allergies">
+                                <select name="allergies" multiple>
+                                    {%for allergy in category_list["allergies"] %}
+                                    <option value="{{allergy}}">{{allergy}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-difficulty">
+                                <select name="difficulty" multiple>
+                                    <option value="HARD">Hard</option>
+                                    <option value="MEDIUM">Medium</option>
+                                    <option value="EASY">Easy</option>
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-meal">
+                                <select name="meal" multiple>
+                                    {%for meal in category_list["meal"] %}
+                                    <option value="{{meal}}">{{meal}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-country">
+                                <select name="country" multiple>
+                                    {%for country in category_list["country"] %}
+                                    <option value="{{country}}">{{country}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-cooktime">
+                                <select name="cooktime" multiple>
+                                    {%for time in category_list["cooktime"] %}
+                                    <option value="{{time}}">{{time}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col s5 offset-s1 m3 offset-m2 ">
+                                    <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Cancel</button>
+                                    <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Cancel</button>
+                                </div>
+                                <div class="col s5 offset-s1 m3 offset-m2 ">
+                                    <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
+                                    <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+        </div>
+    </div>
+</section>
 <!-- details and information -->
 <section>
-    <div class="search-container">
+    <div class="search-button-container">
         <div class="row">
             <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Name
+                <p class="center-align flow-text">Ingredients</p>
+                </a>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
+                <p class="center-align flow-text ">Allergies</p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
+                <p class="center-align flow-text ">Difficulty</p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
+                <p class="center-align flow-text ">Meal</p>
                 </p>
             </div>
             <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text">
-                    Cook Time
-                </p>
+                <p class="center-align flow-text ">Country</p>
             </div>
             <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Allergies
-                </p>
+                <p class="center-align flow-text ">Cook Time</p>
             </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Difficulty
-                </p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Meal
-                </p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Country
-                </p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Author
-                </p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Calories
-                </p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">
-                    Favourite
-                </p>
-            </div>            
         </div>
+    </div>
+    <div>
         <div class="row">
             <div class="col s4 offset-s1 m2 offset-m3 ">
                 <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Home</a>
@@ -74,5 +123,42 @@
     </div>
 </section>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(".search-button").on("click", function() {
+        var category = $(this).children("p").text();
+        var categorySearchPane = $("#category-search");
+        var listElement="#list-element-"+category.toLowerCase();
+        console.log("open="+$(categorySearchPane).attr("open"))
+        console.log("category="+category)
+        console.log(listElement)
+            $(".list-category").hide();        
+        if ($(categorySearchPane).attr("data")) {
+            if($(categorySearchPane).attr("data")!=category) {
+              //  $(categorySearchPane).slideDown();         
+              console.log("open does not equal category so setting to category")
+                $(categorySearchPane).attr("data", category); 
+                console.log($(categorySearchPane).attr("data"))
+                $(listElement).show();      
+                $("#search-category").text(category)
+            }
+            else {
+                $(categorySearchPane).slideUp();
+                $(categorySearchPane).removeAttr("data");   
+            }
+        }
+        else {
+            console.log("open does not exist so setting to category")
+            $(categorySearchPane).slideDown();
+            $(categorySearchPane).attr("data", category);
+            console.log($(categorySearchPane).attr("data"))
+            $(listElement).show();
+            $("#search-category").text(category)
+        }
+
+
+    })
+</script>
 
 {% endblock %}

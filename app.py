@@ -42,7 +42,7 @@ def add_recipe():
     ingredients=ingredientsdb.find()
     _ingredients={}
     for ingredient in ingredients:
-        new_ingredient={ingredient["name"]:None}
+        new_ingredient={ingredient["name"].capitalize():None}
         _ingredients.update(new_ingredient)
         
     #get list of authors to display in auto complete form for authors in add_recipe.html
@@ -79,6 +79,7 @@ def insertrecipe():
     
     #request form data not in flat format - arrays are created in the form for ingredients and allergen information
     new_recipe=request.form.to_dict(flat=False)
+    print("new_recipe unflattened",new_recipe)
     ingredients=[]
     ingredient={}
     #initialise cook time variable to convert hours and minutes to minutes total for ease of search DB in recipe_list
@@ -91,23 +92,23 @@ def insertrecipe():
                 #get the list of users for whom this is a favourite recipe
                 recipe_doc=recipes.find_one({"_id" : ObjectId(recipe_id)})
                 favourites=recipe_doc["favourite"]                   
-                #check whether this user has marked this recipe as a favourite
-                user_doc=usersdb.find_one({"name":session["user"]})
-             
-                if new_recipe[key].lower() =='true':
-                    #if they have and their ID is not marked in this recipe as being one of their favorites
-                    #add the user id to the list of users in the recipe favourites array
-                    if recipe_id not in user_doc["favourites"]:
-                        usersdb.update({"name": session["user"]},{"$push":{"favourites" : recipe_id}})
-                        favourites.append(str(user_doc["_id"]))
+                #check whether a user is logged on and if this user has marked this recipe as a favourite
+                if "user" in session:
+                    user_doc=usersdb.find_one({"name":session["user"]})
+                    if new_recipe[key].lower() =='true':
+                        #if they have and their ID is not marked in this recipe as being one of their favorites
+                        #add the user id to the list of users in the recipe favourites array
+                        if recipe_id not in user_doc["favourites"]:
+                            usersdb.update({"name": session["user"]},{"$push":{"favourites" : recipe_id}})
+                            favourites.append(str(user_doc["_id"]))
+                            new_recipe[key]=favourites
+                    else:
+                        #if they not marked it as a favourite and their ID is in the list of users
+                        #remove the user id to the list of users in the recipe favourites array                    
+                        if recipe_id in user_doc["favourites"]:
+                            usersdb.update({"name": session["user"]},{"$pull":{"favourites" : recipe_id}}) 
+                            favourites.remove(str(user_doc["_id"]))
                         new_recipe[key]=favourites
-                else:
-                    #if they not marked it as a favourite and their ID is in the list of users
-                    #remove the user id to the list of users in the recipe favourites array                    
-                    if recipe_id in user_doc["favourites"]:
-                        usersdb.update({"name": session["user"]},{"$pull":{"favourites" : recipe_id}}) 
-                        favourites.remove(str(user_doc["_id"]))
-                    new_recipe[key]=favourites
 
             if key=='hours' or key=='minutes' or key=='calories':
                 #convert from string to int, if needed
@@ -123,8 +124,9 @@ def insertrecipe():
         elif key=='type':
             #cycle through the ingredient information and create objects for each ingredient with key values of ingredient type, amount and units
             i=0
+            
             for ingredient_type in key_name:
-                ingredient={ 'type' : ingredient_type , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
+                ingredient={ 'type' : ingredient_type.lower() , 'amount' : new_recipe['amount'][i] , 'unit' : new_recipe['unit'][i] }
                 #insert ingredient object into array of ingredients
                 ingredients.append(ingredient)
                 i+=1       
@@ -133,25 +135,29 @@ def insertrecipe():
     new_recipe["cook_time"]=cook_time
     #insert the new ingredients array into the new_receipe dict
     new_recipe['ingredients']=ingredients  
+    print("new_recipe[ingredients]",new_recipe['ingredients'])
 
     current_recipe=recipes.find_one({"_id" : ObjectId(recipe_id)})
     new_ingredients=ingredients
+    print("new ingredients ",new_ingredients)
     ingredientsdb=mongo.db.ingredientsDB
 
     for ingredient in new_ingredients:
         ingredient_type=ingredient
         if edit=="True":
             current_ingredients=current_recipe["ingredients"]
-            print("current_ingredients", current_ingredients)
             if ingredient in current_ingredients:
                 ingredient_index=current_ingredients.index(ingredient)
                 current_ingredients.remove(ingredient)
-            
-        new_ingredient_doc=ingredientsdb.find_one({"name" : ingredient})
+        #find the ingredient document in the ingredients database        
+        new_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"].lower()})
+        
         if new_ingredient_doc!=None:
             new_ingredient_id=new_ingredient_doc["_id"]
         else:
-            new_ingredient_id=ingredientsdb.insert({"name" : ingredient["type"], "recipe":[]})
+            #if the ingredient is new and has no document create a new ID
+            print("on adding ingredient[type] is ",ingredient["type"].lower())
+            new_ingredient_id=ingredientsdb.insert({"name" : ingredient["type"].lower(), "recipe":[]})
             new_ingredient_doc=ingredientsdb.find_one({"_id" : new_ingredient_id})
         if recipe_id not in new_ingredient_doc["recipe"]:
             ingredientsdb.update({"_id": new_ingredient_id},{"$push":{"recipe" : recipe_id}})
@@ -159,8 +165,7 @@ def insertrecipe():
     if edit=="True":
         for ingredient in current_ingredients:
             if ingredient not in new_ingredients:
-                print("ingredient not in new ingredients=",ingredient)
-                current_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"]})  
+                current_ingredient_doc=ingredientsdb.find_one({"name" : ingredient["type"].lower()})  
                 current_ingredient_id=current_ingredient_doc["_id"]
                 ingredientsdb.update({"_id": current_ingredient_id},{"$pull":{"recipe" : recipe_id}})
                 current_ingredient_doc=ingredientsdb.find_one({"_id": current_ingredient_id})
@@ -190,7 +195,7 @@ def insertrecipe():
             categorydb=mongo.db.difficultyDB   
 
         for value in new_category:
-            #check if we are edtting an existing recipe, if so check whether any values existing in both the updated and current recipes 
+            #check if we are editting an existing recipe, if so check whether any values existing in both the updated and current recipes 
             #if so remove them from the list to later delete the recipe ID from the values that remain in the list
             if edit=="True":
                 if category in current_recipe:
@@ -210,7 +215,7 @@ def insertrecipe():
                 new_category_id=new_category_doc["_id"]
             else:
                 #if it doesn't exist createa a new doc with the name and the ID of this recipe
-                new_category_id=categorydb.insert({"name" : value, "recipe":[]})
+                new_category_id=categorydb.insert({"name" : value.lower(), "recipe":[]})
                 new_category_doc=categorydb.find_one({"_id" : new_category_id})
             if recipe_id not in new_category_doc["recipe"]:
                 #check if the recipe is already in the new doc, if it isn't add the recipe ID to this particular category in the DB
@@ -257,7 +262,27 @@ def insertrecipe():
 
 @app.route("/search")
 def search():
-    return render_template("search.html",title_text="Find your favourites")
+    
+    categories=["ingredients","allergies","difficulty","meal","country","cook_time"]
+    _category_lists={}
+    
+    for category in categories:
+        item_list=[]
+        if category=="ingredients":
+            database=mongo.db.ingredientsDB.find().sort("name")
+        elif category=="allergies":
+            database=mongo.db.allergensDB.find().sort("name")
+        elif category=="meal":
+            database=mongo.db.mealDB.find().sort("name")
+        elif category=="country":
+            database=mongo.db.countriesDB.find().sort("name")
+
+        for item in database:
+            item_list.append(item["name"].capitalize())   
+        
+        _category_lists[category]=item_list  
+    print("country list",_category_lists["country"])
+    return render_template("search.html",title_text="Find your favourites",category_list=_category_lists)
 
 @app.route("/recipe_list", methods=['POST','GET'])
 def recipe_list():
@@ -355,15 +380,15 @@ def recipe_list():
                 _filter_dict.pop("author",None)
                 
             session["filters"]=_filter_dict
-
+    print("_sort",_sort)
     if filter=='true':
     #do the appropriate search and sort against the mongoDB depending on input from form/session variable
+
         if _sort!=None and _sort!="none":
             _recipe_list=mongo.db.recipeDB.find(_filter_dict).sort(_sort,1) 
         else:
             _recipe_list=mongo.db.recipeDB.find(_filter_dict)
     else:
-        print("_sort",_sort)
         if _sort!="none" and _sort!=None:
             _recipe_list=mongo.db.recipeDB.find().sort(_sort,1) 
         else:      
