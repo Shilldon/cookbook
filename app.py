@@ -99,14 +99,15 @@ def insertrecipe():
                         if recipe_id not in user_doc["favourites"]:
                             usersdb.update({"name": session["user"]},{"$push":{"favourites" : recipe_id}})
                             favourites.append(str(user_doc["_id"]))
-                            new_recipe[key]=favourites
+#                            new_recipe[key]=favourites
                     else:
                         #if they not marked it as a favourite and their ID is in the list of users
                         #remove the user id to the list of users in the recipe favourites array                    
                         if recipe_id in user_doc["favourites"]:
                             usersdb.update({"name": session["user"]},{"$pull":{"favourites" : recipe_id}}) 
                             favourites.remove(str(user_doc["_id"]))
-                        new_recipe[key]=favourites
+#                        new_recipe[key]=favourites
+                new_recipe[key]=favourites    
             if key=='hours' or key=='minutes' or key=='calories':
                 #convert from string to int, if needed
                 try:
@@ -169,7 +170,7 @@ def insertrecipe():
                 if len(current_ingredient_doc["recipe"])==0:
                     ingredientsdb.remove({"_id": current_ingredient_id})  
     
-    categories=["allergens","meal","country","author"]
+    categories=["allergens","meal","country","author","difficulty"]
     for category in categories:
         if category in new_recipe:
             if type(new_recipe[category]) is list:
@@ -206,7 +207,7 @@ def insertrecipe():
                         current_category.remove(value)
         
             #get the name of the new value in this category        
-            new_category_doc=categorydb.find_one({"name" : value}) 
+            new_category_doc=categorydb.find_one({"name" : value.lower()}) 
             if new_category_doc!=None:
                 #if the particular object exists then get the associated doc
                 new_category_id=new_category_doc["_id"]
@@ -452,8 +453,51 @@ def edit_recipe(recipe_id):
 @app.route('/delete_recipe',methods=['POST'])
 def delete_recipe():
     recipe_id=request.form.get('recipe_id')
-    _recipe=mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
+    recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+    for key in recipe:
+        print("recipe key ",key)
+        if key=='favourite':
+            for value in recipe[key]:
+                mongo.db.usersDB.update({"_id" : ObjectId(value)},{"$pull" : {"favourites" : ObjectId(recipe_id)}})
+        if key=="meal":
+            mongo.db.mealDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+        if key=="difficulty":
+            mongo.db.difficultyDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+        if key=="allergens":
+            for value in recipe[key]:
+                mongo.db.allergensDB.update({"name" : value},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+        if key=="country":
+            mongo.db.countriesDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+            #check if there are any recipes stored against this country. If not delete the country from the collection 
+            check_and_delete_empty_doc(recipe[key].lower(),mongo.db.countriesDB) 
+            #country_doc=mongo.db.countriesDB.find_one({"name" : recipe[key].lower()})
+            #if len(country_doc["recipe"])==0:
+            #    mongo.db.countriesDB.remove({"name" : recipe[key].lower()})            
+        if key=="author":
+            mongo.db.authorDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+            author_doc=mongo.db.authorDB.find_one({"name" : recipe[key].lower()})
+            #check if there are any recipes stored against this author. If not delete the author from the collection
+            check_and_delete_empty_doc(recipe[key].lower(),mongo.db.authorDB)            
+            #if len(author_doc["recipe"])==0:
+            #    mongo.db.authorDB.remove({"name" : recipe[key].lower()})
+        if key=="ingredients":
+            for value in recipe[key]:
+                for ingredient in value["type"]:
+                    mongo.db.ingredientsDB.update({"name" : ingredient},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+                    #check if there are any recipes stored against this ingredient. If not delete the ingredient from the collection
+                    check_and_delete_empty_doc(ingredient,mongo.db.ingredientsDB)
+                    #ingredient_doc=mongo.db.ingredientsDB.find_one({"name" : ingredient})
+                    #if len(ingredient_doc["recipe"])==0:
+                    #    mongo.db.ingredientsDB.remove({"name" : ingredient})                      
+        
+    mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
     return redirect(url_for('.recipe_list',action='delete'))
+
+def check_and_delete_empty_doc(item,database):
+    document=database.find_one({"name" : item})
+    if len(document["recipe"])==0:
+        database.remove({"name" : item})                      
+            
 
 @app.route('/filter_recipes', methods=['POST'])
 def filter_recipes():
@@ -489,7 +533,9 @@ def display_categories():
     elif category=="country":
         database=mongo.db.countriesDB        
     elif category=="author":
-        database=mongo.db.authorDB     
+        database=mongo.db.authorDB   
+    elif category=="difficulty":
+        database=mongo.db.difficultyDB    
         
     for i in range(0,len(_item_list)):
         recipe_objects=database.find({"name" : {'$eq' : _item_list[i]}})
