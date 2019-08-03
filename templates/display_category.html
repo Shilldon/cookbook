@@ -1,0 +1,59 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- details and information -->
+<section class="category-display">
+  <div class="row">
+    <div class="col s12" style="background-color:#033E8C; color: white">
+      <h5 class="center-align flow-text">{{category[0]|upper}}{{category[1:]|lower}}</h5>
+      {%if category=="allergens" %}
+      <p>Recipes that do not contain:</p>
+      {%endif%}
+    </div>
+    <div class="col s12" style="padding:0">
+      <ul class="collapsible">
+        {%for item in items %}
+        <li>
+          <div class="collapsible-header" style="background-color:#8C5D42; color:white"><strong>{{item[0]|upper}}{{item[1:]|lower}}</strong></div>
+          <div class="collapsible-body" style="padding:0 !important; border-bottom:none">
+            <ul class="collapsible" style="border-top:0 !important">
+              {%for recipe in recipes[item]%}
+              <li>
+                <div class="collapsible-header" style="padding-top:0; padding-bottom:0">
+                  <div class="row valign-wrapper" style="margin-bottom:0">
+                    <div class="valign-wrapper" style="padding:5px 0 5px 0">
+                      {% if recipe.picture %}
+                      <img src="{{recipe.picture}}" style="width:50px; height:50px; border: 2px solid brown; margin-right:14px"> {% else %}
+                      <i class="fa fa-cutlery fa-2x" aria-hidden="true" style="padding-top:12px; width:50px; height:50px; border: 2px solid brown"></i> {% endif %}
+                    </div>
+                    <div class="">
+                      {{recipe.name}}
+                    </div>
+                  </div>
+                </div>
+                <div class="collapsible-body">
+                  <div class="row" style="margin-bottom:0">
+                    <div class="col s12" style="padding-left:30px">
+                      {%if recipe.cook_time%}
+                      <p>Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}</p>
+                      {%endif%} {%if recipe.calories%}
+                      <p>Calories: {{recipe.calories}} kCal</p>
+                      {%endif%}
+                      {%if recipe.difficulty%}
+                      <p>Difficulty: {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
+                      {%endif%}                      
+                    </div>
+                  </div>
+                </div>
+              </li>
+              {%endfor%}
+            </ul>
+          </div>
+
+        </li>
+        {%endfor%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -29,13 +29,11 @@ def check_user():
     return redirect(url_for('index'))
 
 @app.route("/")
-
 def index():
     session["filters"]={}
     return render_template("index.html",title_text='Perfect dishes on demand')
 
 @app.route("/add_recipe")
-
 def add_recipe():
     #get list of ingredients to display in auto complete form for ingredients in add_recipe.html
     ingredientsdb=mongo.db.ingredientsDB
@@ -109,7 +107,6 @@ def insertrecipe():
                             usersdb.update({"name": session["user"]},{"$pull":{"favourites" : recipe_id}}) 
                             favourites.remove(str(user_doc["_id"]))
                         new_recipe[key]=favourites
-
             if key=='hours' or key=='minutes' or key=='calories':
                 #convert from string to int, if needed
                 try:
@@ -263,14 +260,14 @@ def insertrecipe():
 @app.route("/search")
 def search():
     
-    categories=["ingredients","allergies","difficulty","meal","country","cook_time"]
+    categories=["ingredients","allergens","difficulty","meal","country","author"]
     _category_lists={}
     
     for category in categories:
         item_list=[]
         if category=="ingredients":
             database=mongo.db.ingredientsDB.find().sort("name")
-        elif category=="allergies":
+        elif category=="allergens":
             database=mongo.db.allergensDB.find().sort("name")
         elif category=="meal":
             database=mongo.db.mealDB.find().sort("name")
@@ -281,7 +278,7 @@ def search():
             item_list.append(item["name"].capitalize())   
         
         _category_lists[category]=item_list  
-    print("country list",_category_lists["country"])
+    print("country list",_category_lists["allergens"])
     return render_template("search.html",title_text="Find your favourites",category_list=_category_lists)
 
 @app.route("/recipe_list", methods=['POST','GET'])
@@ -406,7 +403,6 @@ def recipe_list():
     _total_results=_recipe_list.count()
     return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,selected_country=filter_country, selected_author=filter_author,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
 
-
 @app.route('/show_recipe/<recipe_id>')
 def show_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
@@ -466,6 +462,47 @@ def filter_recipes():
     if calories:
         session["filters"]["calories"]=calories
     return redirect('recipe_list')
+
+@app.route('/display_categories', methods=['POST'])
+def display_categories():
+    selected_categories=request.form.to_dict(flat=False)
+    category=list(selected_categories.keys())[0]    
+    _item_list=[]
+    for key in selected_categories:
+        for item in selected_categories[key]:
+            if category!="country" and category!="author":
+                _item_list.append(item.lower())
+            else:
+                _item_list.append(item)    
+    category=list(selected_categories.keys())[0]
+    
+    i=0
+    recipes_in_category={}
+    search_value="$in"
+    if category=="allergens":
+        database=mongo.db.allergensDB
+        search_value="$nin"
+    elif category=="meal":
+        database=mongo.db.mealDB
+    elif category=="ingredients":
+        database=mongo.db.ingredientsDB
+    elif category=="country":
+        database=mongo.db.countriesDB        
+    elif category=="author":
+        database=mongo.db.authorDB     
+        
+    for i in range(0,len(_item_list)):
+        recipe_objects=database.find({"name" : {'$eq' : _item_list[i]}})
+        print("recipe_objets",recipe_objects)
+        recipe_ids=[]
+        for recipe in recipe_objects:
+            for id in recipe["recipe"]:
+                recipe_ids.append(ObjectId(id))
+        print("recipe_ids",recipe_ids)
+        recipes_in_category[_item_list[i]]=list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}}))            
+
+    
+    return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":
     app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True)    

@@ -54,10 +54,10 @@
               <div class="input-field">
                 <select name="meal">
               <option value="" disabled selected>Select</option>
-              <option value="BREAKFAST" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
-              <option value="LUNCH" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
-              <option value="DINNER" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
-              <option value="SNACK" {% if recipe.meal|upper=="SNACK" %} selected="selected" {% endif %}>SNACK</option>
+              <option value="breakfast" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
+              <option value="lunch" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
+              <option value="dinner" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
+              <option value="snack" {% if recipe.meal|upper=="SNACK" %} selected="selected" {% endif %}>SNACK</option>
             </select>
               </div>
             </div>
@@ -67,9 +67,9 @@
               <div class="input-field">
                 <select name="difficulty">
               <option value="" disabled selected>Select</option>
-              <option value="EASY" {% if recipe.difficulty|upper=="EASY" %} selected="selected" {% endif %}>EASY</option>
-              <option value="MEDIUM" {% if recipe.difficulty|upper=="MEDIUM" %} selected="selected" {% endif %}>MEDIUM</option>
-              <option value="HARD" {% if recipe.difficulty|upper=="HARD" %} selected="selected" {% endif %}>HARD</option>
+              <option value="easy" {% if recipe.difficulty|upper=="EASY" %} selected="selected" {% endif %}>EASY</option>
+              <option value="medium" {% if recipe.difficulty|upper=="MEDIUM" %} selected="selected" {% endif %}>MEDIUM</option>
+              <option value="hard" {% if recipe.difficulty|upper=="HARD" %} selected="selected" {% endif %}>HARD</option>
             </select>
               </div>
             </div>

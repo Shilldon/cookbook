@@ -10,79 +10,7 @@
         </div>
     </div>
 </section>
-<section class="search-container">
-    <div class="row" id="category-search" style="display:none">
-        <div class="col s12">
-            <ul class="collapsible">
-                <li>
-                    <div class="collapsible-header"><i class="material-icons expand">expand_more</i><i class="material-icons">search</i>Search Category:&nbsp<span id="search-category"></span></div>
-                    <div class="collapsible-body">
-                        <form method="POST">
-                            <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
-                            <div class="list-category input-field" id="list-element-ingredients">
-                                <select name="ingredients" multiple>
-                                    {%for ingredient in category_list["ingredients"] %}
-                                    <option value="{{ingredient}}">{{ingredient}}</option>
-                                    {%endfor%}
-                                </select>
-                            </div>
 
-                            <div class="list-category input-field" id="list-element-allergies">
-                                <select name="allergies" multiple>
-                                    {%for allergy in category_list["allergies"] %}
-                                    <option value="{{allergy}}">{{allergy}}</option>
-                                    {%endfor%}
-                                </select>
-                            </div>
-
-                            <div class="list-category input-field" id="list-element-difficulty">
-                                <select name="difficulty" multiple>
-                                    <option value="HARD">Hard</option>
-                                    <option value="MEDIUM">Medium</option>
-                                    <option value="EASY">Easy</option>
-                                </select>
-                            </div>
-
-                            <div class="list-category input-field" id="list-element-meal">
-                                <select name="meal" multiple>
-                                    {%for meal in category_list["meal"] %}
-                                    <option value="{{meal}}">{{meal}}</option>
-                                    {%endfor%}
-                                </select>
-                            </div>
-
-                            <div class="list-category input-field" id="list-element-country">
-                                <select name="country" multiple>
-                                    {%for country in category_list["country"] %}
-                                    <option value="{{country}}">{{country}}</option>
-                                    {%endfor%}
-                                </select>
-                            </div>
-
-                            <div class="list-category input-field" id="list-element-cooktime">
-                                <select name="cooktime" multiple>
-                                    {%for time in category_list["cooktime"] %}
-                                    <option value="{{time}}">{{time}}</option>
-                                    {%endfor%}
-                                </select>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col s5 offset-s1 m3 offset-m2 ">
-                                    <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Cancel</button>
-                                    <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Cancel</button>
-                                </div>
-                                <div class="col s5 offset-s1 m3 offset-m2 ">
-                                    <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
-                                    <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </li>
-        </div>
-    </div>
-</section>
 <!-- details and information -->
 <section>
     <div class="search-button-container">
@@ -105,8 +33,82 @@
                 <p class="center-align flow-text ">Country</p>
             </div>
             <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">Cook Time</p>
+                <p class="center-align flow-text ">Author</p>
             </div>
+        </div>
+    </div>
+</section>
+
+<section class="search-container">
+    <div class="row" id="category-search" style="display:none">
+        <div class="col s12">
+            <ul >
+                <li>
+                    <div ><i class="material-icons expand">expand_more</i><i class="material-icons">search</i>Search Category:&nbsp<span id="search-category"></span></div>
+                    <div >
+                        <form action="{{url_for('display_categories')}}" id="categories" method="POST">
+                            <div class="list-category input-field" id="list-element-ingredients">
+                                <select name="ingredients" multiple>
+                                    {%for ingredient in category_list["ingredients"] %}
+                                    <option value="{{ingredient}}">{{ingredient}}</option>
+
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-allergies">
+                                <select name="allergens" multiple>
+                                    {%for allergy in category_list["allergens"] %}
+                                    <option value="{{allergy}}">{{allergy}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-difficulty">
+                                <select name="difficulty" multiple>
+                                    <option value="hard">Hard</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="easy">Easy</option>
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-meal">
+                                <select name="meal" multiple>
+                                    {%for meal in category_list["meal"] %}
+                                    <option value="{{meal}}">{{meal}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-country">
+                                <select name="country" multiple>
+                                    {%for country in category_list["country"] %}
+                                    <option value="{{country}}">{{country}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+
+                            <div class="list-category input-field" id="list-element-author">
+                                <select name="author" multiple>
+                                    {%for author in category_list["author"] %}
+                                    <option value="{{time}}">{{author}}</option>
+                                    {%endfor%}
+                                </select>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col s5 offset-s1 m3 offset-m2 ">
+                                    <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</button>
+                                    <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</button>
+                                </div>
+                                <div class="col s5 offset-s1 m3 offset-m2 ">
+                                    <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Submit</button>
+                                    <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
         </div>
     </div>
     <div>
@@ -120,9 +122,8 @@
                 <a href="{{url_for('recipe_list', action='search')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Search</a>
             </div>
         </div>
-    </div>
+    </div>    
 </section>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
@@ -130,16 +131,12 @@
         var category = $(this).children("p").text();
         var categorySearchPane = $("#category-search");
         var listElement="#list-element-"+category.toLowerCase();
-        console.log("open="+$(categorySearchPane).attr("open"))
-        console.log("category="+category)
-        console.log(listElement)
-            $(".list-category").hide();        
+        $(".list-category").hide();   
+        //reset the form to ensure only one category is returned to display_category when submitting 
+        $('#categories')[0].reset();
         if ($(categorySearchPane).attr("data")) {
             if($(categorySearchPane).attr("data")!=category) {
-              //  $(categorySearchPane).slideDown();         
-              console.log("open does not equal category so setting to category")
                 $(categorySearchPane).attr("data", category); 
-                console.log($(categorySearchPane).attr("data"))
                 $(listElement).show();      
                 $("#search-category").text(category)
             }

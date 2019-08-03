@@ -76,8 +76,7 @@
 
 .search-button-container {
   font-family: "Roboto";
-  color: white;
-  height: 240px; }
+  color: white; }
   .search-button-container .col {
     color: white;
     line-height: 80px;
@@ -200,6 +199,13 @@ textarea:focus {
 .selected-for-deletion {
   background-color: red;
   color: white; }
+
+.category-display .collapsible ul {
+  margin-bottom: 0 !important;
+  box-shadow: none !important; }
+.category-display .collapsible-body {
+  padding: 0 !important;
+  border-bottom: none !important; }
 
 form {
   margin-top: 10px;
