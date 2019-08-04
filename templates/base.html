@@ -43,14 +43,14 @@
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
           <li class="highlight2-background">
           {% if recipe %}
-            <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}"></a>
+            <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a>
           {% else %}          
             <a href="{{url_for('recipe_list', action='edit')}}">Edit</a>
           {% endif %}
           </li>
           <li class="highlight4-background">
-          {% if recipe_id %}
-            <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}"></a>
+          {% if recipe %}
+            <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}">Delete</a>
           {% else %}
             <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
           {% endif %}
@@ -70,7 +70,7 @@
       {% endif %}
       </li>
       <li class="highlight4-background">
-      {% if recipe_id %}
+      {% if recipe %}
         <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}">Delete</a>
       {% else %}
         <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>

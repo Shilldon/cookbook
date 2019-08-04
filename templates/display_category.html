@@ -13,10 +13,19 @@
       <ul class="collapsible">
         {%for item in items %}
         <li>
-          <div class="collapsible-header" style="background-color:#8C5D42; color:white"><strong>{{item[0]|upper}}{{item[1:]|lower}}</strong></div>
+          <div class="collapsible-header" style="background-color:#8C5D42; color:white">
+            <div class="row" style="padding:0; margin:0; flex:auto">
+              <div class="col s7" >
+                <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
+              </div>
+              <div class="col s5" class="right-align">
+                <p  style="margin:0; ">Recipes found: {{recipes[item]["count"]}}</p>    
+              </div>
+            </div> 
+          </div>  
           <div class="collapsible-body" style="padding:0 !important; border-bottom:none">
             <ul class="collapsible" style="border-top:0 !important">
-              {%for recipe in recipes[item]%}
+              {%for recipe in recipes[item]["recipe"]%}
               <li>
                 <div class="collapsible-header" style="padding-top:0; padding-bottom:0">
                   <div class="row valign-wrapper" style="margin-bottom:0">

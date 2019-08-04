@@ -99,14 +99,12 @@ def insertrecipe():
                         if recipe_id not in user_doc["favourites"]:
                             usersdb.update({"name": session["user"]},{"$push":{"favourites" : recipe_id}})
                             favourites.append(str(user_doc["_id"]))
-#                            new_recipe[key]=favourites
                     else:
                         #if they not marked it as a favourite and their ID is in the list of users
                         #remove the user id to the list of users in the recipe favourites array                    
                         if recipe_id in user_doc["favourites"]:
                             usersdb.update({"name": session["user"]},{"$pull":{"favourites" : recipe_id}}) 
                             favourites.remove(str(user_doc["_id"]))
-#                        new_recipe[key]=favourites
                 new_recipe[key]=favourites    
             if key=='hours' or key=='minutes' or key=='calories':
                 #convert from string to int, if needed
@@ -497,8 +495,7 @@ def check_and_delete_empty_doc(item,database):
     document=database.find_one({"name" : item})
     if len(document["recipe"])==0:
         database.remove({"name" : item})                      
-            
-
+    
 @app.route('/filter_recipes', methods=['POST'])
 def filter_recipes():
     session["filters"]=request.form.to_dict()
@@ -518,7 +515,7 @@ def display_categories():
                 _item_list.append(item.lower())
             else:
                 _item_list.append(item)    
-    category=list(selected_categories.keys())[0]
+    #category=list(selected_categories.keys())[0]
     
     i=0
     recipes_in_category={}
@@ -539,14 +536,13 @@ def display_categories():
         
     for i in range(0,len(_item_list)):
         recipe_objects=database.find({"name" : {'$eq' : _item_list[i]}})
-        print("recipe_objets",recipe_objects)
         recipe_ids=[]
         for recipe in recipe_objects:
             for id in recipe["recipe"]:
                 recipe_ids.append(ObjectId(id))
-        print("recipe_ids",recipe_ids)
-        recipes_in_category[_item_list[i]]=list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}}))            
-
+        recipes_in_category[_item_list[i]]={"recipe":list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})) }           
+        recipes_in_category[_item_list[i]].update({"count":len(recipe_ids)})
+        print("count=",recipes_in_category[_item_list[i]])
     
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
