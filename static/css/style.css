@@ -101,9 +101,13 @@
 
 .search-container .collapsible {
   margin-bottom: 0.5rem !important; }
+  .search-container .collapsible li i {
+    transition-duration: 0.25s;
+    transform: rotate(0deg); }
   .search-container .collapsible .active .expand {
-    transform: rotate(180deg); }
-.search-container #category-search {
+    transform: rotate(-90deg); }
+
+#category-search {
   margin-top: 20px; }
 
 .recipe-list-header {

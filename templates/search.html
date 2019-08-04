@@ -39,19 +39,18 @@
     </div>
 </section>
 
-<section class="search-container">
+<section>
     <div class="row" id="category-search" style="display:none">
         <div class="col s12">
             <ul >
                 <li>
-                    <div ><i class="material-icons expand">expand_more</i><i class="material-icons">search</i>Search Category:&nbsp<span id="search-category"></span></div>
-                    <div >
+                    <div>Search Category:&nbsp<span id="search-category"></span></div>
+                    <div>
                         <form action="{{url_for('display_categories')}}" id="categories" method="POST">
                             <div class="list-category input-field" id="list-element-ingredients">
                                 <select name="ingredients" multiple>
                                     {%for ingredient in category_list["ingredients"] %}
                                     <option value="{{ingredient}}">{{ingredient}}</option>
-
                                     {%endfor%}
                                 </select>
                             </div>

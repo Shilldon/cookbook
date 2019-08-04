@@ -9,13 +9,16 @@
       <p>Recipes that do not contain:</p>
       {%endif%}
     </div>
-    <div class="col s12" style="padding:0">
+    <div class="col s12 search-container" style="padding:0">
       <ul class="collapsible">
         {%for item in items %}
         <li>
           <div class="collapsible-header" style="background-color:#8C5D42; color:white">
             <div class="row" style="padding:0; margin:0; flex:auto">
-              <div class="col s7" >
+              <div class="col s1">
+                <i class="material-icons expand">expand_more</i>
+              </div>
+              <div class="col s6" >
                 <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
               </div>
               <div class="col s5" class="right-align">

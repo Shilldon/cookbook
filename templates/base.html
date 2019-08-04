@@ -50,7 +50,7 @@
           </li>
           <li class="highlight4-background">
           {% if recipe %}
-            <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}">Delete</a>
+            <a href="#delete_modal" class=" modal-trigger">Delete</a>
           {% else %}
             <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
           {% endif %}
@@ -71,7 +71,7 @@
       </li>
       <li class="highlight4-background">
       {% if recipe %}
-        <a href="{{url_for('delete_recipe', recipe_id=recipe._id)}}">Delete</a>
+        <a href="#delete_modal" class="modal-trigger"">Delete</a>
       {% else %}
         <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
       {% endif %}
@@ -145,7 +145,7 @@
         dismissible: false,
       });
       $('.collapsible').collapsible();
-
+      $('.dropdown-trigger').dropdown();
     });
 
     $("#favourite").on("click", function() {

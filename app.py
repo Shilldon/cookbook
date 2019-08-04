@@ -451,9 +451,9 @@ def edit_recipe(recipe_id):
 @app.route('/delete_recipe',methods=['POST'])
 def delete_recipe():
     recipe_id=request.form.get('recipe_id')
+    print("recipe_id",recipe_id)
     recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
     for key in recipe:
-        print("recipe key ",key)
         if key=='favourite':
             for value in recipe[key]:
                 mongo.db.usersDB.update({"_id" : ObjectId(value)},{"$pull" : {"favourites" : ObjectId(recipe_id)}})
@@ -468,33 +468,37 @@ def delete_recipe():
             mongo.db.countriesDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
             #check if there are any recipes stored against this country. If not delete the country from the collection 
             check_and_delete_empty_doc(recipe[key].lower(),mongo.db.countriesDB) 
-            #country_doc=mongo.db.countriesDB.find_one({"name" : recipe[key].lower()})
             #if len(country_doc["recipe"])==0:
             #    mongo.db.countriesDB.remove({"name" : recipe[key].lower()})            
         if key=="author":
             mongo.db.authorDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
-            author_doc=mongo.db.authorDB.find_one({"name" : recipe[key].lower()})
+            #author_doc=mongo.db.authorDB.find_one({"name" : recipe[key].lower()})
             #check if there are any recipes stored against this author. If not delete the author from the collection
             check_and_delete_empty_doc(recipe[key].lower(),mongo.db.authorDB)            
             #if len(author_doc["recipe"])==0:
             #    mongo.db.authorDB.remove({"name" : recipe[key].lower()})
         if key=="ingredients":
             for value in recipe[key]:
-                for ingredient in value["type"]:
-                    mongo.db.ingredientsDB.update({"name" : ingredient},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
-                    #check if there are any recipes stored against this ingredient. If not delete the ingredient from the collection
-                    check_and_delete_empty_doc(ingredient,mongo.db.ingredientsDB)
-                    #ingredient_doc=mongo.db.ingredientsDB.find_one({"name" : ingredient})
-                    #if len(ingredient_doc["recipe"])==0:
-                    #    mongo.db.ingredientsDB.remove({"name" : ingredient})                      
+                print("value=",value)
+                print("value[type]=", value["type"])
+                mongo.db.ingredientsDB.update({"name" : value["type"]},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
+                #check if there are any recipes stored against this ingredient. If not delete the ingredient from the collection
+                print("ingredient=",value["type"])
+                check_and_delete_empty_doc(value["type"],mongo.db.ingredientsDB)
+                #ingredient_doc=mongo.db.ingredientsDB.find_one({"name" : ingredient})
+                #if len(ingredient_doc["recipe"])==0:
+                #    mongo.db.ingredientsDB.remove({"name" : ingredient})                      
         
     mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
     return redirect(url_for('.recipe_list',action='delete'))
 
 def check_and_delete_empty_doc(item,database):
+    print("item=",item)
     document=database.find_one({"name" : item})
-    if len(document["recipe"])==0:
-        database.remove({"name" : item})                      
+    #check if the document exists, if so and there are no recipes registered against the document delete it from the collection
+    if document!=None:
+        if len(document["recipe"])==0:
+            database.remove({"name" : item})                      
     
 @app.route('/filter_recipes', methods=['POST'])
 def filter_recipes():
