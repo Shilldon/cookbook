@@ -78,14 +78,12 @@
   font-family: "Roboto";
   color: white; }
   .search-button-container .col {
-    color: white;
+    color: #034AA6;
     line-height: 80px;
     border: 1px solid white;
     padding: 0; }
     .search-button-container .col p {
       margin: 0; }
-  .search-button-container .col:hover {
-    background-color: white; }
   .search-button-container .row {
     margin-bottom: 0;
     height: 80px; }
@@ -95,9 +93,29 @@
     margin-top: 30px; }
   .search-button-container .search-button {
     transition-duration: 0.5s;
-    background-color: #8C5D42; }
-  .search-button-container .search-button:hover {
+    border: 5px solid #8C5D42;
+    transition-duration: 0.5s;
+    background-repeat: no-repeat;
+    background-size: cover; }
+    .search-button-container .search-button strong {
+      color: white;
+      padding: 5px;
+      background-color: rgba(3, 57, 166, 0.75); }
+  .search-button-container .search-button-clicked {
+    background-image: none !important;
     background-color: #033E8C; }
+  .search-button-container #search-ingredients {
+    background-image: url("https://c.pxhere.com/images/2f/23/aa0d73376be59a4310bb2943515f-1433267.jpg!d"); }
+  .search-button-container #search-meal {
+    background-image: url("https://c.pxhere.com/photos/5b/df/blue_plate_breakfast_cuisine_dairy_product_delicious_dining_dining_room_dinner-1516443.jpg!d"); }
+  .search-button-container #search-author {
+    background-image: url("https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document_editorial_information_keyboard-1401823.jpg!d"); }
+  .search-button-container #search-difficulty {
+    background-image: url("https://c.pxhere.com/photos/45/e6/camping_story_2010365-228377.jpg!d"); }
+  .search-button-container #search-allergies {
+    background-image: url("https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d"); }
+  .search-button-container #search-country {
+    background-image: url("https://c.pxhere.com/photos/cd/86/art_atlas_ball_shaped_cartography_continent_country_destination_geography-1521383.jpg!d"); }
 
 .search-container .collapsible {
   margin-bottom: 0.5rem !important; }
@@ -156,6 +174,9 @@
 
 .order-list .select-wrapper {
   display: inline-block; }
+
+.pagination li.active {
+  background-color: #033E8C; }
 
 input {
   border-bottom: 1px solid #0339A6 !important;

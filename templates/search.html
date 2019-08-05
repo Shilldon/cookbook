@@ -11,34 +11,6 @@
     </div>
 </section>
 
-<!-- details and information -->
-<section>
-    <div class="search-button-container">
-        <div class="row">
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text">Ingredients</p>
-                </a>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">Allergies</p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">Difficulty</p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">Meal</p>
-                </p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">Country</p>
-            </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button">
-                <p class="center-align flow-text ">Author</p>
-            </div>
-        </div>
-    </div>
-</section>
-
 <section>
     <div class="row" id="category-search" style="display:none">
         <div class="col s12">
@@ -53,6 +25,7 @@
                                     <option value="{{ingredient}}">{{ingredient}}</option>
                                     {%endfor%}
                                 </select>
+                                <label for="ingredients" data-error="Select an ingredient">Select at least one ingredient</label>
                             </div>
 
                             <div class="list-category input-field" id="list-element-allergies">
@@ -61,6 +34,8 @@
                                     <option value="{{allergy}}">{{allergy}}</option>
                                     {%endfor%}
                                 </select>
+                                <label for="allergens" data-error="Select an allergen">Select at least one allergen</label>
+                                
                             </div>
 
                             <div class="list-category input-field" id="list-element-difficulty">
@@ -69,6 +44,8 @@
                                     <option value="medium">Medium</option>
                                     <option value="easy">Easy</option>
                                 </select>
+                                <label for="difficulty" data-error="Select a difficulty level">Select at least one difficulty level</label>
+                                
                             </div>
 
                             <div class="list-category input-field" id="list-element-meal">
@@ -77,6 +54,8 @@
                                     <option value="{{meal}}">{{meal}}</option>
                                     {%endfor%}
                                 </select>
+                                <label for="meal" data-error="Select a meal">Select at least one type of meal</label>
+                                
                             </div>
 
                             <div class="list-category input-field" id="list-element-country">
@@ -85,6 +64,8 @@
                                     <option value="{{country}}">{{country}}</option>
                                     {%endfor%}
                                 </select>
+                                <label for="country" data-error="Select a country">Select at least one country</label>
+                                
                             </div>
 
                             <div class="list-category input-field" id="list-element-author">
@@ -93,67 +74,129 @@
                                     <option value="{{time}}">{{author}}</option>
                                     {%endfor%}
                                 </select>
+                                <label for="author" data-error="Select an author">Select at least one author</label>
+                                
                             </div>
                             
                             <div class="row">
-                                <div class="col s5 offset-s1 m3 offset-m2 ">
-                                    <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</button>
-                                    <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</button>
+                                <div class="col s4 offset-s1 m3 offset-m2 ">
+                                    <div class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background category-close">Cancel</div>
+                                    <div class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background category-close">Cancel</div>
                                 </div>
-                                <div class="col s5 offset-s1 m3 offset-m2 ">
-                                    <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Submit</button>
-                                    <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Submit</button>
+                                <div class="col s4 offset-s2 m3 offset-m2 ">
+                                    <div class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background category-search">Search</div>
+                                    <div class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background category-search">Search</div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </li>
+            </ul>    
         </div>
     </div>
-    <div>
+</section>
+
+<!-- details and information -->
+<section>
+    <div class="search-button-container">
         <div class="row">
-            <div class="col s4 offset-s1 m2 offset-m3 ">
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-ingredients">
+                <p class="center-align flow-text"><strong>Ingredients</strong></p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-allergies">
+                <p class="center-align flow-text"><strong>Allergies</strong></p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-difficulty">
+                <p class="center-align flow-text"><strong>Difficulty</strong></p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-meal"> 
+                <p class="center-align flow-text"><strong>Meal</strong></p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-country">
+                <p class="center-align flow-text"><strong>Country</strong></p>
+            </div>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-author">
+                <p class="center-align flow-text"><strong>Author</strong></p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col s4 offset-s4 m2 offset-m5 ">
                 <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Home</a>
                 <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
             </div>
-            <div class="col s4 offset-s2 m2 offset-m2 ">
-                <a href="{{url_for('recipe_list', action='search')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Search</a>
-                <a href="{{url_for('recipe_list', action='search')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Search</a>
-            </div>
-        </div>
-    </div>    
+        </div>        
+    </div>
+</section>
+
+<!--Error modal -->
+<section>
+  <div id="error-modal" class="modal">
+    <div class="modal-content">
+      <h4>Error</h4>
+      <p>Please select at least one item in the category</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-light btn-flat background-highlight3">OK</a>
+    </div>
+  </div>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+
+    $(".category-search").on("click", function() {
+        var inputValid=false;
+        $("form select").each(function() {
+            if($(this).val().length>0) {
+                inputValid=true;
+                return false;
+            }            
+        })
+        if(inputValid==false) {
+            $("#error-modal").modal('open');         
+        }
+        else {
+            $("#categories").submit();
+        }
+    })
+
+    $(".category-close").on("click", function() {
+        $("#category-search").slideUp();  
+        $("#category-search").removeAttr("data"); 
+        $(".search-button").removeClass("search-button-clicked");
+    })
+
+    
     $(".search-button").on("click", function() {
         var category = $(this).children("p").text();
         var categorySearchPane = $("#category-search");
         var listElement="#list-element-"+category.toLowerCase();
+        var previousCategory=$(categorySearchPane).attr("data");
         $(".list-category").hide();   
         //reset the form to ensure only one category is returned to display_category when submitting 
         $('#categories')[0].reset();
         if ($(categorySearchPane).attr("data")) {
-            if($(categorySearchPane).attr("data")!=category) {
+            if(previousCategory!=category) {
                 $(categorySearchPane).attr("data", category); 
                 $(listElement).show();      
-                $("#search-category").text(category)
+                $("#search-category").text(category);
+                $(this).addClass("search-button-clicked");
+                $("#search-"+previousCategory.toLowerCase()).removeClass("search-button-clicked");
             }
             else {
                 $(categorySearchPane).slideUp();
-                $(categorySearchPane).removeAttr("data");   
+                $(categorySearchPane).removeAttr("data");  
+                $(this).removeClass("search-button-clicked");
             }
         }
         else {
-            console.log("open does not exist so setting to category")
             $(categorySearchPane).slideDown();
             $(categorySearchPane).attr("data", category);
-            console.log($(categorySearchPane).attr("data"))
             $(listElement).show();
             $("#search-category").text(category)
+            $(this).addClass("search-button-clicked");            
         }
-
-
     })
 </script>
 
