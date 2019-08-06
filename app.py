@@ -22,7 +22,6 @@ def check_user():
     else:    
         session["user"]=user['username']
         #check if the user exists in the userDB - if not (by counting results = 0) create user
-        print("users db result ",usersdb.find({"name" : user['username']}).count())
         if usersdb.find({"name" : user['username']}).count()==0: 
             usersdb.insert({'name':user['username'],'favourites':[], 'liked':[]})  
         
@@ -77,7 +76,6 @@ def insertrecipe():
     
     #request form data not in flat format - arrays are created in the form for ingredients and allergen information
     new_recipe=request.form.to_dict(flat=False)
-    print("new_recipe unflattened",new_recipe)
     ingredients=[]
     ingredient={}
     #initialise cook time variable to convert hours and minutes to minutes total for ease of search DB in recipe_list
@@ -131,11 +129,9 @@ def insertrecipe():
     new_recipe["cook_time"]=cook_time
     #insert the new ingredients array into the new_receipe dict
     new_recipe['ingredients']=ingredients  
-    print("new_recipe[ingredients]",new_recipe['ingredients'])
 
     current_recipe=recipes.find_one({"_id" : ObjectId(recipe_id)})
     new_ingredients=ingredients
-    print("new ingredients ",new_ingredients)
     ingredientsdb=mongo.db.ingredientsDB
 
     for ingredient in new_ingredients:
@@ -152,7 +148,6 @@ def insertrecipe():
             new_ingredient_id=new_ingredient_doc["_id"]
         else:
             #if the ingredient is new and has no document create a new ID
-            print("on adding ingredient[type] is ",ingredient["type"].lower())
             new_ingredient_id=ingredientsdb.insert({"name" : ingredient["type"].lower(), "recipe":[]})
             new_ingredient_doc=ingredientsdb.find_one({"_id" : new_ingredient_id})
         if recipe_id not in new_ingredient_doc["recipe"]:
@@ -520,7 +515,7 @@ def display_categories():
             else:
                 _item_list.append(item)    
     #category=list(selected_categories.keys())[0]
-    
+    print("item_list=",_item_list)
     i=0
     recipes_in_category={}
     search_value="$in"
@@ -539,15 +534,27 @@ def display_categories():
         database=mongo.db.difficultyDB    
         
     for i in range(0,len(_item_list)):
-        recipe_objects=database.find({"name" : {'$eq' : _item_list[i]}})
+        category_objects=database.find({"name" : {'$eq' : _item_list[i]}})
+        print("recipe_objects",category_objects)
         recipe_ids=[]
-        for recipe in recipe_objects:
-            for id in recipe["recipe"]:
-                recipe_ids.append(ObjectId(id))
-        recipes_in_category[_item_list[i]]={"recipe":list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})) }           
-        recipes_in_category[_item_list[i]].update({"count":len(recipe_ids)})
-        print("count=",recipes_in_category[_item_list[i]])
-    
+
+        for object in category_objects:
+            print("category=",category)
+            for recipe in object["recipe"]:
+                print("recipe=",recipe)    
+                recipe_ids.append(ObjectId(recipe))
+
+        print("recipe ids=",recipe_ids)
+        #recipes_in_category[_item_list[i]]={"recipe":list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})) }  
+        recipes=mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})
+        recipes_in_category[_item_list[i]]=list(recipes)
+        '''
+        print("recipes=",recipes)
+        print("category ",_item_list[i])
+        print("recipes_in_category",recipes_in_category[_item_list[i]])
+        recipes_in_category[_item_list[i]].append({"count":len(recipes_in_category[_item_list[i]])})
+        print("recipes_in_category count=",recipes_in_category[_item_list[i]])
+        '''
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":

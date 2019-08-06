@@ -3,11 +3,15 @@
 <!-- details and information -->
 <section class="category-display">
   <div class="row">
-    <div class="col s12" style="background-color:#033E8C; color: white">
-      <h5 class="center-align flow-text">{{category[0]|upper}}{{category[1:]|lower}}</h5>
-      {%if category=="allergens" %}
-      <p>Recipes that do not contain:</p>
-      {%endif%}
+    <div class="col s12 splash-container search-splash">
+      <div class="row valign-wrapper">
+        <div class="col s12">
+          <h5 class="center-align flow-text">{{category[0]|upper}}{{category[1:]|lower}}</h5>
+          {%if category=="allergens" %}
+          <p>Recipes that do not contain:</p>
+          {%endif%}
+        </div>
+      </div>
     </div>
     <div class="col s12 search-container" style="padding:0">
       <ul class="collapsible">
@@ -18,17 +22,17 @@
               <div class="col s1">
                 <i class="material-icons expand">expand_more</i>
               </div>
-              <div class="col s6" >
+              <div class="col s6">
                 <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
               </div>
               <div class="col s5" class="right-align">
-                <p  style="margin:0; ">Recipes found: {{recipes[item]["count"]}}</p>    
+                <p style="margin:0; ">Recipes found: {{recipes[item]|length}}</p>
               </div>
-            </div> 
-          </div>  
+            </div>
+          </div>
           <div class="collapsible-body" style="padding:0 !important; border-bottom:none">
             <ul class="collapsible" style="border-top:0 !important">
-              {%for recipe in recipes[item]["recipe"]%}
+              {%for recipe in recipes[item]%}
               <li>
                 <div class="collapsible-header" style="padding-top:0; padding-bottom:0">
                   <div class="row valign-wrapper" style="margin-bottom:0">
@@ -49,10 +53,9 @@
                       <p>Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}</p>
                       {%endif%} {%if recipe.calories%}
                       <p>Calories: {{recipe.calories}} kCal</p>
-                      {%endif%}
-                      {%if recipe.difficulty%}
+                      {%endif%} {%if recipe.difficulty%}
                       <p>Difficulty: {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
-                      {%endif%}                      
+                      {%endif%}
                     </div>
                   </div>
                 </div>
@@ -60,10 +63,15 @@
               {%endfor%}
             </ul>
           </div>
-
         </li>
         {%endfor%}
       </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col s4 offset-s4 m2 offset-m5 ">
+      <a href="{{url_for('search')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Back</a>
+      <a href="{{url_for('search')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Back</a>
     </div>
   </div>
 </section>

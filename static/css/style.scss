@@ -135,16 +135,6 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
         margin-top: 30px;
     }
     
-  //  $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highlight4-color;
-
-//create background colours 
-//@each $color in $highlight-colors {
-  //  $i: index($highlight-colors, $color);
-    //.highlight#{$i}-background {
-      //  background-color: #{$color} !important
-//    }
-//}
-    
     .search-button {
         transition-duration: 0.5s;
         border: 5px solid $highlight4-color;
@@ -274,7 +264,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 
 .order-list {
     .select-wrapper {
-        display: inline-block;
+       // display: inline-block;
     }
 }
 .pagination li.active {

@@ -14,12 +14,12 @@
                                 {% if session["user"] %}
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Favourites</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select name="favourite">
-                                            <option value="">Not filtered</option>
+                                            <option value="" disabled selected>Not filtered</option>
                                             <option value=true {% if filters.favourite==True %}selected="selected" {% endif%} >Filtered by favourites</option>
                                         </select>
                                         </div>
@@ -28,12 +28,12 @@
                                 {% endif %}
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Meal</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select name="meal">
-                                            <option value="">Not filtered</option>
+                                            <option value="" disabled selected>Not filtered</option>
                                             <option value="SNACK" {% if filters.meal=="SNACK" %}selected="selected" {% endif%}>Snack</option>
                                             <option value="BREAKFAST" {% if filters.meal=="BREAKFAST" %}selected="selected" {% endif%}>Breakfast</option>
                                             <option value="LUNCH" {% if filters.meal=="LUNCH" %}selected="selected" {% endif%}>Lunch</option>
@@ -44,12 +44,12 @@
                                 </li>
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Allergens</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select id="allergens_list" name="allergens" multiple>
-                                            <option value="" id="allergens-unfiltered" {% if allergens|length==0 %} selected="selected" {% endif %}>Not filtered</option>
+                                            <option value="" id="allergens-unfiltered" {% if allergens|length==0 %}  disabled selected {% endif %}>Not filtered</option>
                                             <option value="dairy" {% if 'dairy' is in allergens %} selected="selected" {%endif%}>Dairy-free</option>
                                             <option value="fish" {% if 'fish' is in allergens %} selected="selected" {%endif%}>Fish-free</option>
                                             <option value="gluten" {% if 'gluten' is in allergens %} selected="selected" {%endif%}>Gluten-free</option>
@@ -63,12 +63,12 @@
                                 </li>
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Calories</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select name="calories">
-                                            <option value="">Not filtered</option>
+                                            <option value=""  disabled selected>Not filtered</option>
                                             <option value=100 {% if filters.calories=={'$lt' : '100'} %} selected="selected" {% endif%}>< 100</option>
                                             <option value=200 {% if filters.calories=={'$lt' : '200'} %} selected="selected" {% endif%}>< 200</option>
                                             <option value=300 {% if filters.calories=={'$lt' : '300'} %} selected="selected" {% endif%}>< 300</option>
@@ -82,12 +82,12 @@
                                 </li>
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Cooking time</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select name="cook_time">
-                                            <option value="">Not filtered</option>
+                                            <option value="" disabled selected>Not filtered</option>
                                             <option value=10 {% if filters.cook_time=={'$lt' : '10'} %} selected="selected" {% endif%}>< 10 minutes</option>
                                             <option value=20 {% if filters.cook_time=={'$lt' : '20'} %} selected="selected" {% endif%}>< 20 minutes</option>
                                             <option value=30 {% if filters.cook_time=={'$lt' : '30'} %} selected="selected" {% endif%}>< 30 minutes</option>
@@ -103,14 +103,14 @@
                                 {% if countries[0] is defined %}
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Country</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select name="country">
-                                            <option value="">Not filtered</option>
+                                            <option value="" disabled selected>Not filtered</option>
                                             {% for country in countries %}
-                                            <option value="{{country}}" {% if selected_country==country %} selected="selected" {% endif%}>{{country}}</option>
+                                            <option value="{{country}}" {% if selected_country==country %} selected="selected" {% endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
                                             {%endfor%}
                                             </select>
                                         </div>
@@ -121,12 +121,12 @@
                                 {% if authors[0] is defined %}
                                 <li>
                                     <div class="row">
-                                        <div class="col s5">
+                                        <div class="col s5 input-field">
                                             <p>Author</p>
                                         </div>
                                         <div class="col s7  input-field">
                                             <select name="author">
-                                            <option value="">Not filtered</option>
+                                            <option value="" disabled selected>Not filtered</option>
                                             {% for author in authors %}
                                             <option value="{{author}}" {% if selected_author==author %} selected="selected" {% endif%}>{{author}}</option>
                                             {%endfor%}
@@ -150,13 +150,13 @@
                     <div class="col s10 offset-s1">
                         <form id="sort-form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
                             <div class="row">
-                                <div class="col s5">
+                                <div class="col s5 input-field">
                                     <p>Sort by:</p>
                                 </div>
                                 <div class="col s7">
                                     <div class="input-field order-list">
                                         <select class="sort_by" name="sort_by">
-                                            <option value="none">Not sorted</option>
+                                            <option value="none" disabled selected>Not sorted</option>
                                             <option value="name"  {% if sort=="name" %}selected="selected" {% endif %}>Name</option>
                                             <option value="cook_time" {% if sort=="cook_time" %}selected="selected" {% endif %}>Cooking Time</option>
                                             <option value="calories" {% if sort=="calories" %}selected="selected" {% endif %}>Calories</option>
@@ -288,6 +288,9 @@
 <script type="text/javascript" src="/static/js/materialize-pagination.js"></script>
 
 <script>
+$(document).ready(function() {
+    $('select').formSelect();
+})
     $('body').on('click', '.delete_button', function() {
         //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to flask if deletion is confirmed
         recipe_id = $(this).attr("recipe_id");

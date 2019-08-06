@@ -4,7 +4,8 @@ function myFunc() {
 
     $(document).ready(function() {
       $('.sidenav').sidenav();
-      $('select').formSelect();
+
+
       $('.modal').modal({
         //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
         dismissible: false,
@@ -12,7 +13,7 @@ function myFunc() {
       $('.collapsible').collapsible();
       $('.dropdown-trigger').dropdown();
     });
-
+       
     $("#favourite").on("click", function() {
       //ensure the favourite variable is a boolean value
       var favourite = $("#favourite_input").val();

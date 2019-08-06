@@ -172,9 +172,6 @@
   border: none;
   background-color: white; }
 
-.order-list .select-wrapper {
-  display: inline-block; }
-
 .pagination li.active {
   background-color: #033E8C; }
 
