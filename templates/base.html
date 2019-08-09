@@ -22,6 +22,10 @@
   <!-- Nav Bar -->
   <section>
     <nav>
+      <ul id="search-options" class="dropdown-content">
+        <li class="highlight3-background valign-wrapper" style="height:63px"><a href="{{ url_for('recipe_list', action='search') }}" style="padding-top:22px; color:white;width:100%; height:100%" href="#!">Recipes</a></li>
+        <li class="highlight3-background valign-wrapper" style="height:63px"><a href="{{ url_for('search')}}" style="padding-top:22px; color:white;width:100%; height:100%" href="#!">Categories</a></li>
+      </ul>
       <div class="nav-wrapper">
         <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
         <a href="#" data-target="menu-list" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
@@ -39,43 +43,84 @@
           <i class="material-icons">person_outline</i></a>
           </li>
           {%endif%}
-          <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
+          <li class="highlight3-background">
+            <a class="dropdown-trigger" href="#!" data-target="search-options">Search</a>
+          </li>
+          {% if session["user"] %}
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
           <li class="highlight2-background">
-          {% if recipe %}
-            <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a>
-          {% else %}          
-            <a href="{{url_for('recipe_list', action='edit')}}">Edit</a>
-          {% endif %}
+            {% if recipe %}
+            <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
+            <a href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
           </li>
           <li class="highlight4-background">
-          {% if recipe %}
-            <a href="#delete_modal" class=" modal-trigger">Delete</a>
-          {% else %}
-            <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
-          {% endif %}
+            {% if recipe %}
+            <a href="#delete_modal" class=" modal-trigger">Delete</a> {% else %}
+            <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
           </li>
+          {%else%}
+          <li class="highlight2-background">
+            <a href="#user-error-modal" class="modal-trigger" style="background-color:rgba(200,200,200,0.3); color: rgba(200,200,200,0.5); padding:0 !important">Add</a>
+          </li>
+          <li class="highlight1-background">
+            <div style="background-color:rgba(200,200,200,0.3); ">
+              <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Edit</a>
+            </div>
+          </li>
+          <li class="highlight4-background">
+            <div style="background-color:rgba(200,200,200,0.3); ">
+              <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Delete</a>
+            </div>
+          </li>
+          {%endif%}
         </ul>
       </div>
     </nav>
 
-    <ul class="sidenav" id="menu-list">
-      <li class="highlight3-background"><a href="{{ url_for('recipe_list', action='search') }}">Search</a></li>
-      <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
+    <ul class="sidenav center-align" id="menu-list">
+      <ul class="collapsible">
+        <li >
+
+          <a style="border-bottom:solid 1px grey" class="highlight3-background collapsible-header">Search</a>
+          <div class="collapsible-body">
+            <ul>
+              <li>
+            <a class="highlight3-background" href="{{ url_for('recipe_list', action='search') }}" style="color:white">Recipes</a>
+            </li>
+            <li>
+            <a class="highlight3-background" href="{{ url_for('search') }}" style="color:white">Categories</a>
+            </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+      {% if session["user"] %}
+      <li class="highlight1-background"><a style="padding:0 !important" href="{{ url_for('add_recipe') }}">Add</a></li>
       <li class="highlight2-background">
-      {% if recipe %}
-        <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a>
-      {% else %}          
-        <a href="{{url_for('recipe_list', action='edit')}}">Edit</a>
-      {% endif %}
+        {% if recipe %}
+        <a style="padding:0 !important" href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
+        <a style="padding:0 !important" href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
       </li>
       <li class="highlight4-background">
-      {% if recipe %}
-        <a href="#delete_modal" class="modal-trigger">Delete</a>
-      {% else %}
-        <a href="{{url_for('recipe_list', action='delete')}}">Delete</a>
-      {% endif %}
+        {% if recipe %}
+        <a href="#delete_modal" class="modal-trigger">Delete</a> {% else %}
+        <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
       </li>
+      {%else%}
+      <li class="highlight2-background">
+        <a href="#user-error-modal" class="modal-trigger" style="background-color:rgba(200,200,200,0.3); color: rgba(200,200,200,0.5); padding:0 !important">Add</a>
+      </li>
+      <li class="highlight1-background">
+        <div style="background-color:rgba(200,200,200,0.3); ">
+          <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Edit</a>
+        </div>
+      </li>
+      <li class="highlight4-background">
+        <div style="background-color:rgba(200,200,200,0.3); ">
+          <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Delete</a>
+        </div>
+      </li>
+      {%endif%}
     </ul>
   </section>
 
@@ -93,9 +138,11 @@
 
   {% block content %} {% endblock %}
 
+  <!--Modals-->
+
   <div id="login-modal" class="modal">
-      <div class="modal-content">
-    <form id="user-form" action="{{url_for('check_user') }}" method="POST">
+    <div class="modal-content">
+      <form id="user-form" action="{{url_for('check_user') }}" method="POST">
         {%if session['user'] %}
         <h4>Logout</h4>
         <h6>Currently logged in as {{session['user']}}</h6>
@@ -129,17 +176,30 @@
           </div>
         </div>
         {%endif%}
-    </form>
+      </form>
+    </div>
+  </div>
+
+  <div id="user-error-modal" class="modal">
+    <div class="modal-content">
+      <h4>Error</h4>
+      <p>You need to log in</p>
+      <div class="input-field">
+        <div class="col s6 m3 offset-m2">
+          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">OK</button>
+          <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">OK</button>
+        </div>
       </div>
+    </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script type="text/javascript" src="static/js/app.js"></script>
+  <script type="text/javascript" src="{{url_for('static', filename='js/app.js')}}"></script>
   <script>
-  $(document).ready(function() {
-   $('select').formSelect();
-  })
+    $(document).ready(function() {
+      $('select').formSelect();
+    })
   </script>
 
 </body>

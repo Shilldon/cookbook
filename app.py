@@ -253,7 +253,10 @@ def insertrecipe():
 
 @app.route("/search")
 def search():
-    
+    try:
+        session.pop("category_form")
+    except KeyError:
+        pass    
     categories=["ingredients","allergens","difficulty","meal","country","author"]
     _category_lists={}
     
@@ -277,6 +280,11 @@ def search():
 
 @app.route("/recipe_list", methods=['POST','GET'])
 def recipe_list():
+    try:
+        session.pop("category_form")
+    except KeyError:
+        pass
+    
     if session.get('sort')==True:
         _sort=session["sort"]
     else:
@@ -397,8 +405,8 @@ def recipe_list():
     _total_results=_recipe_list.count()
     return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,selected_country=filter_country, selected_author=filter_author,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
 
-@app.route('/show_recipe/<recipe_id>')
-def show_recipe(recipe_id):
+@app.route('/display_recipe/<recipe_id>')
+def display_recipe(recipe_id):
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
     _added=request.args.get('added_recipe',None)
     #check if the user is logged on, if not pass false value for favourite so no star is shown on display_recipe.html
@@ -503,9 +511,14 @@ def filter_recipes():
         session["filters"]["calories"]=calories
     return redirect('recipe_list')
 
-@app.route('/display_categories', methods=['POST'])
+@app.route('/display_categories', methods=['POST','GET'])
 def display_categories():
-    selected_categories=request.form.to_dict(flat=False)
+    try:
+        selected_categories=session["category_form"]  
+    except KeyError:
+        selected_categories=request.form.to_dict(flat=False)
+        session["category_form"]=selected_categories        
+  
     category=list(selected_categories.keys())[0]    
     _item_list=[]
     for key in selected_categories:
@@ -514,8 +527,6 @@ def display_categories():
                 _item_list.append(item.lower())
             else:
                 _item_list.append(item)    
-    #category=list(selected_categories.keys())[0]
-    print("item_list=",_item_list)
     i=0
     recipes_in_category={}
     search_value="$in"
@@ -548,13 +559,7 @@ def display_categories():
         #recipes_in_category[_item_list[i]]={"recipe":list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})) }  
         recipes=mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})
         recipes_in_category[_item_list[i]]=list(recipes)
-        '''
-        print("recipes=",recipes)
-        print("category ",_item_list[i])
-        print("recipes_in_category",recipes_in_category[_item_list[i]])
-        recipes_in_category[_item_list[i]].append({"count":len(recipes_in_category[_item_list[i]])})
-        print("recipes_in_category count=",recipes_in_category[_item_list[i]])
-        '''
+    
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":

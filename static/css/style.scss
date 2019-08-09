@@ -2,7 +2,8 @@ $base-color: #0339A6;
 $base-color-opaque: rgba(3, 57, 166, 0.75);
 $highlight1-color: #034AA6;
 $highlight2-color: #033E8C;
-$highlight3-color: #F2C6A0;
+//$highlight3-color: #F2C6A0;
+$highlight3-color: #c69769;
 $highlight4-color: #8C5D42;
 $font-color: #5A6978;
 
@@ -23,6 +24,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     background-color: $base-color;
     .brand-logo {
         font-family: "Abril Fatface", sans;
+        padding-left:15px !important; 
     }
     .selected {
         background-color: white;
@@ -34,9 +36,9 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
         font-family: "Roboto", sans;
         font-weight: 500;
         text-align: center;
-        width: 100px;
+        width: 120px;
         a {
-            text-shadow: 0px 0px 10px #000000;
+            //text-shadow: 0px 0px 10px #000000;
             font-size: 1.2rem;
         }
     }
@@ -45,11 +47,13 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 .sidenav {
     margin-top: 57px;
     padding-bottom: 0;
-    max-height: 192px;
-    width: 100px;
+    background-color:transparent;
+    box-shadow:none;
+//    max-height: 192px;
+    width: 140px;
     li {
         a {
-            text-shadow: 0px 0px 10px #000000;
+            //text-shadow: 0px 0px 10px #000000;
             color: white;
         }
     }
@@ -134,66 +138,96 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     a {
         margin-top: 30px;
     }
-    
+
     .search-button {
         transition-duration: 0.5s;
         border: 5px solid $highlight4-color;
         transition-duration: 0.5s;
-        background-repeat:no-repeat;
-        background-size:cover;
-        strong{
-            color:white; 
-            padding:5px; 
-            background-color:$base-color-opaque;            
+        background-repeat: no-repeat;
+        background-size: cover;
+        strong {
+            color: white;
+            padding: 5px;
+            background-color: $base-color-opaque;
         }
     }
     .search-button-clicked {
-        background-image:none !important;
-        background-color: $highlight2-color;        
-    }     
-    #search-ingredients {
-        background-image:url("https://c.pxhere.com/images/2f/23/aa0d73376be59a4310bb2943515f-1433267.jpg!d");
+        background-image: none !important;
+        background-color: $highlight2-color;
     }
-  
+    #search-ingredients {
+        background-image: url("https://c.pxhere.com/images/2f/23/aa0d73376be59a4310bb2943515f-1433267.jpg!d");
+    }
     #search-meal {
-        background-image:url("https://c.pxhere.com/photos/5b/df/blue_plate_breakfast_cuisine_dairy_product_delicious_dining_dining_room_dinner-1516443.jpg!d");
-   
+        background-image: url("https://c.pxhere.com/photos/5b/df/blue_plate_breakfast_cuisine_dairy_product_delicious_dining_dining_room_dinner-1516443.jpg!d");
     }
     #search-author {
-        background-image:url("https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document_editorial_information_keyboard-1401823.jpg!d");
-      
-    }    
+        background-image: url("https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document_editorial_information_keyboard-1401823.jpg!d");
+    }
     #search-difficulty {
-        background-image:url("https://c.pxhere.com/photos/45/e6/camping_story_2010365-228377.jpg!d");
-      
-    }        
-    #search-allergies {
-        background-image:url("https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d");
-     
-    }        
+        background-image: url("https://c.pxhere.com/photos/45/e6/camping_story_2010365-228377.jpg!d");
+    }
+    #search-dietary {
+        background-image: url("https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d");
+
+    }
     #search-country {
-        background-image:url("https://c.pxhere.com/photos/cd/86/art_atlas_ball_shaped_cartography_continent_country_destination_geography-1521383.jpg!d");
-    
-    }      
-    
-    
+        background-image: url("https://c.pxhere.com/photos/cd/86/art_atlas_ball_shaped_cartography_continent_country_destination_geography-1521383.jpg!d");
+    }
 }
 
 .search-container {
     .collapsible {
         margin-bottom: 0.5rem !important;
-        li i {
+        .expand {
             transition-duration: 0.25s;
-            transform: rotate(0deg);
-        }
-        .active .expand {
             transform: rotate(-90deg);
         }
+        .active .expand {
+            transform: rotate(0deg);
+        }
+        .collapsible {
+            .expand-nested {
+                transition-duration: 0.25s;
+                transform: rotate(-90deg);                
+            }
+            .active {
+                .expand-nested {
+                    transform: rotate(0deg);
+                }
+            }
+        }
+    }
+    img {
+        width: 50px;
+        height: 50px;
+        border: 2px solid $highlight2-color;
+        margin-right: 14px;
+    }
+    .meal-icon {
+        padding-top: 12px;
+        width: 50px;
+        height: 50px;
+        border: 2px solid $highlight2-color;
+    }
+    a {
+        text-decoration: none;
+        color: $highlight2-color;
+        transition-duration: 0.25;
+    }
+    a:hover {
+        color: $highlight3-color;
     }
 }
 
 #category-search {
     margin-top: 20px;
+}
+
+.category-display {
+    .row {
+        margin-bottom:0;
+    }
 }
 
 //----- RECIPE RESULTS -----//
@@ -264,11 +298,12 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 
 .order-list {
     .select-wrapper {
-       // display: inline-block;
+        display: inline-block;
     }
 }
+
 .pagination li.active {
-background-color: $highlight2-color;
+    background-color: $highlight4-color;
 }
 
 //----- ADD RECIPES -----//
@@ -326,7 +361,6 @@ textarea:focus {
 }
 
 //----- DISPLAY RECIPE -----//
-
 .recipe-contents-list {
     margin-bottom: 20px;
     p {

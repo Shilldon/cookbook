@@ -5,7 +5,7 @@
   background-color: #033E8C !important; }
 
 .highlight3-background {
-  background-color: #F2C6A0 !important; }
+  background-color: #c69769 !important; }
 
 .highlight4-background {
   background-color: #8C5D42 !important; }
@@ -13,7 +13,8 @@
 .nav-wrapper {
   background-color: #0339A6; }
   .nav-wrapper .brand-logo {
-    font-family: "Abril Fatface", sans; }
+    font-family: "Abril Fatface", sans;
+    padding-left: 15px !important; }
   .nav-wrapper .selected {
     background-color: white; }
     .nav-wrapper .selected a {
@@ -22,18 +23,17 @@
     font-family: "Roboto", sans;
     font-weight: 500;
     text-align: center;
-    width: 100px; }
+    width: 120px; }
     .nav-wrapper li a {
-      text-shadow: 0px 0px 10px #000000;
       font-size: 1.2rem; }
 
 .sidenav {
   margin-top: 57px;
   padding-bottom: 0;
-  max-height: 192px;
-  width: 100px; }
+  background-color: transparent;
+  box-shadow: none;
+  width: 140px; }
   .sidenav li a {
-    text-shadow: 0px 0px 10px #000000;
     color: white; }
 
 .title-container {
@@ -112,21 +112,45 @@
     background-image: url("https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document_editorial_information_keyboard-1401823.jpg!d"); }
   .search-button-container #search-difficulty {
     background-image: url("https://c.pxhere.com/photos/45/e6/camping_story_2010365-228377.jpg!d"); }
-  .search-button-container #search-allergies {
+  .search-button-container #search-dietary {
     background-image: url("https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d"); }
   .search-button-container #search-country {
     background-image: url("https://c.pxhere.com/photos/cd/86/art_atlas_ball_shaped_cartography_continent_country_destination_geography-1521383.jpg!d"); }
 
 .search-container .collapsible {
   margin-bottom: 0.5rem !important; }
-  .search-container .collapsible li i {
+  .search-container .collapsible .expand {
     transition-duration: 0.25s;
-    transform: rotate(0deg); }
-  .search-container .collapsible .active .expand {
     transform: rotate(-90deg); }
+  .search-container .collapsible .active .expand {
+    transform: rotate(0deg); }
+  .search-container .collapsible .collapsible .expand-nested {
+    transition-duration: 0.25s;
+    transform: rotate(-90deg); }
+  .search-container .collapsible .collapsible .active .expand-nested {
+    transform: rotate(0deg); }
+.search-container img {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #033E8C;
+  margin-right: 14px; }
+.search-container .meal-icon {
+  padding-top: 12px;
+  width: 50px;
+  height: 50px;
+  border: 2px solid #033E8C; }
+.search-container a {
+  text-decoration: none;
+  color: #033E8C;
+  transition-duration: 0.25; }
+.search-container a:hover {
+  color: #c69769; }
 
 #category-search {
   margin-top: 20px; }
+
+.category-display .row {
+  margin-bottom: 0; }
 
 .recipe-list-header {
   font-family: "Roboto", sans;
@@ -172,8 +196,11 @@
   border: none;
   background-color: white; }
 
+.order-list .select-wrapper {
+  display: inline-block; }
+
 .pagination li.active {
-  background-color: #033E8C; }
+  background-color: #8C5D42; }
 
 input {
   border-bottom: 1px solid #0339A6 !important;

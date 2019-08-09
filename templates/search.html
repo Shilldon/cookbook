@@ -5,7 +5,7 @@
     <div class="splash-container search-splash">
         <div class="row  valign-wrapper">
             <div class="col s8 offset-s2 m6 offset-m3 ">
-                <h6 class="flow-text center-align">Search for recipes by category</h6>
+                <h6 class="flow-text center-align">Browse for recipes by category</h6>
             </div>
         </div>
     </div>
@@ -28,13 +28,17 @@
                                 <label for="ingredients" data-error="Select an ingredient">Select at least one ingredient</label>
                             </div>
 
-                            <div class="list-category input-field" id="list-element-allergies">
+                            <div class="list-category input-field" id="list-element-dietary">
                                 <select name="allergens" multiple>
                                     {%for allergy in category_list["allergens"] %}
-                                    <option value="{{allergy}}">{{allergy}}</option>
+                                    {%if allergy=="Meat"%}
+                                    <option value="{{allergy}}">Vegetarian</option>
+                                    {%else%}
+                                    <option value="{{allergy}}">{{allergy}}-free</option>
+                                    {%endif%}
                                     {%endfor%}
                                 </select>
-                                <label for="allergens" data-error="Select an allergen">Select at least one allergen</label>
+                                <label for="allergens" data-error="Select an allergen">Select at least one option</label>
                                 
                             </div>
 
@@ -103,8 +107,8 @@
             <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-ingredients">
                 <p class="center-align flow-text"><strong>Ingredients</strong></p>
             </div>
-            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-allergies">
-                <p class="center-align flow-text"><strong>Allergies</strong></p>
+            <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-dietary">
+                <p class="center-align flow-text"><strong>Dietary</strong></p>
             </div>
             <div class="col s4 m2 valign-wrapper waves-effect waves-light search-button" id="search-difficulty">
                 <p class="center-align flow-text"><strong>Difficulty</strong></p>
@@ -122,8 +126,8 @@
         
         <div class="row">
             <div class="col s4 offset-s4 m2 offset-m5 ">
-                <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Home</a>
-                <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
+                <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Home</a>
+                <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Home</a>
             </div>
         </div>        
     </div>

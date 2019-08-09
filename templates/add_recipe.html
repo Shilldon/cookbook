@@ -127,7 +127,7 @@
           </div>
           <div class="row ">
             <div class="col s12">
-              <label for="select_allergens">Allergens</label>
+              <label for="select_allergens">Dietary Requirements - Contains:</label>
               <div class="input-field">
                 <select name="allergens" id="select_allergens" multiple>
               <option value="dairy">DAIRY</option>
@@ -153,12 +153,12 @@
       </div>
       <div class="row">
         <div class="col s4 offset-s1 m2 offset-m3 ">
-          <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Home</a>
-          <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Home</a>
+          <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Home</a>
+          <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Home</a>
         </div>
         <div class="col s4 offset-s2 m2 offset-m2 ">
-          <a id="submit-recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Add</a>
-          <a id="submit-recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Add</a>
+          <a id="submit-recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Add</a>
+          <a id="submit-recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Add</a>
         </div>
       </div>
     </form>
@@ -182,8 +182,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
- //   $('select').formSelect();
-    
     var ingredient_list={{ingredients_list|tojson}}
     var author_list={{author_list|tojson}}
     var country_list={{country_list|tojson}}
@@ -199,7 +197,7 @@
     });         
       
   })
-
+/*
   $("#add_ingredient").on("click", function() {
     var totalIngredients = $("#ingredients").data("total_ingredients");
     totalIngredients++;
@@ -268,7 +266,7 @@
     }
   })
   
-    
+    */
 
 
 </script>
