@@ -83,7 +83,7 @@ def insertrecipe():
     for key, key_name in new_recipe.items():
         #flatten dict for non-array items which have become arrays through request object
         if key!='type' and key!='amount' and key!='unit' and key!='allergens':
-            new_recipe[key]=new_recipe[key][0]
+            new_recipe[key]=new_recipe[key][0].lower()
             if key=='favourite':
                 #get the list of users for whom this is a favourite recipe
                 recipe_doc=recipes.find_one({"_id" : ObjectId(recipe_id)})
@@ -186,6 +186,8 @@ def insertrecipe():
             categorydb=mongo.db.difficultyDB   
 
         for value in new_category:
+            print("new_cateogry=",new_category)
+            print("value=",value)
             #check if we are editting an existing recipe, if so check whether any values existing in both the updated and current recipes 
             #if so remove them from the list to later delete the recipe ID from the values that remain in the list
             if edit=="True":
@@ -200,17 +202,18 @@ def insertrecipe():
                         current_category.remove(value)
         
             #get the name of the new value in this category        
-            new_category_doc=categorydb.find_one({"name" : value.lower()}) 
-            if new_category_doc!=None:
-                #if the particular object exists then get the associated doc
-                new_category_id=new_category_doc["_id"]
-            else:
-                #if it doesn't exist createa a new doc with the name and the ID of this recipe
-                new_category_id=categorydb.insert({"name" : value.lower(), "recipe":[]})
-                new_category_doc=categorydb.find_one({"_id" : new_category_id})
-            if recipe_id not in new_category_doc["recipe"]:
-                #check if the recipe is already in the new doc, if it isn't add the recipe ID to this particular category in the DB
-                categorydb.update({"_id" : new_category_id},{"$push":{"recipe":recipe_id}})
+            new_category_doc=categorydb.find_one({"name" : value.lower()})
+            if value:
+                if new_category_doc!=None:
+                    #if the particular object exists then get the associated doc
+                    new_category_id=new_category_doc["_id"]
+                else:
+                    #if it doesn't exist and is not blank create a new doc with the name and the ID of this recipe
+                    new_category_id=categorydb.insert({"name" : value.lower(), "recipe":[]})
+                    new_category_doc=categorydb.find_one({"_id" : new_category_id})
+                if recipe_id not in new_category_doc["recipe"]:
+                    #check if the recipe is already in the new doc, if it isn't add the recipe ID to this particular category in the DB
+                    categorydb.update({"_id" : new_category_id},{"$push":{"recipe":recipe_id}})
 
         if edit=="True":
             #if we are editing a recipe check whether there are any remaining values in the category list
@@ -243,13 +246,9 @@ def insertrecipe():
     except KeyError:
         pass          
 
-    
-    #if edit=='True':
-        #recipes.update({'_id':ObjectId(recipe_id)},new_recipe)
-    #else:
     recipes.update({'_id':ObjectId(recipe_id)},new_recipe)
         
-    return redirect(url_for('show_recipe',recipe_id=recipe_id,added_recipe="true"))
+    return redirect(url_for('display_recipe',recipe_id=recipe_id,added_recipe="true"))
 
 @app.route("/search")
 def search():
@@ -280,6 +279,7 @@ def search():
 
 @app.route("/recipe_list", methods=['POST','GET'])
 def recipe_list():
+    #need to clear the category_form session variable so that, after displaying a recipe it returns to recipe_list not category_search
     try:
         session.pop("category_form")
     except KeyError:
@@ -292,8 +292,10 @@ def recipe_list():
     _filter_dict=session["filters"]
     if _filter_dict==None:
         _filter_dict={}
-        
+    
+    print("_filter_dict", _filter_dict)    
     allergen_list=[]
+    
     #get the action request from the page to determine what sort of list is to be displayed and display appropriate title text 
     _todo=request.args.get('action',None)
     if _todo=="delete":
@@ -313,11 +315,15 @@ def recipe_list():
     #define filter author and country for passing to filter list in recipe_list.html.
     #Will check for "" value and if so, not display author/country filter
     filter_country=""
-    filter_author=""
+    if _todo=="delete" or _todo=="edit":
+        print("todo ",_todo)
+        filter_author=session["user"].lower()
+        filter='true'
+    else:
+        filter_author=""
 
     if filter=='true':    
         _currentsort=request.form.get('sort_by')
-        print("_sort=",_sort)
         if _currentsort!=None:
             _sort=_currentsort
             session["sort"]=_sort
@@ -372,14 +378,19 @@ def recipe_list():
             else:
                 _filter_dict.pop("country",None)
             
-            filter_author=request.form.get('author')
-            if filter_author!="" and filter_author!=None:
-                _filter_dict.update({"author" : filter_author})
+            if _todo=="search":
+                filter_author=request.form.get('author')
+                if filter_author!="" and filter_author!=None:
+                    _filter_dict.update({"author" : filter_author})
+                else:    
+                    _filter_dict.pop("author",None)
             else:
-                _filter_dict.pop("author",None)
+                _filter_dict.update({"author" : filter_author})    
                 
             session["filters"]=_filter_dict
-    print("_sort",_sort)
+    
+    print("_filter_dict",_filter_dict)
+    
     if filter=='true':
     #do the appropriate search and sort against the mongoDB depending on input from form/session variable
 

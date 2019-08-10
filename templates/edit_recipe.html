@@ -1,168 +1,173 @@
 {% extends 'base.html' %} {% block content %}
 
 <!-- call to action -->
-<!-- Add recipe form -->
-<section>
+<div class="hide-on-small-only top-margin-page-divider">
+  <div class="row">
+    <div class="col m10 offset-m1">
+      <div class="col center-align m3">
+        <div class="left-align page-divider highlight3-background"></div>
+      </div>
+      <div class="col center-align m3">
+        <div class="center-align page-divider highlight1-background"></div>
+      </div>
+      <div class="col center-align m3">
+        <div class=" center-align page-divider highlight2-background"></div>
+      </div>
+      <div class="col center-align m3">
+        <div class="center-align page-divider highlight4-background"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row hide-on-small-only information-container">
+  <div class="col s12">
+    <h5 class="center-align">Edit your recipe</h5>
+  </div>
+  <div class="row">
+    <div class="col s10 offset-s1">
+      <p class="left-align">Made a mistake? Found some better ingredients? Want to change the cooking instructions? Just fill out the form below to edit your own creation in the Cookbook.</h5>
+    </div>
+  </div>
+</div>
+
+<!-- Edit recipe form -->
+<section class="recipe-form">
   <div class="row">
     <!--set the edit variable to true to tell flask this is an existing recipe being editted and pass the id of the recipe-->
     <form id="recipe-form" action="{{url_for('insertrecipe',recipe_id=recipe._id,edit='True') }}" method="POST" class="col s12">
       <div class="row">
         <div class="col s10 offset-s1">
-
           <div class="row">
             <div class="col s10 input-field">
-              
               <input id="name" name="name" type="text" label="Name" value="{{recipe.name[0]|upper}}{{recipe.name[1:]|lower}}" required></input>
               <label for="name">Name</label>
             </div>
-            <div class="col s2 valign-wrapper">
-              {%if session["user"] %}
-                {%if recipe.favourite %}
-                <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
-                {% else %}
-                <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
-                {% endif %}
-              {%endif%}
+            <div class="col s1 offset-s1 valign-wrapper">
+              {%if recipe.favourite %}
+              <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
+              {% else %}
+              <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
+              {% endif %}
               <input type="hidden" id="favourite_input" name="favourite" value={{recipe.favourite}}></input>
             </div>
           </div>
 
           <div class="row">
-            <div class="col s12 input-field">
+            <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
               <input id="country" name="country" type="text" value="{{recipe.country}}"></input>
             </div>
           </div>
 
           <div class="row">
-            <div class="col s12 input-field">
-              <label>Recipe Author</label>
-              <input id="author" class="autocomplete" name="author" type="text" placeholder="Firstname Lastname" value="{{recipe.author}}"></input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col s12">
-              <label>Picture</label>
+            <div class="col s12 m6 input-field">
+              <label for="pictire">Picture</label>
               <input id="picture" name="picture" type="text" value="{{recipe.picture}}" placeholder="type in full URL of image"></input>
             </div>
           </div>
 
-          <div class="row ">
-            <div class="col s6">
-              <label>Meal</label>
-              <div class="input-field">
-                <select name="meal">
-              <option value="" disabled selected>Select</option>
-              <option value="breakfast" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
-              <option value="lunch" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
-              <option value="dinner" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
-              <option value="snack" {% if recipe.meal|upper=="SNACK" %} selected="selected" {% endif %}>SNACK</option>
-            </select>
-              </div>
+          <div class="row">
+            <div class="col s12 m4 l3 input-field">
+              <select name="allergens" id="select_allergens" multiple>
+                <option value="dairy" {% if recipe.allergens and 'dairy' in recipe.allergens|lower %} selected="selected" {% endif %}>DAIRY</option>
+                <option value="fish" {% if recipe.allergens and 'fish' in recipe.allergens|lower %} selected="selected" {% endif %}>FISH</option>
+                <option value="gluten" {% if recipe.allergens and 'gluten' in recipe.allergens|lower %} selected="selected" {% endif %}>GLUTEN</option>
+                <option value="nuts" {% if recipe.allergens and 'nuts' in recipe.allergens|lower %} selected="selected" {% endif %}>NUTS</option>
+                <option value="shellfish" {% if recipe.allergens and 'shellfish' in recipe.allergens|lower %} selected="selected" {% endif %}>SHELLFISH</option>
+                <option value="eggs" {% if recipe.allergens and 'eggs' in recipe.allergens|lower %} selected="selected" {% endif %}>EGGS</option>
+                <option value="meat" {% if recipe.allergens and 'meat' in recipe.allergens|lower %} selected="selected" {% endif %}>MEAT</option>
+              </select>
+              <label for="select_allergens">Dietary Requirements - Contains:</label>
             </div>
 
-            <div class="col s6">
-              <label>Difficulty</label>
-              <div class="input-field">
-                <select name="difficulty">
-              <option value="" disabled selected>Select</option>
-              <option value="easy" {% if recipe.difficulty|upper=="EASY" %} selected="selected" {% endif %}>EASY</option>
-              <option value="medium" {% if recipe.difficulty|upper=="MEDIUM" %} selected="selected" {% endif %}>MEDIUM</option>
-              <option value="hard" {% if recipe.difficulty|upper=="HARD" %} selected="selected" {% endif %}>HARD</option>
-            </select>
-              </div>
+            <div class="col s6 m3 input-field">
+              <select name="meal">
+                <option value="" disabled selected>Select</option>
+                <option value="breakfast" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
+                <option value="lunch" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
+                <option value="dinner" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
+                <option value="snack" {% if recipe.meal|upper=="SNACK" %} selected="selected" {% endif %}>SNACK</option>
+              </select>
+              <label for="meal">Meal</label>
             </div>
-          </div>
 
-          <div class="row">
-            <div class="col s6">
-              <label for="hours">Cooking time</label>
+            <div class="col s6 m3 input-field">
+              <select name="difficulty">
+                <option value="" disabled selected>Select</option>
+                <option value="easy" {% if recipe.difficulty|upper=="EASY" %} selected="selected" {% endif %}>EASY</option>
+                <option value="medium" {% if recipe.difficulty|upper=="MEDIUM" %} selected="selected" {% endif %}>MEDIUM</option>
+                <option value="hard" {% if recipe.difficulty|upper=="HARD" %} selected="selected" {% endif %}>HARD</option>
+              </select>
+              <label for="difficulty">Difficulty</label>
             </div>
-            <div class="col s3 offset-s3">
-              <label for="calories">Calories</label>
+
+            <div class="col m2 s3 l1 input-field" style="white-space:nowrap">
+              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours"></input>
+              <label for="hours">Cooking Time</label>
             </div>
-          </div>  
-          <div class="row">
-            <div class="col s3">
-              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours"></input>                
-            </div>
-            <div class="col s3">
+            <div class="col m2 s3 l1 input-field">
               <input name="minutes" type="number" value="{{recipe.minutes}}" placeholder="minutes"></input>
             </div>
-            <div class="col s3 offset-s3">
+            <div class="col s3 m2 l1 input-field">
               <input name="calories" type="number" value="{{recipe.calories}}" placeholder="calories"></input>
-            </div>              
+              <label for="calories">Calories</label>
+            </div>
           </div>
+
+
 
           <div class="row ">
             <div class="col s12">
-              <p>Ingredients</p>
+              <p><strong>Ingredients</strong></p>
             </div>
           </div>
-          <div class="row">
-            <div class="col s5 input-field">
-              <input id="ingredient" class="autocomplete" type="text"></input>
-              <label for="ingredient">Ingredient</label>
-            </div>
-            <div class="col s3 input-field">
-              <input id="amount" type="number" min="0">
-              <label for="amount">Quantity</label>
-            </div>
-            <div class="col s2" style="padding-right:2px">
-              <div id="unit" class="input-field">
-                <select id="select-unit">
-              <option value=""> </option>
-              <option value="g">g</option>
-              <option value="kg">kg</option>
-              <option value="ml">ml</option>
-              <option value="ltr">ltr</option>
-              <option value="tsp">tsp</option>
-              <option value="tbsp">tbsp</option>
-            </select>
-              <label>Unit</label>
-            
-              </div>
-            </div>
-            <div class="col s1">
-              <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
-            </div>
-          </div>
+          
           <div id="ingredients">
             {% for ingredient in recipe.ingredients %}
             <div class="row">
-              <div class="col s10 valign-wrapper">
+              <div class="col s1 offset-s1 l1">
+                <a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a>
+                <input type='hidden' name='type' value="{{ingredient.type}}"></input><input type='hidden' name='amount' value="{{ingredient.amount}}"></input><input type='hidden' name='unit' value="{{ingredient.unit}}"></input>
+              </div>              
+              <div class="col s10 l5 valign-wrapper">
                 <p>
                   {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} {% endif %} {{ingredient.type[0]|upper}}{{ingredient.type[1:]|lower}}
                 </p>
               </div>
-              <div class="col s1">
-                <a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a>
-                <input type='hidden' name='type' value="{{ingredient.type}}"></input><input type='hidden' name='amount' value="{{ingredient.amount}}"></input><input type='hidden' name='unit' value="{{ingredient.unit}}"></input>
-              </div>
             </div>
             {%endfor%}
-          </div>
-
-          <div class="row ">
-            <div class="col s12">
-              <label for="select_allergens">Dietary Requirements - Contains:</label>
-              <div class="input-field">
-                <select name="allergens" id="select_allergens" multiple>
-              <option value="dairy" {% if recipe.allergens and 'dairy' in recipe.allergens|lower %} selected="selected" {% endif %}>DAIRY</option>
-              <option value="fish" {% if recipe.allergens and 'fish' in recipe.allergens|lower %} selected="selected" {% endif %}>FISH</option>
-              <option value="gluten" {% if recipe.allergens and 'gluten' in recipe.allergens|lower %} selected="selected" {% endif %}>GLUTEN</option>
-              <option value="nuts" {% if recipe.allergens and 'nuts' in recipe.allergens|lower %} selected="selected" {% endif %}>NUTS</option>
-              <option value="shellfish" {% if recipe.allergens and 'shellfish' in recipe.allergens|lower %} selected="selected" {% endif %}>SHELLFISH</option>
-              <option value="eggs" {% if recipe.allergens and 'eggs' in recipe.allergens|lower %} selected="selected" {% endif %}>EGGS</option>
-              <option value="meat" {% if recipe.allergens and 'meat' in recipe.allergens|lower %} selected="selected" {% endif %}>MEAT</option>
-            </select>
-              </div>
+          </div>            
+          <div class="row">
+            <div class="col s10 m5 l4 input-field">
+              <input id="ingredient" class="autocomplete" type="text"></input>
+              <label for="ingredient">Ingredient</label>
+            </div>
+            <div class="col s3 m2 l1 input-field">
+              <input id="amount" type="number" min="0">
+              <label for="amount">Quantity</label>
+            </div>
+            <div id="unit" class="col s3 m2 l1 input-field">
+              <select id="select-unit">
+                  <option value=""> </option>
+                  <option value="g">g</option>
+                  <option value="kg">kg</option>
+                  <option value="ml">ml</option>
+                  <option value="ltr">ltr</option>
+                  <option value="tsp">tsp</option>
+                  <option value="tbsp">tbsp</option>
+                </select>
+              <label for="select-unit">Unit</label>
+            </div>
+            <div class="add-ingredient-button">
+              <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
             </div>
           </div>
 
+
+
+
           <div class="row">
-            <div class="col s12 input-field" style="margin-top:10px">
+            <div class="col s12 input-field">
               <label for="method">Method</label>
               <textarea name="method" class="materialize-textarea" label="method" required>{{recipe.method}}</textarea>
             </div>
@@ -172,16 +177,38 @@
 
       <div class="row">
         <div class="col s4 offset-s1 m2 offset-m3 ">
-          <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Home</a>
-          <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Home</a>
+          <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
+          <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
         </div>
         <div class="col s4 offset-s2 m2 offset-m2 ">
-          <a id="submit-recipe" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Update</a>
-          <a id="submit-recipe" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Update</a>
+          <button type="button" class="submit-recipe waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Update</button>
+          <button type="button" class="submit-recipe waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Update</button>
         </div>
       </div>
+      <!--author field - takes value of user logged in - not displayed -->
+      <input id="author" type="hidden" name="author" type="text" value="{{recipe.author}}"></input>
     </form>
   </div>
+
+  <div class="hide-on-small-only top-margin-page-divider">
+    <div class="row">
+      <div class="col m10 offset-m1">
+        <div class="col center-align m3">
+          <div class="left-align page-divider highlight3-background"></div>
+        </div>
+        <div class="col center-align m3">
+          <div class="center-align page-divider highlight1-background"></div>
+        </div>
+        <div class="col center-align m3">
+          <div class=" center-align page-divider highlight2-background"></div>
+        </div>
+        <div class="col center-align m3">
+          <div class="center-align page-divider highlight4-background"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <!--Error modal -->
@@ -200,21 +227,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    var ingredient_list={{ingredients_list|tojson}}
-    var author_list={{author_list|tojson}}
-    var country_list={{country_list|tojson}}
-    
+    var ingredient_list = { { ingredients_list | tojson } }
+    var author_list = { { author_list | tojson } }
+    var country_list = { { country_list | tojson } }
+
     $('#ingredient').autocomplete({
-      data:ingredient_list,
+      data: ingredient_list,
     });
-    $('#author').autocomplete({
-      data:author_list,
-    }); 
+    //    $('#author').autocomplete({
+    //      data:author_list,
+    //    }); 
     $('#country').autocomplete({
-      data:country_list,
-    });         
+      data: country_list,
+    });
   })
-  
 </script>
 
 {% endblock %}

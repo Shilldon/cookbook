@@ -1,290 +1,384 @@
 {% extends 'base.html' %} {% block content %}
-<section class="category-display">
-  <div class="row">
-    <div class="col s12 splash-container search-splash">
-      <div class="row valign-wrapper">
-        <div class="col s12">
-
-          <h5 class="center-align flow-text">Search for recipes</h5>
-        </div>
-      </div>
-    </div>
-  </div>     
-    <div class="row">
-    <div class="col s12 search-container" style="padding:0">
-        <ul class="collapsible">
-            <li>
-                <div class="collapsible-header " style="background-color:#8C5D42; color:white">
-                    <div class="row" style="padding:0; margin:0; flex:auto">
-                      <div class="col s1">
-                        <i class="material-icons expand">expand_more</i>
-                      </div>
-                      <div class="col s6">
-                            <strong class="align-left font-color">Filter options</strong>
-                        </div>
-                    </div>
-                </div>    
-                <div class="row collapsible-body " style="padding-bottom:20px  !important; padding-top:0 !important; margin:0">
-                    <div class="col s10 offset-s1" style="    margin-bottom: 20px;">
-                        <form id="filters_form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
-                            <ul>
-                                {% if session["user"] %}
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Favourites</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select name="favourite">
-                                            <option value="" disabled selected>Not filtered</option>
-                                            <option value=true {% if filters.favourite==True %}selected="selected" {% endif%} >Filtered by favourites</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                {% endif %}
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Meal</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select name="meal">
-                                            <option value="" disabled selected>Not filtered</option>
-                                            <option value="SNACK" {% if filters.meal=="SNACK" %}selected="selected" {% endif%}>Snack</option>
-                                            <option value="BREAKFAST" {% if filters.meal=="BREAKFAST" %}selected="selected" {% endif%}>Breakfast</option>
-                                            <option value="LUNCH" {% if filters.meal=="LUNCH" %}selected="selected" {% endif%}>Lunch</option>
-                                            <option value="DINNER" {% if filters.meal=="DINNER" %}selected="selected" {% endif%}>Dinner</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Allergens</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select id="allergens_list" name="allergens" multiple>
-                                            <option value="" id="allergens-unfiltered" {% if allergens|length==0 %}  disabled selected {% endif %}>Not filtered</option>
-                                            <option value="dairy" {% if 'dairy' is in allergens %} selected="selected" {%endif%}>Dairy-free</option>
-                                            <option value="fish" {% if 'fish' is in allergens %} selected="selected" {%endif%}>Fish-free</option>
-                                            <option value="gluten" {% if 'gluten' is in allergens %} selected="selected" {%endif%}>Gluten-free</option>
-                                            <option value="nuts" {% if 'nuts' is in allergens %} selected="selected" {%endif%}>Nut-free</option>
-                                            <option value="shellfish" {% if 'shellfish' is in allergens %} selected="selected" {%endif%}>Shellfish-free</option>
-                                            <option value="eggs" {% if 'eggs' is in allergens %} selected="selected" {%endif%}>Egg-free</option>                                        
-                                            <option value="meat" {% if 'meat' is in allergens %} selected="selected" {%endif%}>Vegetarian</option>  
-                                            </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Calories</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select name="calories">
-                                            <option value=""  disabled selected>Not filtered</option>
-                                            <option value=100 {% if filters.calories=={'$lt' : '100'} %} selected="selected" {% endif%}>< 100</option>
-                                            <option value=200 {% if filters.calories=={'$lt' : '200'} %} selected="selected" {% endif%}>< 200</option>
-                                            <option value=300 {% if filters.calories=={'$lt' : '300'} %} selected="selected" {% endif%}>< 300</option>
-                                            <option value=500 {% if filters.calories=={'$lt' : '500'} %} selected="selected" {% endif%}>< 500</option>
-                                            <option value=750 {% if filters.calories=={'$lt' : '750'} %} selected="selected" {% endif%}>< 750</option>
-                                            <option value=1000 {% if filters.calories=={'$lt' : '1000'} %} selected="selected" {% endif%}>< 1000</option>
-                                            <option value=999 {% if filters.calories=={'$gt' : '999'} %}selected="selected" {% endif%}>> 1000</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Cooking time</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select name="cook_time">
-                                            <option value="" disabled selected>Not filtered</option>
-                                            <option value=10 {% if filters.cook_time=={'$lt' : '10'} %} selected="selected" {% endif%}>< 10 minutes</option>
-                                            <option value=20 {% if filters.cook_time=={'$lt' : '20'} %} selected="selected" {% endif%}>< 20 minutes</option>
-                                            <option value=30 {% if filters.cook_time=={'$lt' : '30'} %} selected="selected" {% endif%}>< 30 minutes</option>
-                                            <option value=60 {% if filters.cook_time=={'$lt' : '60'} %} selected="selected" {% endif%}>< 1 hour</option>
-                                            <option value=120 {% if filters.cook_time=={'$lt' : '120'} %} selected="selected" {% endif%}>< 2 hours</option>
-                                            <option value=180 {% if filters.cook_time=={'$lt' : '180'} %} selected="selected" {% endif%}>< 3 hours</option>
-                                            <option value=179 {% if filters.cook_time=={'$gt' : '179'} %} selected="selected" {% endif%}>> 3 hours</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- check if there is a list of countries to display in the filter. If not, skip -->
-                                {% if countries[0] is defined %}
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Country</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select name="country">
-                                            <option value="" disabled selected>Not filtered</option>
-                                            {% for country in countries %}
-                                            <option value="{{country}}" {% if selected_country==country %} selected="selected" {% endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
-                                            {%endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                {% endif %}
-                                <!-- check if a list of authors has been retrieved, if not do not display this filter -->
-                                {% if authors[0] is defined %}
-                                <li>
-                                    <div class="row">
-                                        <div class="col s5 input-field">
-                                            <p>Author</p>
-                                        </div>
-                                        <div class="col s7  input-field">
-                                            <select name="author">
-                                            <option value="" disabled selected>Not filtered</option>
-                                            {% for author in authors %}
-                                            <option value="{{author}}" {% if selected_author==author %} selected="selected" {% endif%}>{{author}}</option>
-                                            {%endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </li>
-                                {%endif%}
-                                <li class="center-align" style="padding-top:10px">
-                                <button class="waves-effect waves-light btn btn_small highlight2-background filter_button" type="submit">Apply Filters</button>
-                                </li>
-                            </ul>
-                        </form>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="collapsible-header " style="background-color:#8C5D42; color:white">
-                    <div class="row" style="padding:0; margin:0; flex:auto">
-                      <div class="col s1">
-                        <i class="material-icons expand">expand_more</i>
-                      </div>
-                      <div class="col s6">
-                            <strong class="align-left font-color">Sort options</strong>
-                        </div>
-                    </div>
-                </div>
-                <div class="row collapsible-body " style="padding-bottom:20px !important; padding-top:0 !important; margin:0">
-                    <div class="col s10 offset-s1" style="    margin-bottom: 20px;">
-                        <form id="sort-form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
-                            <div class="row">
-                                <div class="col s5 input-field">
-                                    <p>Sort by:</p>
-                                </div>
-                                <div class="col s7">
-                                    <div class="input-field order-list">
-                                        <select class="sort_by" name="sort_by">
-                                            <option value="none" disabled selected>Not sorted</option>
-                                            <option value="name"  {% if sort=="name" %}selected="selected" {% endif %}>Name</option>
-                                            <option value="cook_time" {% if sort=="cook_time" %}selected="selected" {% endif %}>Cooking Time</option>
-                                            <option value="calories" {% if sort=="calories" %}selected="selected" {% endif %}>Calories</option>
-                                            <option value="meal" {% if sort=="meal" %}selected="selected" {% endif %}>Meal</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        </div>
-    </div>
-
-    <div class="recipe-book">
-        <!--display the total number of search results-->
-        <div class="row">
-            <div class="col s10 offset-s1">
-                <p>Number of recipes found: {{total_results}}</p>
+<!-- call to action 
+<section>
+    <div class="splash-container search-splash">
+        <div class="row valign-wrapper">
+            <div class="col s12">
+              <h5 class="center-align flow-text">Search for recipes</h5>
             </div>
         </div>
+    </div>
+</section>  -->
+
+<!--details and information-->
+<section class="hide-on-small-only">
+    <div class="row top-margin-page-divider">
+        <div class="col m10 offset-m1">
+            <div class="col center-align m3">
+                <div class="left-align page-divider highlight3-background"></div>
+            </div>
+            <div class="col center-align m3">
+                <div class="center-align page-divider highlight1-background"></div>
+            </div>
+            <div class="col center-align m3">
+                <div class=" center-align page-divider highlight2-background"></div>
+            </div>
+            <div class="col center-align m3">
+                <div class="center-align page-divider highlight4-background"></div>
+            </div>
+        </div>
+    </div>     
+    <div class="information-container">
+    <div class="row hide-on-small-only">
+        <div class="col s12">
+            <h5 class="center-align">Find your perfect dish</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s10 offset-s1">
+            <p class="left-align">Below you will find recipes at your fingertips. Use the filter options to narrow your search and sort options to sort the results into order that suits you.</h5>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!--search options-->
+<section>
+    <div class="recipe-list-search-options-container">
+        <div class="row">
+        <div class="col s12 m10 offset-m1">
+            <div class="row">
+        <div class="col s12 m6">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header ">
+                        <div class="row">
+                            <div class="col s1">
+                                <i class="material-icons expand">expand_more</i>
+                            </div>
+                            <div class="col s6">
+                                <strong class="align-left font-color">Filter options</strong>
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="collapsible-body">
+                    <div class="row">
+                        <div class="col s10 offset-s1">
+                            <form id="filters_form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
+                                <ul>
+                                    {% if session["user"] %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Favourites</p>
+                                            </div>
+                                            <div class="col s7  input-field">
+                                                <select name="favourite">
+                                                    <option value="" selected>Not filtered</option>
+                                                    <option value=true {% if filters.favourite==True %}selected="selected" {% endif%} >Filtered by favourites</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Meal</p>
+                                            </div>
+                                            <div class="col s7  input-field">
+                                                <select name="meal">
+                                                    <option value="" selected>Not filtered</option>
+                                                    <option value="SNACK" {% if filters.meal=="SNACK" %}selected="selected" {% endif%}>Snack</option>
+                                                    <option value="BREAKFAST" {% if filters.meal=="BREAKFAST" %}selected="selected" {% endif%}>Breakfast</option>
+                                                    <option value="LUNCH" {% if filters.meal=="LUNCH" %}selected="selected" {% endif%}>Lunch</option>
+                                                    <option value="DINNER" {% if filters.meal=="DINNER" %}selected="selected" {% endif%}>Dinner</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Allergens</p>
+                                            </div>
+                                            <div class="col s7 input-field">
+                                                <select id="allergens_list" name="allergens" multiple>
+                                                    <option value="" id="allergens-unfiltered" {% if allergens|length==0 %}  disabled selected {% endif %}>Not filtered</option>
+                                                    <option value="dairy" {% if 'dairy' is in allergens %} selected="selected" {%endif%}>No Dairy</option>
+                                                    <option value="fish" {% if 'fish' is in allergens %} selected="selected" {%endif%}>No Fish</option>
+                                                    <option value="gluten" {% if 'gluten' is in allergens %} selected="selected" {%endif%}>No Gluten</option>
+                                                    <option value="nuts" {% if 'nuts' is in allergens %} selected="selected" {%endif%}>No Nuts</option>
+                                                    <option value="shellfish" {% if 'shellfish' is in allergens %} selected="selected" {%endif%}>No Shellfish</option>
+                                                    <option value="eggs" {% if 'eggs' is in allergens %} selected="selected" {%endif%}>No Eggs</option>                                        
+                                                    <option value="meat" {% if 'meat' is in allergens %} selected="selected" {%endif%}>Vegetarian</option>  
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Calories</p>
+                                            </div>
+                                            <div class="col s7  input-field">
+                                                <select name="calories">
+                                                <option value=""  selected>Not filtered</option>
+                                                <option value=100 {% if filters.calories=={'$lt' : '100'} %} selected="selected" {% endif%}>< 100</option>
+                                                <option value=200 {% if filters.calories=={'$lt' : '200'} %} selected="selected" {% endif%}>< 200</option>
+                                                <option value=300 {% if filters.calories=={'$lt' : '300'} %} selected="selected" {% endif%}>< 300</option>
+                                                <option value=500 {% if filters.calories=={'$lt' : '500'} %} selected="selected" {% endif%}>< 500</option>
+                                                <option value=750 {% if filters.calories=={'$lt' : '750'} %} selected="selected" {% endif%}>< 750</option>
+                                                <option value=1000 {% if filters.calories=={'$lt' : '1000'} %} selected="selected" {% endif%}>< 1000</option>
+                                                <option value=999 {% if filters.calories=={'$gt' : '999'} %}selected="selected" {% endif%}>> 1000</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Cooking time</p>
+                                            </div>
+                                            <div class="col s7  input-field">
+                                                <select name="cook_time">
+                                                <option value="" selected>Not filtered</option>
+                                                <option value=10 {% if filters.cook_time=={'$lt' : '10'} %} selected="selected" {% endif%}>< 10 minutes</option>
+                                                <option value=20 {% if filters.cook_time=={'$lt' : '20'} %} selected="selected" {% endif%}>< 20 minutes</option>
+                                                <option value=30 {% if filters.cook_time=={'$lt' : '30'} %} selected="selected" {% endif%}>< 30 minutes</option>
+                                                <option value=60 {% if filters.cook_time=={'$lt' : '60'} %} selected="selected" {% endif%}>< 1 hour</option>
+                                                <option value=120 {% if filters.cook_time=={'$lt' : '120'} %} selected="selected" {% endif%}>< 2 hours</option>
+                                                <option value=180 {% if filters.cook_time=={'$lt' : '180'} %} selected="selected" {% endif%}>< 3 hours</option>
+                                                <option value=179 {% if filters.cook_time=={'$gt' : '179'} %} selected="selected" {% endif%}>> 3 hours</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- check if there is a list of countries to display in the filter. If not, skip -->
+                                    {% if countries[0] is defined %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Country</p>
+                                            </div>
+                                            <div class="col s7  input-field">
+                                                <select name="country">
+                                                <option value="" selected>Not filtered</option>
+                                                {% for country in countries %}
+                                                <option value="{{country}}" {% if selected_country==country %} selected="selected" {% endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
+                                                {%endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                    <!-- check if a list of authors has been retrieved, if not do not display this filter -->
+                                    {% if authors[0] is defined and action=="search" %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col s5 input-field">
+                                                <p>Author</p>
+                                            </div>
+                                            <div class="col s7  input-field">
+                                                <select name="author">
+                                                <option value="" selected>Not filtered</option>
+                                                {% for author in authors %}
+                                                <option value="{{author}}" {% if selected_author==author %} selected="selected" {% endif%}>{{author}}</option>
+                                                {%endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {%endif%}
+                                    <li class="center-align">
+                                        <button class="waves-effect waves-light btn btn-small highlight2-background filter-button hide-on-large-only" type="submit">Apply Filters</button>
+                                        <button class="waves-effect waves-light btn btn-large highlight2-background filter-button hide-on-med-and-down" type="submit">Apply Filters</button>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+            </ul>
+        </div>    
+        <div class="col s12 m6">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header">
+                        <div class="row">
+                          <div class="col s1">
+                            <i class="material-icons expand">expand_more</i>
+                          </div>
+                          <div class="col s6">
+                                <strong class="align-left font-color">Sort options</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="collapsible-body">
+                    <div class="row" >
+                        <div class="col s10 offset-s1">
+                            <form id="sort-form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
+                                <div class="row">
+                                    <div class="col s5 input-field">
+                                        <p>Sort by:</p>
+                                    </div>
+                                    <div class="col s7">
+                                        <div class="input-field sort-options-list">
+                                            <select class="sort_by" name="sort_by">
+                                                <option value="none" selected>Not sorted</option>
+                                                <option value="name"  {% if sort=="name" %}selected="selected" {% endif %}>Name</option>
+                                                <option value="cook_time" {% if sort=="cook_time" %}selected="selected" {% endif %}>Cooking Time</option>
+                                                <option value="calories" {% if sort=="calories" %}selected="selected" {% endif %}>Calories</option>
+                                                <option value="meal" {% if sort=="meal" %}selected="selected" {% endif %}>Meal</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--List of recipe results -->
+<section class="recipe-list-results">
+    <!--display the total number of search results-->
+            <div class="row">
+                        <div class="col s12 m10 offset-m1">
+    
+    <div class="row">
+        
+        <div class="col s10 offset-s1">
+            {%if action=="edit" or action=="delete" %}
+            <p>Number of recipes found that were created by you: {{total_results}}</p>
+            {% else %}
+            <p>Number of recipes found: {{total_results}}</p>
+            {%endif%}
+        </div>
+    </div>
+    <!--display the recipes found-->
+    <div class="row">
+        <div class="col s12 recipe-book">
         {% for recipe in recipes %} {% if loop.index % 10 == 1 or loop.first %} {% set page=loop.index/10 %} {% set page=page | round | int %}
         <div class="recipe-page" id="recipepage{{page+1}}" {%if loop.first %}style="display:block" {%else%} style="display:none" {%endif%}>
             {%endif%}
-            <div class="recipe_list row-effect">
+            <div class="recipe-list row-effect">
+                <a
                 {% if action=="edit" %}
-                <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
-            {% elif action=="delete" %}        
-            <a href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
-            {% else %}        
-            <a href="{{url_for('display_recipe', recipe_id=recipe._id)}}">
-            {% endif %}
-            <div class="row valign-wrapper">
-                <div class="col s2">
-                    {% if recipe.picture %}
-                    <p class="center-align"><img src="{{recipe.picture}}"></p>
-                    {% else %}
-                    <p class="center-align"><i class="fa fa-cutlery fa-2x" aria-hidden="true"></i></p>
-                    {% endif %}
-                </div>
-                <div class="col s4">
-                    <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
-                </div>
-                <div class="col s2">
-                {% if sort=="cook_time" %}
-                    <p class="center-align">
-                        {% if recipe.hours > 0 %} 
-                        {{recipe.hours}}h 
-                        {%endif%} 
-                        {% if recipe.minutes > 0 %} 
-                        {{recipe.minutes}}m
-                        {% endif %}
-                    </p>
-                {% elif sort=="calories" %}  
-                    <p class="center-align">
-                        {% if recipe.calories %}
-                        {{recipe.calories}} kCal
-                        {%endif%}
-                    </p>
-                {% elif sort=="difficulty" %}  
-                    <p class="center-align">
-                        {% if recipe.difficulty %}
-                        {{recipe.difficulty}}
-                        {%endif%}
-                    </p>  
-                {% elif sort=="meal" %}  
-                    <p class="center-align">
-                        {% if recipe.meal %}
-                        {{recipe.meal[0]|upper}}{{recipe.meal[1:]|lower}}
-                        {%endif%}
-                    </p>                    
+                 href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">
+                {% elif action=="delete" %}        
+                 href="#delete_modal" class="modal-trigger delete_button" recipe_id={{recipe._id}}>
+                {% else %}        
+                 href="{{url_for('display_recipe', recipe_id=recipe._id)}}">
                 {% endif %}
-                </div>
-                <div class="col s1 recipe-list-right-col">
-                    {% if action=="edit" %}
-                      <p><i class="material-icons">edit</i></p>
-                    {% elif action=="delete" %}
-                      <p><i class="material-icons">delete_forever</i></p>  
-                    {% elif session["user"] %}
-                        {%if recipe.favourite %}
-                            <p><i class="material-icons gold-star">star</i></p>
-                        {% else %}
-                            <p><i class="material-icons">star_border</i></p>
+                    <div class="row valign-wrapper">
+                        <div class="col s1">
+                            {% if action=="edit" %}
+                              <p><i class="material-icons">edit</i></p>
+                            {% elif action=="delete" %}
+                              <p><i class="material-icons">delete_forever</i></p>  
+                            {% elif session["user"] %}
+                                {%if recipe.favourite %}
+                                    <p><i class="material-icons gold-star">star</i></p>
+                                {% else %}
+                                    <p><i class="material-icons">star_border</i></p>
+                                {% endif %}
+                            {%endif%}    
+                        </div>                        
+                        <div class="col s2">
+                            {% if recipe.picture %}
+                            <p class="center-align"><img class="circle responsive-image" src="{{recipe.picture}}"></p>
+                            {% else %}
+                            <p class="center-align"><i class="fa fa-cutlery fa-2x" aria-hidden="true"></i></p>
+                            {% endif %}
+                        </div>
+                        <div class="col s8 hide-on-med-and-up">
+                            <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
+                        </div>
+                        <div class="col s6 hide-on-small-only">
+                            <p>{{ recipe.name[0]|upper }}{{ recipe.name[1:]}}</p>
+                        </div>                    
+                        <div class="col s2 hide-on-small-only">
+                        {% if sort=="cook_time" %}
+                            <p class="center-align">
+                                {% if recipe.hours > 0 %} 
+                                {{recipe.hours}}h 
+                                {%endif%} 
+                                {% if recipe.minutes > 0 %} 
+                                {{recipe.minutes}}m
+                                {% endif %}
+                            </p>
+                        {% elif sort=="calories" %}  
+                            <p class="center-align">
+                                {% if recipe.calories %}
+                                {{recipe.calories}} kCal
+                                {%endif%}
+                            </p>
+                        {% elif sort=="difficulty" %}  
+                            <p class="center-align">
+                                {% if recipe.difficulty %}
+                                {{recipe.difficulty}}
+                                {%endif%}
+                            </p>  
+                        {% elif sort=="meal" %}  
+                            <p class="center-align">
+                                {% if recipe.meal %}
+                                {{recipe.meal[0]|upper}}{{recipe.meal[1:]|lower}}
+                                {%endif%}
+                            </p>                    
                         {% endif %}
-                    {%endif%}    
-                </div>
-            </div> 
-            </a>
+                        </div>
+                    </div> 
+                </a>
             </div>
             {% if loop.index % 10 == 0 or loop.last%}
         </div>
         {%endif%} {% endfor %}
-        <div id="pagination">
         </div>
+        
     </div>
     <div class="row">
-        <div class="col s4 offset-s4">
-            <p class="center-align"><a href="{{url_for('index')}}" class="waves-effect waves-light btn highlight2-background btn-block">Home</a></p>
+        <div id="pagination" class="s12">
         </div>
     </div>
+
+    <div class="row">
+        <div class="col s4 offset-s4 m2 offset-m5">
+            <p class="center-align hide-on-large-only"><a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block highlight2-background">Home</a></p>
+            <p class="center-align hide-on-med-and-down"><a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block highlight2-background">Home</a></p>
+        </div>
+    </div>
+
+    </div>
+    </div>
 </section>
+    <div class="hide-on-small-only padded-margin-page-divider">
+      <div class="row">
+        <div class="col m10 offset-m1">
+          <div class="col center-align m3">
+            <div class="left-align page-divider highlight3-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class="center-align page-divider highlight1-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class=" center-align page-divider highlight2-background"></div>
+          </div>
+          <div class="col center-align m3">
+            <div class="center-align page-divider highlight4-background"></div>
+          </div>
+        </div>
+      </div>   
+    </div>  
 
 <!--Deletion modal -->
 <section>
@@ -296,16 +390,17 @@
                 <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
                 <div class="row">
                     <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Cancel</button>
-                        <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Cancel</button>
+                        <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</button>
+                        <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
                     </div>
                     <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
-                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
+                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red">Delete</button>
+                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red">Delete</button>
                     </div>
                 </div>
             </form>
         </div>
+    </div>
     </div>
 </section>
 
@@ -313,47 +408,9 @@
 <script type="text/javascript" src="/static/js/materialize-pagination.js"></script>
 
 <script>
-/*
-    $('body').on('click', '.delete_button', function() {
-        //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to flask if deletion is confirmed
-        recipe_id = $(this).attr("recipe_id");
-        $('#recipe_id_input').val(recipe_id)
-        $(this).find(".row").addClass("selected-for-deletion")
-        //need to set the row object on the reset modal button to remove the red highlight if cancelling deletion
-        $('#modal_reset').data("row_to_delete", $(this).find(".row"))
-    })
-
-    $('#modal_reset').on('click', function() {
-        var row = $(this).data("row_to_delete");
-        //on cancelling deletion remove the red highlight on the row
-        row.removeClass("selected-for-deletion");
-        //reset the row variable
-        $(this).data("row_to_delete", "");
-    })
-
-    $('.filter_button').on("click", function() {
-        //disable all empty form fields to avoid sending blank fields for filter search in flask against DB
-        $(".collapsible-header").removeClass(function() {
-            return "active";
-        });
-        $(".collapsible").collapsible({ accordion: true });
-        $(".collapsible").collapsible({ accordion: false });
-        $("#filters_form option[value='']").attr("disabled", "disabled");
-        $("#filters_form input[value='']").attr("disabled", "disabled");
-    });
-
-    $(".sort_by").change(function() {
-        $("#sort-form").submit()
-    })
-
-    $("#allergens_list").change(function() {
-        if ($("#allergens_list").val() != "") {
-            $("#allergens-unfiltered").prop("selected", false)
-        }
-        else {
-            $("#allergens-unfiltered").prop("selected", "selected")
-        }
-    })*/
+$(document).ready(function(){
+      $('select').formSelect();
+})
     $('#pagination').materializePagination({
         align: 'center',
         lastPage:  $(".recipe-book").children(".recipe-page").length,
@@ -369,7 +426,6 @@
             }, 1000);        
         }
     });     
-    
 </script>
 
 {% endblock %}

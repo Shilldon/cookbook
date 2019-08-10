@@ -25,3 +25,4 @@ author: https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document
 allergies: https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d
 
 defensive - category search - prevent entering empty search
+admin edit and delete all recipes

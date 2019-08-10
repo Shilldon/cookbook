@@ -3,13 +3,18 @@ function myFunc() {
 }
 
 $(document).ready(function() {
-  $('.sidenav').sidenav();
+  $('.sidenav').sidenav({
+    edge:"right"
+  });
   $('.modal').modal({
     //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
     dismissible: false,
   });
   $('.collapsible').collapsible();
   $('.dropdown-trigger').dropdown();
+  //important - must be called last
+  $('select').formSelect();
+  
 });
 
 $("#favourite").on("click", function() {
@@ -53,7 +58,7 @@ $("#add_ingredient").on("click", function() {
   }
   else {
     if (currentUnit === "0") { currentUnit = "" }
-    $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + " </p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
+    $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 offset-s1 l1'><a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div><div class='col s10 l5 valign-wrapper'><p>" + currentAmount + " " + currentUnit + " " + currentIngredient + " </p></div></div><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
     $("#ingredient").val('');
     $("#amount").val('');
     $("#select-unit").val('');
@@ -67,7 +72,7 @@ $('body').on("click", "#remove_ingredient", function() {
   setTimeout(function() { ingredientLine.remove(); }, 500);
 });
 
-$("#submit-recipe").on("click", function() {
+$(".submit-recipe").on("click", function() {
   var name = $("#name").val();
   var ingredient = $('#ingredients').find('input').filter(':hidden:first').val();
   var method = $('#method').val();
@@ -110,7 +115,7 @@ $('#modal_reset').on('click', function() {
   }
 })
 
-$('.filter_button').on("click", function() {
+$('.filter-button').on("click", function() {
   //disable all empty form fields to avoid sending blank fields for filter search in flask against DB
   $(".collapsible-header").removeClass(function() {
     return "active";

@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-{%if session["user"] %}
+{%if recipe.author|lower==session["user"]|lower %}
 <div class="button-container" style="position:fixed">
   <!-- Dropdown Trigger -->
   <a class='dropdown-trigger btn highlight1-background' href='#' data-target='recipe_options'><i class="material-icons">add</i></a>
@@ -33,7 +33,7 @@
       <div class="row">
         <div class="col s6 offset-s3">
           <p class="center-align">
-            <img src="{{ recipe.picture }}"></img>
+            <img class="recipe-image" src="{{ recipe.picture }}"></img>
           </p>
         </div>
       </div>
@@ -142,7 +142,7 @@
         <div class="col s3 offset-s1">
           <p class="recipe-subject">Method</p>
         </div>
-        <div class="col s8">
+        <div class="col s7">
           <p>{{ recipe.method }}</p>
         </div>
       </div>
@@ -153,22 +153,22 @@
     {% if added!="true" %}
     <div class="col s4 offset-s1 m2 offset-m3 ">
       {% if session["category_form"] is defined %}
-      <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Back</a>
-      <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Back</a>
+      <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn btn-block hide-on-large highlight4-background">Back</a>
+      <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a>
       {%else%}
-      <a href="{{ url_for('recipe_list', filter='true') }}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Back</a>
-      <a href="{{ url_for('recipe_list', filter='true') }}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Back</a>
+      <a href="{{ url_for('recipe_list', filter='true') }}" class="waves-effect waves-light btn btn-block hide-on-large highlight4-background">Back</a>
+      <a href="{{ url_for('recipe_list', filter='true') }}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a>
       {%endif%}
     </div>
     {% else %}
     <div class="col s4 offset-s1 m2 offset-m3 ">
-      <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight4-background">Back</a>
-      <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight4-background">Back</a>
+      <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}" class="waves-effect waves-light btn btn-block hide-on-large highlight4-background">Back</a>
+      <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a>
     </div>
     {% endif %}
     <div class="col s4 offset-s2 m2 offset-m2 ">
-      <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-med-and-up highlight2-background">Home</a>
-      <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight2-background">Home</a>
+      <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large highlight2-background">Home</a>
+      <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
     </div>
   </div>
 </section>
@@ -183,12 +183,12 @@
         <input type="hidden" name="recipe_id" value="{{recipe._id}}"></input>
         <div class="row">
           <div class="col s5 offset-s1 m3 offset-m2 ">
-            <a href="#!" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Cancel</a>
-            <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Cancel</button>
+            <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</a>
+            <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
           </div>
-          <div class="col s5 offset-s1 m3 offset-m2 ">
-            <button type="submit" class="waves-effect waves-light btn btn-block hide-on-med-and-up red">Delete</button>
-            <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only red">Delete</button>
+          <div class="col s5 offset-s1 m3 offset-m2">
+            <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red">Delete</button>
+            <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red">Delete</button>
           </div>
         </div>
       </form>

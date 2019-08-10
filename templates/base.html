@@ -77,9 +77,9 @@
       </div>
     </nav>
 
-    <ul class="sidenav center-align" id="menu-list">
-      <ul class="collapsible">
-        <li >
+    <ul class="sidenav center-align " id="menu-list">
+      <ul class="collapsible ">
+        <li>
 
           <a style="border-bottom:solid 1px grey" class="highlight3-background collapsible-header">Search</a>
           <div class="collapsible-body">
@@ -140,7 +140,7 @@
 
   <!--Modals-->
 
-  <div id="login-modal" class="modal">
+  <div id="login-modal" class="modal" style="width:60%">
     <div class="modal-content">
       <form id="user-form" action="{{url_for('check_user') }}" method="POST">
         {%if session['user'] %}
@@ -149,15 +149,17 @@
         <div class="input-field">
           <input id="username" type="hidden" name="username" type="text" label="User Name" value="logout"></input>
         </div>
+        <div class="modal-footer">
         <div class="row">
           <div class="col s6 m3 offset-m2 ">
-            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</a>
-            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</a>
+            <button type="reset" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Cancel</button>
+            <button type="reset" class="modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Cancel</button>
           </div>
           <div class="col s6 m3 offset-m2">
-            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Logout</button>
-            <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Logout</button>
+            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Logout</button>
+            <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Logout</button>
           </div>
+        </div>
         </div>
         {%else%}
         <h4>Login</h4>
@@ -165,15 +167,17 @@
         <div class="input-field">
           <input id="username" name="username" type="text" label="User Name" required></input>
         </div>
+        <div class="modal-footer">
         <div class="row">
           <div class="col s6 m3 offset-m2 ">
-            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-med-and-up red">Cancel</a>
-            <a href="#!" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-small-only red">Cancel</a>
+            <button type="reset" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Cancel</button>
+            <button type="reset" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Cancel</button>
           </div>
           <div class="col s6 m3 offset-m2">
-            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">Login</button>
-            <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">Login</button>
+            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Login</button>
+            <button type="submit" class="modal-close waves-effect waves-light btn-large btn-large btn-block hide-on-med-and-down highlight1-background">Login</button>
           </div>
+        </div>
         </div>
         {%endif%}
       </form>
@@ -185,9 +189,11 @@
       <h4>Error</h4>
       <p>You need to log in</p>
       <div class="input-field">
-        <div class="col s6 m3 offset-m2">
-          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-med-and-up highlight1-background">OK</button>
-          <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-small-only highlight1-background">OK</button>
+        <div class="row">
+        <div class="col s6 offset-s3 m4 offset-m4">
+          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large highlight1-background">OK</button>
+          <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">OK</button>
+        </div>
         </div>
       </div>
     </div>
@@ -196,11 +202,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script type="text/javascript" src="{{url_for('static', filename='js/app.js')}}"></script>
-  <script>
-    $(document).ready(function() {
-      $('select').formSelect();
-    })
-  </script>
 
 </body>
 
