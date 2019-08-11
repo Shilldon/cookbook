@@ -122,6 +122,15 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     color: #FFBF57;
 }
 
+.loader {
+  position: absolute;
+  margin: auto;
+  top: 50vh;
+  bottom: 50vh;
+  left: 0;
+  right: 0;
+}
+
 //----- NAV BAR ----- //
 .nav-wrapper {
     background-color: $base-color;
@@ -296,7 +305,6 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         i {
             margin: auto;
         }
-        .fa {}
         p {
             margin-top: 0;
             margin-bottom: 0;
@@ -328,9 +336,18 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     .row {
         margin-bottom: 0;
     }
+    .s12 {
+        padding: 0;
+    }
     ul {
         margin-top: 0;
         margin-bottom: 0;
+    }
+}
+
+.category-search-results-button-container {
+    .row {
+        margin-top: 20px;
     }
 }
 
@@ -514,6 +531,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 
 //----- MODAL STYLES -----//
 .modal {
+    max-width: 600px;
     font-family: "Roboto", sans;
     color: $font-color;
     h4 {
@@ -522,6 +540,15 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     button {
         color: white;
         padding: 0;
+    }
+}
+
+#loader-modal {
+    .modal-content {
+        height:25vh;
+        p {
+            margin-top:17vh;
+        }
     }
 }
 
@@ -552,14 +579,21 @@ input[type="checkbox"]:checked+span:not(.lever):before {
             font-size: 1.2rem;
         }
     }
-.category-search-results-container {    
-    .category-result-header {
+    .category-search-results-container {
+        .category-result-header {
             background-color: white;
             color: $highlight1-color;
-//            background-color: $highlight1-color;
-//            color: white;    
+        }
+
+        img {
+            width: 70px;
+            height: 70px;
+        }
+        .fa {
+            font-size: 35px;
+        }
     }
-}
+
     .search-splash {
         height: 125px;
     }
@@ -577,9 +611,8 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         }
         .collapsible-header {
             background-color: white;
-            color: $highlight1-color;
-//            background-color: $highlight1-color;
-//            color: white;        
+            color: $highlight1-color; //            background-color: $highlight1-color;
+            //            color: white;        
         }
         p {
             margin-top: 10px;
@@ -617,6 +650,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 
     .recipe-image {
         width: 25vw;
+        max-width: 350px;
     }
 
     .display-recipe-button-container {
@@ -624,10 +658,20 @@ input[type="checkbox"]:checked+span:not(.lever):before {
             margin: 10px 0 0 20px;
         }
     }
-    
+
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 992px) {
+    form {
+        p {
+            font-size: 1.2rem !important;
+        }
+        input,
+        label {
+            font-size: 0.9rem !important;
+
+        }
+    }
     .title-container {
         height: 350px;
         .title-text {
@@ -664,10 +708,23 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         }
     }
 
+    .category-search-results-container {
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+        .fa {
+            font-size: 50px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    }
+
     .search-button-container {
-        p {    
+        p {
             font-size: 2.5rem;
-        }    
+        }
         .col {
             line-height: 250px;
         }
@@ -685,4 +742,20 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     .btn-large {
         font-size: 1.2rem;
     }
+}
+
+@media only screen and (min-width: 1200px) {
+    html {
+        font-size: 18px;
+    }
+    form {
+        p {
+            font-size: 1.5rem !important;
+        }
+        input,
+        label {
+            font-size: 1.2rem !important;
+
+        }
+    }    
 }

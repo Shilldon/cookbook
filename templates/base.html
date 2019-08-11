@@ -44,7 +44,7 @@
           </li>
           {%endif%}
           <li class="highlight3-background">
-            <a class="dropdown-trigger" href="#!" data-target="search-options">Search</a>
+            <a class="dropdown-trigger call-preloader" href="#!" data-target="search-options">Search</a>
           </li>
           {% if session["user"] %}
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
@@ -141,7 +141,24 @@
 
   <!--Modals-->
 <section>
-  <div id="login-modal" class="modal" style="width:60%">
+  <div id="loader-modal" class="modal">
+    <div class="modal-content">
+    <div class="preloader-wrapper big active loader">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+  <p class="center-align">Please wait a moment</p>
+  </div>
+  </div>
+  
+  <div id="login-modal" class="modal">
     <div class="modal-content">
       <form id="user-form" action="{{url_for('check_user') }}" method="POST">
         {%if session['user'] %}

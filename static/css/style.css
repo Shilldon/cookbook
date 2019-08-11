@@ -82,6 +82,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 .gold-star {
   color: #FFBF57; }
 
+.loader {
+  position: absolute;
+  margin: auto;
+  top: 50vh;
+  bottom: 50vh;
+  left: 0;
+  right: 0; }
+
 .nav-wrapper {
   background-color: #0339A6; }
   .nav-wrapper .brand-logo {
@@ -226,9 +234,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   color: white; }
 .category-search-results-container .row {
   margin-bottom: 0; }
+.category-search-results-container .s12 {
+  padding: 0; }
 .category-search-results-container ul {
   margin-top: 0;
   margin-bottom: 0; }
+
+.category-search-results-button-container .row {
+  margin-top: 20px; }
 
 .recipe-list-header {
   font-family: "Roboto", sans;
@@ -344,6 +357,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   transform: rotate(0deg); }
 
 .modal {
+  max-width: 600px;
   font-family: "Roboto", sans;
   color: #5A6978; }
   .modal h4 {
@@ -351,6 +365,11 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   .modal button {
     color: white;
     padding: 0; }
+
+#loader-modal .modal-content {
+  height: 25vh; }
+  #loader-modal .modal-content p {
+    margin-top: 17vh; }
 
 @media (hover: hover) {
   .row-effect .row:hover {
@@ -370,6 +389,11 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   .category-search-results-container .category-result-header {
     background-color: white;
     color: #034AA6; }
+  .category-search-results-container img {
+    width: 70px;
+    height: 70px; }
+  .category-search-results-container .fa {
+    font-size: 35px; }
 
   .search-splash {
     height: 125px; }
@@ -407,11 +431,18 @@ input[type="checkbox"]:checked + span:not(.lever):before {
       padding: 0; }
 
   .recipe-image {
-    width: 25vw; }
+    width: 25vw;
+    max-width: 350px; }
 
   .display-recipe-button-container .dropdown-trigger {
     margin: 10px 0 0 20px; } }
-@media (min-width: 1024px) {
+@media (min-width: 992px) {
+  form p {
+    font-size: 1.2rem !important; }
+  form input,
+  form label {
+    font-size: 0.9rem !important; }
+
   .title-container {
     height: 350px; }
     .title-container .title-text h5 {
@@ -435,6 +466,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
     line-height: 70px;
     font-size: 35px; }
 
+  .category-search-results-container img {
+    width: 100px;
+    height: 100px; }
+  .category-search-results-container .fa {
+    font-size: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px; }
+
   .search-button-container p {
     font-size: 2.5rem; }
   .search-button-container .col {
@@ -448,5 +487,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 
   .btn-large {
     font-size: 1.2rem; } }
+@media only screen and (min-width: 1200px) {
+  html {
+    font-size: 18px; }
+
+  form p {
+    font-size: 1.5rem !important; }
+  form input,
+  form label {
+    font-size: 1.2rem !important; } }
 
 /*# sourceMappingURL=style.css.map */

@@ -4,7 +4,7 @@ function myFunc() {
 
 $(document).ready(function() {
   $('.sidenav').sidenav({
-    edge:"right"
+    edge: "right"
   });
   $('.modal').modal({
     //defensive - prevent modals from being closed by clicking on background - so an option has to be selected
@@ -14,7 +14,7 @@ $(document).ready(function() {
   $('.dropdown-trigger').dropdown();
   //important - must be called last
   $('select').formSelect();
-  
+
 });
 
 $("#favourite").on("click", function() {
@@ -34,6 +34,12 @@ $("#favourite").on("click", function() {
     $("#favourite_input").val(false);
     favourite = $("#favourite_input").val();
   }
+})
+
+$(".call-preloader").on("click", function() {
+  console.log("clickd")
+  $(".modal").modal("close");
+  $("#loader-modal").modal('open');  
 })
 
 //----edit recipe scripts----//
@@ -58,7 +64,7 @@ $("#add_ingredient").on("click", function() {
   }
   else {
     if (currentUnit === "0") { currentUnit = "" }
-    $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 offset-s1 l1'><a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div><div class='col s10 l5 valign-wrapper'><p>" + currentAmount + " " + currentUnit + " " + currentIngredient + " </p></div></div><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
+    $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 offset-s1 l1'><a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background valign-wrapper'><i class='material-icons'>delete</i></a></div><div class='col s10 l5 valign-wrapper'><p>" + currentAmount + " " + currentUnit + " " + currentIngredient + " </p><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden'name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input></div>")
     $("#ingredient").val('');
     $("#amount").val('');
     $("#select-unit").val('');
@@ -141,57 +147,57 @@ $("#allergens_list").change(function() {
 
 
 //---search page scripts---//
-    $(".category-search-button").on("click", function() {
-        var inputValid = false;
-        $("form select").each(function() {
-            if ($(this).val().length > 0) {
-                inputValid = true;
-                return false;
-            }
-        })
-        if (inputValid == false) {
-            $("#error-modal").modal('open');
-        }
-        else {
-            $("#categories").submit();
-        }
-    })
+$(".category-search-button").on("click", function() {
+  var inputValid = false;
+  $("form select").each(function() {
+    if ($(this).val().length > 0) {
+      inputValid = true;
+      return false;
+    }
+  })
+  if (inputValid == false) {
+    $("#error-modal").modal('open');
+  }
+  else {
+    $("#categories").submit();
+  }
+})
 
-    $(".category-close-button").on("click", function() {
-        $("#category-search-form-container").slideUp();
-        $("#category-search-form-container").removeAttr("data");
-        $(".search-button").removeClass("search-button-clicked");
-    })
+$(".category-close-button").on("click", function() {
+  $("#category-search-form-container").slideUp();
+  $("#category-search-form-container").removeAttr("data");
+  $(".search-button").removeClass("search-button-clicked");
+})
 
-    $(".search-button").on("click", function() {
-        var category = $(this).children("p").text();
-        if(category!="") {
-          var categorySearchPane = $("#category-search-form-container");
-          var listElement = "#list-element-" + category.toLowerCase();
-          var previousCategory = $(categorySearchPane).attr("data");
-          $(".list-category").hide();
-          //reset the form to ensure only one category is returned to display_category when submitting 
-          $('#categories')[0].reset();
-          if ($(categorySearchPane).attr("data")) {
-              if (previousCategory != category) {
-                  $(categorySearchPane).attr("data", category);
-                  $(listElement).show();
-                  $("#category-to-search").text(category);
-                  $(this).addClass("search-button-clicked");
-                  $("#search-" + previousCategory.toLowerCase()).removeClass("search-button-clicked");
-              }
-              else {
-                  $(categorySearchPane).slideUp();
-                  $(categorySearchPane).removeAttr("data");
-                  $(this).removeClass("search-button-clicked");
-              }
-          }
-          else {
-              $(categorySearchPane).slideDown();
-              $(categorySearchPane).attr("data", category);
-              $(listElement).show();
-              $("#category-to-search").text(category)
-              $(this).addClass("search-button-clicked");
-          }
-        }          
-    })
+$(".search-button").on("click", function() {
+  var category = $(this).children("p").text();
+  if (category != "") {
+    var categorySearchPane = $("#category-search-form-container");
+    var listElement = "#list-element-" + category.toLowerCase();
+    var previousCategory = $(categorySearchPane).attr("data");
+    $(".list-category").hide();
+    //reset the form to ensure only one category is returned to display_category when submitting 
+    $('#categories')[0].reset();
+    if ($(categorySearchPane).attr("data")) {
+      if (previousCategory != category) {
+        $(categorySearchPane).attr("data", category);
+        $(listElement).show();
+        $("#category-to-search").text(category);
+        $(this).addClass("search-button-clicked");
+        $("#search-" + previousCategory.toLowerCase()).removeClass("search-button-clicked");
+      }
+      else {
+        $(categorySearchPane).slideUp();
+        $(categorySearchPane).removeAttr("data");
+        $(this).removeClass("search-button-clicked");
+      }
+    }
+    else {
+      $(categorySearchPane).slideDown();
+      $(categorySearchPane).attr("data", category);
+      $(listElement).show();
+      $("#category-to-search").text(category)
+      $(this).addClass("search-button-clicked");
+    }
+  }
+})
