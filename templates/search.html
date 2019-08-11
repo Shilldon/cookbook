@@ -11,13 +11,45 @@
     </div>
 </section>
 
+<section class="hide-on-small-only">
+    <div class="row top-margin-page-divider">
+        <div class="col m10 offset-m1">
+            <div class="col center-align m3">
+                <div class="left-align page-divider highlight3-background"></div>
+            </div>
+            <div class="col center-align m3">
+                <div class="center-align page-divider highlight1-background"></div>
+            </div>
+            <div class="col center-align m3">
+                <div class=" center-align page-divider highlight2-background"></div>
+            </div>
+            <div class="col center-align m3">
+                <div class="center-align page-divider highlight4-background"></div>
+            </div>
+        </div>
+    </div>     
+    <div class="information-container">
+    <div class="row hide-on-small-only">
+        <div class="col s12">
+            <h5 class="center-align">Browse your recipes</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s10 offset-s1">
+            <p class="left-align">After a particular cuisine? Concerned about dietary requirements? Or just fancy that particular dish with your favourite ingredient? Search the Cookbook by clicking on the categories below.</h5>
+        </div>
+    </div>
+    </div>
+</section>
+
+
 <!-- search -->
 <section>
-    <div class="row" id="category-search" style="display:none">
+    <div class="row" id="category-search-form-container">
         <div class="col s12 m8 offset-m2">
             <ul>
                 <li>
-                    <div>Search Category:&nbsp<span id="search-category"></span></div>
+                    <div>Search Category:&nbsp<span id="category-to-search"></span></div>
                     <div>
                         <form action="{{url_for('display_categories')}}" id="categories" method="POST">
                             <div class="list-category input-field" id="list-element-ingredients">
@@ -50,7 +82,6 @@
                                     <option value="easy">Easy</option>
                                 </select>
                                 <label for="difficulty" data-error="Select a difficulty level">Select at least one difficulty level</label>
-
                             </div>
 
                             <div class="list-category input-field" id="list-element-meal">
@@ -85,12 +116,12 @@
 
                             <div class="row">
                                 <div class="col s4 offset-s1 m3 offset-m2 ">
-                                    <div class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background category-close">Cancel</div>
-                                    <div class="waves-effect waves-light btn btn-block hide-on-med-and-down highlight4-background category-close">Cancel</div>
+                                    <button type="button" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background category-close-button">Cancel</button>
+                                    <button type="button" class="waves-effect waves-light btn btn-block hide-on-med-and-down highlight4-background category-close-button">Cancel</button>
                                 </div>
                                 <div class="col s4 offset-s2 m3 offset-m2 ">
-                                    <div class="waves-effect waves-light btn btn-block hide-on-large-only highlight1-background category-search">Search</div>
-                                    <div class="waves-effect waves-light btn btn-block hide-on-med-and-down highlight1-background category-search">Search</div>
+                                    <button type="button" class="waves-effect waves-light btn btn-block hide-on-large-only highlight1-background category-search-button">Search</button>
+                                    <button type="button" class="waves-effect waves-light btn btn-block hide-on-med-and-down highlight1-background category-search-button">Search</button>
                                 </div>
                             </div>
                         </form>
@@ -101,58 +132,39 @@
     </div>
 </section>
 
-<!-- details and information -->
+<!-- category search buttons -->
 <section>
-    <div class="search-button-container">
         <div class="row">
-            <div class="col s4 m3 valign-wrapper waves-effect waves-light search-button" id="search-ingredients">
-                <p class="center-align flow-text"><strong>Ingredients</strong></p>
-            </div>
-            <div class="col s4 m3 valign-wrapper waves-effect waves-light search-button" id="search-dietary">
-                <p class="center-align flow-text"><strong>Dietary</strong></p>
-            </div>
-            <div class="col s4 m3 valign-wrapper waves-effect waves-light search-button" id="search-difficulty">
-                <p class="center-align flow-text"><strong>Difficulty</strong></p>
-            </div>
-            <div class="col s4 m3 valign-wrapper waves-effect waves-light search-button" id="search-meal">
-                <p class="center-align flow-text"><strong>Meal</strong></p>
-            </div>
-            <div class="col m3 search-button highlight2-background hide-on-small-only">
-                &nbsp
-            </div>
-            <div class="col s4 m3 valign-wrapper waves-effect waves-light search-button" id="search-country">
-                <p class="center-align flow-text"><strong>Country</strong></p>
-            </div>
-            <div class="col s4 m3 valign-wrapper waves-effect waves-light search-button" id="search-author">
-                <p class="center-align flow-text"><strong>Author</strong></p>
-            </div>
-            <div class="col m3 search-button highlight2-background hide-on-small-only">
-                &nbsp
-            </div>
-        </div>
+            <div class="col s12 m8 offset-m2">
+            <div class="search-button-container">
 
-        <div class="row">
-            <div class="col s4 offset-s4 m2 offset-m5 ">
-                <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
-                <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
-            </div>
-        </div>
-    </div>
+                <div class="row">
+                    <div class="col s4 valign-wrapper waves-effect waves-light search-button" id="search-ingredients">
+                        <p class="center-align flow-text"><strong>Ingredients</strong></p>
+                    </div>
+                    <div class="col s4  valign-wrapper waves-effect waves-light search-button" id="search-dietary">
+                        <p class="center-align flow-text"><strong>Dietary</strong></p>
+                    </div>
+                    <div class="col s4  valign-wrapper waves-effect waves-light search-button" id="search-difficulty">
+                        <p class="center-align flow-text"><strong>Difficulty</strong></p>
+                    </div>
+                    <div class="col s4  valign-wrapper waves-effect waves-light search-button" id="search-meal">
+                        <p class="center-align flow-text"><strong>Meal</strong></p>
+                    </div>
 
-    <div class="hide-on-small-only top-margin-page-divider">
-        <div class="row">
-            <div class="col m10 offset-m1">
-                <div class="col center-align m3">
-                    <div class="left-align page-divider highlight3-background"></div>
+                    <div class="col s4  valign-wrapper waves-effect waves-light search-button" id="search-country">
+                        <p class="center-align flow-text"><strong>Country</strong></p>
+                    </div>
+                    <div class="col s4 valign-wrapper waves-effect waves-light search-button" id="search-author">
+                        <p class="center-align flow-text"><strong>Author</strong></p>
+                    </div>
                 </div>
-                <div class="col center-align m3">
-                    <div class="center-align page-divider highlight1-background"></div>
-                </div>
-                <div class="col center-align m3">
-                    <div class=" center-align page-divider highlight2-background"></div>
-                </div>
-                <div class="col center-align m3">
-                    <div class="center-align page-divider highlight4-background"></div>
+
+                <div class="row">
+                    <div class="col s4 offset-s4 m2 offset-m5 ">
+                        <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
+                        <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -173,61 +185,5 @@
     </div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-    $(".category-search").on("click", function() {
-        var inputValid = false;
-        $("form select").each(function() {
-            if ($(this).val().length > 0) {
-                inputValid = true;
-                return false;
-            }
-        })
-        if (inputValid == false) {
-            $("#error-modal").modal('open');
-        }
-        else {
-            $("#categories").submit();
-        }
-    })
-
-    $(".category-close").on("click", function() {
-        $("#category-search").slideUp();
-        $("#category-search").removeAttr("data");
-        $(".search-button").removeClass("search-button-clicked");
-    })
-
-
-    $(".search-button").on("click", function() {
-        var category = $(this).children("p").text();
-        var categorySearchPane = $("#category-search");
-        var listElement = "#list-element-" + category.toLowerCase();
-        var previousCategory = $(categorySearchPane).attr("data");
-        $(".list-category").hide();
-        //reset the form to ensure only one category is returned to display_category when submitting 
-        $('#categories')[0].reset();
-        if ($(categorySearchPane).attr("data")) {
-            if (previousCategory != category) {
-                $(categorySearchPane).attr("data", category);
-                $(listElement).show();
-                $("#search-category").text(category);
-                $(this).addClass("search-button-clicked");
-                $("#search-" + previousCategory.toLowerCase()).removeClass("search-button-clicked");
-            }
-            else {
-                $(categorySearchPane).slideUp();
-                $(categorySearchPane).removeAttr("data");
-                $(this).removeClass("search-button-clicked");
-            }
-        }
-        else {
-            $(categorySearchPane).slideDown();
-            $(categorySearchPane).attr("data", category);
-            $(listElement).show();
-            $("#search-category").text(category)
-            $(this).addClass("search-button-clicked");
-        }
-    })
-</script>
 
 {% endblock %}

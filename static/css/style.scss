@@ -17,6 +17,111 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
+//----- MATERIALIZE CUSTOMISE OPTIONS -----//
+  body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+//----- GENERAL STYLES -----//
+form {
+    margin-top: 10px;
+    font-family: "Roboto", sans;
+    .row {
+        margin-bottom: 0;
+    }
+    #add_ingredient {
+        margin-top: 22px;
+    }
+    #remove_ingredient {
+        margin-top: 6px;
+        background-color: $highlight4-color !important;
+    }
+    label {
+        color: $base-color;
+    }
+    p {
+        color: $base-color;
+    }
+    input {
+        border-bottom: 1px solid $base-color !important;
+        font-family: "Roboto", sans !important;
+        font-size: 14px !important;
+    }
+
+    input:focus {
+        border-bottom: 1px solid $base-color !important;
+        box-shadow: 0 1px 0 0 $base-color !important;
+
+    }    
+    .input-field {
+        //margin-top: 0;
+        label {
+            color: $base-color;
+            font-family: "Roboto", sans;
+        }
+    }    
+    
+
+}
+
+input[type="checkbox"]:checked+span:not(.lever):before {
+        border-right: 2px solid $highlight2-color;
+        border-bottom: 2px solid $highlight2-color;
+   }
+
+.page-dividers {
+    .col {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.page-divider {
+    height: 10px;
+    margin: 0 30px 0 30px;
+}
+
+.top-margin-page-divider {
+    margin-top: 20px;
+}
+
+.top-margin-wide-page-divider {
+    margin-top: 40px;
+}
+
+.padded-margin-page-divider {
+    margin: 20px 0 20px 0;
+}
+
+.btn-block {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+}
+
+.btn:active {
+    background-color: $highlight4-color !important;
+}
+
+.select-wrapper input {
+    font-size: 1rem !important;
+}
+
+.dropdown-content li>span {
+    color: $font-color;
+    font-size: 0.8rem;
+}
+
+.gold-star {
+    color: #FFBF57;
+}
+
 //----- NAV BAR ----- //
 .nav-wrapper {
     background-color: $base-color;
@@ -57,8 +162,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
-
-//----- MAIN TITLE AND BACKGROUND IMAGE -----//
+//----- MAIN TITLE AND BACKGROUND IMAGE SECTION -----//
 .title-container {
     height: 200px;
     background: url('https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') no-repeat center;
@@ -75,7 +179,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
-//----- SPLASHES -----//
+//----- SPLASH SECTION -----//
 .splash-container {
     background-color: $highlight1-color;
     font-family: "Roboto";
@@ -102,7 +206,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
-//----- INFORMATION SECTION CONTAINER -----//
+//----- INFORMATION SECTION -----//
 .information-container {
     color: $base-color;
     padding-top: 20px;
@@ -111,7 +215,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
-//----- SEARCH SECTION CONTAINER -----//
+//----- SEARCH PAGE -----//
 .search-button-container {
     font-family: "Roboto";
     color: white;
@@ -126,7 +230,6 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
     .row {
         margin-bottom: 0;
-        height: 80px;
     }
     .btn-flat {
         color: white;
@@ -173,19 +276,29 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
-
-
-#category-search {
+#category-search-form-container {
     margin-top: 20px;
+    display:none;
 }
 
+//----- CATEGORY SEARCH RESULTS PAGE -----//
 .category-display {
     .row {
         margin-bottom: 0;
     }
 }
 
-//----- RECIPE RESULTS -----//
+.category-display {
+    .collapsible ul {
+        margin-bottom: 0 !important;
+        box-shadow: none !important;
+    }
+    .collapsible-body {
+        padding: 0 !important; //border-bottom: none !important;
+    }
+}
+
+//----- RECIPE RESULTS PAGE -----//
 .recipe-list-header {
     font-family: "Roboto", sans;
     padding-top: 10px;
@@ -294,9 +407,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
-
-
-//----- ADD AND EDIT RECIPES -----//
+//----- ADD AND EDIT RECIPE PAGES -----//
 .recipe-form {
     textarea {
         border-bottom: 1px solid $base-color !important;
@@ -316,8 +427,29 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
     }
 }
 
+//----- DISPLAY RECIPE PAGE -----//
+.display-recipe-button-container {
+    position:fixed;
+    li a {
+        color:white;
+    }
+    //NB overriding general dropdown-content style
+    .dropdown-content li>span {
+        font-size:16px;
+        color:white;
+    }
+}
 
-//----- DISPLAY RECIPE -----//
+.recipe-details {
+    color:$base-color;
+    .row {
+        margin:0;
+    }
+    i {
+        padding-top:16px;
+    }
+}
+
 .recipe-contents-list {
     margin-bottom: 20px;
     p {
@@ -332,113 +464,7 @@ $highlight-colors: $highlight1-color $highlight2-color $highlight3-color $highli
 
 .recipe-image {
     width: 25vh;
-}
-
-
-//----- DISPLAY CATEGORIES -----//
-.category-display {
-    .collapsible ul {
-        margin-bottom: 0 !important;
-        box-shadow: none !important;
-    }
-    .collapsible-body {
-        padding: 0 !important; //border-bottom: none !important;
-    }
-}
-
-//----- GENERAL STYLES -----//
-form {
-    margin-top: 10px;
-    font-family: "Roboto", sans;
-    .row {
-        margin-bottom: 0;
-    }
-    #add_ingredient {
-        margin-top: 22px;
-    }
-    #remove_ingredient {
-        margin-top: 6px;
-        background-color: $highlight4-color !important;
-    }
-    label {
-        color: $base-color;
-    }
-    p {
-        color: $base-color;
-    }
-    input {
-        border-bottom: 1px solid $base-color !important;
-        font-family: "Roboto", sans !important;
-        font-size: 14px !important;
-    }
-
-    input:focus {
-        border-bottom: 1px solid $base-color !important;
-        box-shadow: 0 1px 0 0 $base-color !important;
-
-    }    
-    .input-field {
-        //margin-top: 0;
-        label {
-            color: $base-color;
-            font-family: "Roboto", sans;
-        }
-    }    
-    
-
-}
-
-    input[type="checkbox"]:checked+span:not(.lever):before {
-        border-right: 2px solid $highlight2-color;
-        border-bottom: 2px solid $highlight2-color;
-   }
-
-.page-dividers {
-    .col {
-        padding: 0;
-        margin: 0;
-    }
-}
-
-.page-divider {
-    height: 10px;
-    margin: 0 30px 0 30px;
-}
-
-.top-margin-page-divider {
-    margin-top: 20px;
-}
-
-.top-margin-wide-page-divider {
-    margin-top: 40px;
-}
-
-.padded-margin-page-divider {
-    margin: 20px 0 20px 0;
-}
-
-
-.btn-block {
-    width: 100%;
-    height: 100%;
-    font-size: 1rem;
-}
-
-.btn:active {
-    background-color: $highlight4-color !important;
-}
-
-.select-wrapper input {
-    font-size: 1rem !important;
-}
-
-.dropdown-content li>span {
-    color: $font-color;
-    font-size: 0.8rem;
-}
-
-.gold-star {
-    color: #FFBF57;
+    border:3px solid $highlight4-color;
 }
 
 //----- MODAL STYLES -----//
@@ -536,8 +562,14 @@ form {
     }
 
     .recipe-image {
-        height: 25vh;
+        width: 25vw;
     }
+    
+    .display-recipe-button-container {
+        .dropdown-trigger {
+            margin:10px 0 0 20px;
+        }
+    }    
 }
 
 @media (min-width: 1024px) {
@@ -576,6 +608,19 @@ form {
             }
         }
     }
+    
+        .search-button-container {
+        .col {
+            line-height: 175px;
+        }
+    }
+
+    .display-recipe-button-container {
+        .dropdown-trigger {
+            margin:10px 0 0 30px;
+        }
+    }  
+    
     #star {
         font-size: 2.5rem;
     }

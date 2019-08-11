@@ -41,24 +41,16 @@ def add_recipe():
     for ingredient in ingredients:
         new_ingredient={ingredient["name"].capitalize():None}
         _ingredients.update(new_ingredient)
-        
-    #get list of authors to display in auto complete form for authors in add_recipe.html
-    authordb=mongo.db.authorDB
-    authors=authordb.find()
-    _authors={}
-    for author in authors:
-        new_author={author["name"]:None}
-        _authors.update(new_author)
 
     #get list of countries to display in auto complete form for countries in add_recipe.html
     countrydb=mongo.db.countriesDB
     countries=countrydb.find()
     _countries={}
     for country in countries:
-        new_country={country["name"]:None}
+        new_country={country["name"].capitalize():None}
         _countries.update(new_country)
 
-    return render_template("add_recipe.html", title_text='Add recipe',ingredients_list=_ingredients, author_list=_authors, country_list=_countries)
+    return render_template("add_recipe.html", title_text='Add recipe',ingredients_list=_ingredients, country_list=_countries)
 
 @app.route("/insertrecipe/", methods=['POST'])
 def insertrecipe():
@@ -389,8 +381,6 @@ def recipe_list():
                 
             session["filters"]=_filter_dict
     
-    print("_filter_dict",_filter_dict)
-    
     if filter=='true':
     #do the appropriate search and sort against the mongoDB depending on input from form/session variable
 
@@ -407,11 +397,11 @@ def recipe_list():
     #remove duplicates from the lists
     _author_list=[]
     for author in list_of_authors:
-        _author_list.append(author["name"])
+        _author_list.append(author["name"][0].capitalize())
             
     _country_list=[]
     for country in list_of_countries:
-        _country_list.append(country["name"])    
+        _country_list.append(country["name"][0].capitalize())    
     
     _total_results=_recipe_list.count()
     return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,selected_country=filter_country, selected_author=filter_author,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
@@ -441,26 +431,26 @@ def edit_recipe(recipe_id):
     ingredients=ingredientsdb.find()
     _ingredients={}
     for ingredient in ingredients:
-        new_ingredient={ingredient["name"]:None}
+        new_ingredient={ingredient["name"][0].capitalize():None}
         _ingredients.update(new_ingredient)
         
     #get list of authors to display in auto complete form for authors in add_recipe.html
+    '''
     authordb=mongo.db.authorDB
     authors=authordb.find()
     _authors={}
     for author in authors:
         new_author={author["name"]:None}
         _authors.update(new_author)
-
+    '''
     #get list of countries to display in auto complete form for countries in add_recipe.html
     countrydb=mongo.db.countriesDB
     countries=countrydb.find()
     _countries={}
     for country in countries:
-        new_country={country["name"]:None}
+        new_country={country["name"][0].capitalize():None}
         _countries.update(new_country)
-        
-    return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe,ingredients_list=_ingredients, author_list=_authors, country_list=_countries)
+    return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe,ingredients_list=_ingredients, country_list=_countries)
 
 @app.route('/delete_recipe',methods=['POST'])
 def delete_recipe():

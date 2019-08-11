@@ -55,7 +55,7 @@
           <div class="row">
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
-              <input id="country" name="country" type="text" value="{{recipe.country}}"></input>
+              <input id="country" class="autocomplete" name="country" type="text" value="{{recipe.country}}"></input>
             </div>
           </div>
 
@@ -139,12 +139,12 @@
           </div>            
           <div class="row">
             <div class="col s10 m5 l4 input-field">
-              <input id="ingredient" class="autocomplete" type="text"></input>
               <label for="ingredient">Ingredient</label>
+              <input id="ingredient" class="autocomplete" type="text"></input>
             </div>
             <div class="col s3 m2 l1 input-field">
-              <input id="amount" type="number" min="0">
               <label for="amount">Quantity</label>
+              <input id="amount" type="number" min="0">
             </div>
             <div id="unit" class="col s3 m2 l1 input-field">
               <select id="select-unit">
@@ -189,26 +189,6 @@
       <input id="author" type="hidden" name="author" type="text" value="{{recipe.author}}"></input>
     </form>
   </div>
-
-  <div class="hide-on-small-only top-margin-page-divider">
-    <div class="row">
-      <div class="col m10 offset-m1">
-        <div class="col center-align m3">
-          <div class="left-align page-divider highlight3-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class="center-align page-divider highlight1-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class=" center-align page-divider highlight2-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class="center-align page-divider highlight4-background"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </section>
 
 <!--Error modal -->
@@ -228,15 +208,11 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var ingredient_list = { { ingredients_list | tojson } }
-    var author_list = { { author_list | tojson } }
     var country_list = { { country_list | tojson } }
 
     $('#ingredient').autocomplete({
       data: ingredient_list,
     });
-    //    $('#author').autocomplete({
-    //      data:author_list,
-    //    }); 
     $('#country').autocomplete({
       data: country_list,
     });

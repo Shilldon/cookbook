@@ -51,7 +51,7 @@
           <div class="row">
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
-              <input id="country" name="country" type="text"></input>
+              <input id="country" class="autocomplete" name="country" type="text"></input>
             </div>
 
             <div class="col s12 m6 input-field">
@@ -118,13 +118,13 @@
           <div id="ingredients">
           </div>          
           <div class="row">
-            <div class="col s10 m5 l4 input-field">
-              <input class="autocomplete" id="ingredient" type="text"></input>
+            <div class="col s12 m5 l4 input-field">
               <label for="ingredient">Ingredient</label>
+              <input class="autocomplete" id="ingredient" type="text">
             </div>
             <div class="col s3 m2 l1 input-field">
-              <input id="amount" type="number" min="0">
               <label for="amount">Quantity</label>
+              <input id="amount" type="number" min="0"></input>
             </div>
             <div id="unit" class="col s3 m2 l1 input-field" >
               <select id="select-unit">
@@ -138,10 +138,12 @@
               </select>
               <label for="select-unit">Unit</label>
             </div>
-            <div class="add-ingredient-button">
+            <div class="col s1 add-ingredient-button">
               <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
-            </div>
+            </div>              
+
           </div>
+        
           <div class="row">
             <div class="col s12 input-field">
               <label for="method">Method</label>
@@ -165,26 +167,6 @@
       <input id="author" type="hidden" name="author" type="text" value="{{session['user']}}"></input>
     </form>
   </div>
-
-  <div class="hide-on-small-only top-margin-wide-page-divider">
-    <div class="row">
-      <div class="col m10 offset-m1">
-        <div class="col center-align m3">
-          <div class="left-align page-divider highlight3-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class="center-align page-divider highlight1-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class=" center-align page-divider highlight2-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class="center-align page-divider highlight4-background"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 </section>
 
 <!--Error modal -->
@@ -205,15 +187,11 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var ingredient_list = {{ingredients_list|tojson}}
-    var author_list = {{author_list|tojson}}
     var country_list = {{country_list|tojson}}
 
     $('#ingredient').autocomplete({
       data: ingredient_list,
     });
-    //    $('#author').autocomplete({
-    //      data:author_list,
-    //    }); 
     $('#country').autocomplete({
       data: country_list,
     });

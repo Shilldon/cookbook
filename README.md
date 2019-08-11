@@ -26,3 +26,5 @@ allergies: https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-143582
 
 defensive - category search - prevent entering empty search
 admin edit and delete all recipes
+
+show on medium not work - workaround - hide on small only and hide on large only

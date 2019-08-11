@@ -138,3 +138,60 @@ $("#allergens_list").change(function() {
     $("#allergens-unfiltered").prop("selected", "selected")
   }
 })
+
+
+//---search page scripts---//
+    $(".category-search-button").on("click", function() {
+        var inputValid = false;
+        $("form select").each(function() {
+            if ($(this).val().length > 0) {
+                inputValid = true;
+                return false;
+            }
+        })
+        if (inputValid == false) {
+            $("#error-modal").modal('open');
+        }
+        else {
+            $("#categories").submit();
+        }
+    })
+
+    $(".category-close-button").on("click", function() {
+        $("#category-search-form-container").slideUp();
+        $("#category-search-form-container").removeAttr("data");
+        $(".search-button").removeClass("search-button-clicked");
+    })
+
+    $(".search-button").on("click", function() {
+        var category = $(this).children("p").text();
+        if(category!="") {
+          var categorySearchPane = $("#category-search-form-container");
+          var listElement = "#list-element-" + category.toLowerCase();
+          var previousCategory = $(categorySearchPane).attr("data");
+          $(".list-category").hide();
+          //reset the form to ensure only one category is returned to display_category when submitting 
+          $('#categories')[0].reset();
+          if ($(categorySearchPane).attr("data")) {
+              if (previousCategory != category) {
+                  $(categorySearchPane).attr("data", category);
+                  $(listElement).show();
+                  $("#category-to-search").text(category);
+                  $(this).addClass("search-button-clicked");
+                  $("#search-" + previousCategory.toLowerCase()).removeClass("search-button-clicked");
+              }
+              else {
+                  $(categorySearchPane).slideUp();
+                  $(categorySearchPane).removeAttr("data");
+                  $(this).removeClass("search-button-clicked");
+              }
+          }
+          else {
+              $(categorySearchPane).slideDown();
+              $(categorySearchPane).attr("data", category);
+              $(listElement).show();
+              $("#category-to-search").text(category)
+              $(this).addClass("search-button-clicked");
+          }
+        }          
+    })
