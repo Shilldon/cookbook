@@ -194,14 +194,41 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   margin-top: 20px;
   display: none; }
 
-.category-display .row {
+.category-search-results-container img {
+  width: 50px;
+  height: 50px;
+  border: solid 4px #8C5D42;
+  object-fit: cover; }
+.category-search-results-container .collapsible-header {
+  line-height: 45px; }
+  .category-search-results-container .collapsible-header img,
+  .category-search-results-container .collapsible-header i {
+    margin: auto; }
+  .category-search-results-container .collapsible-header p {
+    margin-top: 0;
+    margin-bottom: 0; }
+  .category-search-results-container .collapsible-header .row {
+    padding: 0;
+    margin: 0;
+    flex: auto; }
+.category-search-results-container .collapsible-body {
+  padding: 0;
+  color: #5A6978; }
+  .category-search-results-container .collapsible-body p {
+    padding-left: 30px; }
+  .category-search-results-container .collapsible-body a {
+    color: #033E8C;
+    padding-right: 30px; }
+  .category-search-results-container .collapsible-body a:hover {
+    color: #c69769; }
+.category-search-results-container .category-result-header {
+  background-color: #8C5D42;
+  color: white; }
+.category-search-results-container .row {
   margin-bottom: 0; }
-
-.category-display .collapsible ul {
-  margin-bottom: 0 !important;
-  box-shadow: none !important; }
-.category-display .collapsible-body {
-  padding: 0 !important; }
+.category-search-results-container ul {
+  margin-top: 0;
+  margin-bottom: 0; }
 
 .recipe-list-header {
   font-family: "Roboto", sans;
@@ -222,11 +249,6 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   border: none;
   margin-top: 0;
   margin-bottom: 0 !important; }
-  .recipe-list-search-options-container .collapsible .expand {
-    transition-duration: 0.25s;
-    transform: rotate(-90deg); }
-  .recipe-list-search-options-container .collapsible .active .expand {
-    transform: rotate(0deg); }
 .recipe-list-search-options-container .collapsible-header {
   background-color: #8C5D42;
   color: white; }
@@ -312,6 +334,15 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   width: 25vh;
   border: 3px solid #8C5D42; }
 
+.collapsible .expand,
+.collapsible .expand-nested {
+  transition-duration: 0.25s;
+  transform: rotate(-90deg); }
+.collapsible .active .expand {
+  transform: rotate(0deg); }
+.collapsible .collapsible .active .expand-nested {
+  transform: rotate(0deg); }
+
 .modal {
   font-family: "Roboto", sans;
   color: #5A6978; }
@@ -335,6 +366,10 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   .information-container p {
     color: #5A6978;
     font-size: 1.2rem; }
+
+  .category-search-results-container .category-result-header {
+    background-color: white;
+    color: #034AA6; }
 
   .search-splash {
     height: 125px; }
@@ -400,8 +435,10 @@ input[type="checkbox"]:checked + span:not(.lever):before {
     line-height: 70px;
     font-size: 35px; }
 
+  .search-button-container p {
+    font-size: 2.5rem; }
   .search-button-container .col {
-    line-height: 175px; }
+    line-height: 250px; }
 
   .display-recipe-button-container .dropdown-trigger {
     margin: 10px 0 0 30px; }

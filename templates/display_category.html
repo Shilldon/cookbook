@@ -1,69 +1,119 @@
 {% extends 'base.html' %} {% block content %}
+<!-- header dividers -->
+<section class="hide-on-small-only">
+  <div class="row top-margin-page-divider">
+    <div class="col m10 offset-m1">
+      <div class="col center-align m3">
+        <div class="left-align page-divider highlight3-background"></div>
+      </div>
+      <div class="col center-align m3">
+        <div class="center-align page-divider highlight1-background"></div>
+      </div>
+      <div class="col center-align m3">
+        <div class=" center-align page-divider highlight2-background"></div>
+      </div>
+      <div class="col center-align m3">
+        <div class="center-align page-divider highlight4-background"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<!-- details and information -->
-<section class="category-display">
-  <div class="row">
-    <div class="col s12 splash-container search-splash">
-      <div class="row valign-wrapper">
-        <div class="col s12">
-          {%if category=="allergens" %}
-          <h5 class="center-align flow-text">Browse by dietary requirements</h5>
-          <p class="center-align flow-text">Recipes that do not contain:</p>
-          {%else%}
-          <h5 class="center-align flow-text">Browse by {{category[0]|upper}}{{category[1:]|lower}}</h5>
-          {%endif%}
+<!-- call to action -->
+<section class="hide-on-med-and-up">
+  <div class="splash-container search-splash hide-on-med-and-up">
+    <div class="row">
+      <div class="col s12 ">
+        <div class="row valign-wrapper">
+          <div class="col s12">
+            {%if category=="allergens" %}
+            <h5 class="center-align flow-text">Browse by dietary requirements</h5>
+            <p class="center-align flow-text">Recipes that do not contain:</p>
+            {%else%}
+            <h5 class="center-align flow-text">Browse by {{category[0]|upper}}{{category[1:]|lower}}</h5>
+            {%endif%}
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col s12 search-container" style="padding:0">
-      <ul class="collapsible">
-        {%for item in items %}
-        <li {%if loop.index==1 %}class='active' {%endif%}>
-          <div class="collapsible-header" style="background-color:#8C5D42; color:white">
-            <div class="row" style="padding:0; margin:0; flex:auto">
-              <div class="col s1">
-                <i class="material-icons expand">expand_more</i>
-              </div>
-              <div class="col s6">
-                <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
-              </div>
-              <div class="col s5" class="right-align">
-                <p style="margin:0; ">Recipes found: {{recipes[item]|length}}</p>
+</section>
+
+<!--details and information-->
+<section class="hide-on-small-only">
+    <div class="information-container">
+    <div class="row hide-on-small-only">
+        <div class="col s12">
+            <h5 class="center-align">Browse your recipes</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s10 offset-s1">
+            <p class="center-align">Below you will find all the recipes in the Cookbook categorised according to your custom search.</h5>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- list of results from category search -->
+<section>
+  <div class="category-search-results-container">
+        <div class="row">
+        <div class="col s12 m10 offset-m1 l8 offset-l2">
+    
+    <div class="row">
+      <div class="col s12" style="padding:0">
+        <ul class="collapsible">
+          {%for item in items %}
+          <li {%if loop.index==1 %}class='active' {%endif%}>
+            <div class="collapsible-header category-result-header">
+              <div class="row valign-wrapper">
+                <div class="col s1 valign-wrapper">
+                  <i class="material-icons expand">expand_more</i>
+                </div>
+                <div class="col s6">
+                  <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
+                </div>
+                <div class="col s5" class="right-align">
+                  <p>Recipes found: {{recipes[item]|length}}</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="collapsible-body" style="padding:0 !important; border-bottom:none">
-            <ul class="collapsible" style="border-top:0 !important">
-              {%if recipes[item]|length==0 %}
-              <li>
-                <div class='collapsible-header' style="padding-top:0; padding-bottom:0; width:100%">
-                  <div class="valign-wrapper" style="margin-bottom:0">
-                    <p>No recipes found</p>
-                  </div>
-                </div>
-              </li>
-              {%endif%} {%for recipe in recipes[item]%}
-              <li>
-                <div class="collapsible-header" style="padding-top:0; padding-bottom:0; width:100%; display:block">
-                  <i class="material-icons expand-nested right" style="margin-top:20px">expand_more</i>
-                  <div class="valign-wrapper" style="margin-bottom:0">
-                    <div class="valign-wrapper" style="padding:5px 0 5px 0">
-                      {% if recipe.picture %}
-                      <img src="{{recipe.picture}}" class="circle responsive-image recipe-list-image"> {% else %}
-                      <i class="fa fa-cutlery fa-2x meal-icon" aria-hidden="true"></i> {% endif %}
-                    </div>
-                    <div class="">
-                      {{recipe.name}}
+            <div class="collapsible-body">
+              <ul class="collapsible">
+                {%if recipes[item]|length==0 %}
+                <li>
+                  <div class='collapsible-header'>
+                    <div class="valign-wrapper">
+                      <p>No recipes found</p>
                     </div>
                   </div>
-                </div>
-                <div class="collapsible-body">
-                  <div style="padding-left:30px">
+                </li>
+                {%endif%} {%for recipe in recipes[item]%}
+                <li class="hide-on-med-and-up">
+                  <div class="collapsible-header">
+                    <div class="row valign-wrapper">
+                      <div class="col s1 offset-s1 valign-wrapper">
+                        <i class="material-icons expand-nested">expand_more</i>
+                      </div>
+                      <div class="col s3 valign-wrapper">
+                        {% if recipe.picture %}
+                        <img src="{{recipe.picture}}" class="circle responsive-image ">{% else %}
+                        <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i> {% endif %}
+                      </div>
+                      <div class="col s8">
+                        {{recipe.name}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="collapsible-body">
+                    <div class="row">
+                      <div class="col s11 offset-s1">
+                        
                     {%if recipe.cook_time%}
-                    <p><a style="padding-right:30px" class="right" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i style="" class="material-icons">remove_red_eye</i></a> Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if
-                      recipe.minutes %}{{recipe.minutes}} minutes{%endif%}</p>
+                    <p><a class="right" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i class="material-icons">remove_red_eye</i></a> Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}}
+                      minutes{%endif%}
+                    </p>
                     {%endif%} {%if recipe.calories%}
 
                     <p>Calories: {{recipe.calories}} kCal</p>
@@ -72,40 +122,55 @@
 
                     <p>Difficulty: {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
                     {%endif%}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </li>
-              {%endfor%}
-            </ul>
-          </div>
-        </li>
-        {%endfor%}
-      </ul>
+                </li>
+                <li class="hide-on-small-only">
+                                    <div class="collapsible-header">
+                    <div class="row valign-wrapper">
+                      <div class="col m2 valign-wrapper">
+                        {% if recipe.picture %}
+                        <img src="{{recipe.picture}}" class="circle responsive-image ">{% else %}
+                        <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i> {% endif %}
+                      </div>
+                      <div class="col m3">
+                        <strong>{{recipe.name}}</strong>
+                      </div>
+                      <div class="col m7">
+                        
+                    {%if recipe.cook_time%}
+                    <a class="right" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i class="material-icons">remove_red_eye</i></a> 
+                    <strong>Cooking time:</strong> {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}}
+                      minutes{%endif%}
+                    
+                    {%endif%} {%if recipe.calories%}
+
+                    <strong>Calories:</strong> {{recipe.calories}} kCal
+
+                    {%endif%} {%if recipe.difficulty%}
+
+                    <strong>Difficulty:</strong> {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}
+                    {%endif%}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {%endfor%}
+              </ul>
+            </div>
+          </li>
+          {%endfor%}
+        </ul>
+      </div>
     </div>
+  </div>
+  </div>
   </div>
   <div class="row" style="margin-top:20px">
     <div class="col s4 offset-s4 m2 offset-m5 ">
-      <a href="{{url_for('search')}}" class="waves-effect waves-light btn btn-block hide-on-large highlight2-background">Back</a>
+      <a href="{{url_for('search')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Back</a>
       <a href="{{url_for('search')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Back</a>
-    </div>
-  </div>
-
-  <div class="hide-on-small-only top-margin-page-divider">
-    <div class="row">
-      <div class="col m10 offset-m1">
-        <div class="col center-align m3">
-          <div class="left-align page-divider highlight3-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class="center-align page-divider highlight1-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class=" center-align page-divider highlight2-background"></div>
-        </div>
-        <div class="col center-align m3">
-          <div class="center-align page-divider highlight4-background"></div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
