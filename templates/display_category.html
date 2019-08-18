@@ -108,19 +108,22 @@
                       <div class="collapsible-body">
                         <div class="row">
                           <div class="col s11 offset-s1">
-
                             {%if recipe.cook_time%}
-                            <p><a class="right" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i class="material-icons">remove_red_eye</i></a> Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}}
-                              minutes{%endif%}
+                            <p>Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}
                             </p>
                             {%endif%} {%if recipe.calories%}
-
                             <p>Calories: {{recipe.calories}} kCal</p>
-
                             {%endif%} {%if recipe.difficulty%}
-
                             <p>Difficulty: {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
                             {%endif%}
+                            <div class="row" {% if not (recipe.cook_time and recipe.calories and recipe.difficulty) %} style="margin-top:20px; margin-bottom:20px" {%else%} style="padding-bottom:20px;" {%endif%}>
+                              <div class="col s5 offset-s1">
+                                <a href="{{url_for('display_recipe', recipe_id=recipe._id)}}">View recipe</a>
+                              </div>
+                              <div class="col s5">
+                                <a class="valign-wrapper" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i class="material-icons">remove_red_eye</i></a>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -136,16 +139,14 @@
                           <div class="col m3">
                             <strong>{{recipe.name}}</strong>
                           </div>
-                          {%if recipe.cook_time%}
                           <div class="col m6">
-                            <p><strong>Cooking time:</strong> {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}</p> 
-                          {%endif%} 
-                          {%if recipe.calories%}
-                            <p><strong>Calories:</strong> {{recipe.calories}} kCal</p> 
-                          {%endif%}
-                          {%if recipe.difficulty%}
-                            <p><strong>Difficulty:</strong> {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p> 
-                          {%endif%}
+                          {%if recipe.cook_time%}
+                            <p><strong>Cooking time:</strong> {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}</p>
+                            {%endif%} {%if recipe.calories%}
+                            <p><strong>Calories:</strong> {{recipe.calories}} kCal</p>
+                            {%endif%} {%if recipe.difficulty%}
+                            <p><strong>Difficulty:</strong> {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
+                            {%endif%}
                           </div>
                           <div class="col m1">
                             <a class="right valign-wrapper" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i class="material-icons">remove_red_eye</i></a>
@@ -165,12 +166,12 @@
     </div>
   </div>
   <div class="category-search-results-button-container">
-  <div class="row">
-    <div class="col s4 offset-s4 m2 offset-m5 ">
-      <a href="{{url_for('search')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Back</a>
-      <a href="{{url_for('search')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Back</a>
+    <div class="row">
+      <div class="col s4 offset-s4 m2 offset-m5 ">
+        <a href="{{url_for('search')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Back</a>
+        <a href="{{url_for('search')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Back</a>
+      </div>
     </div>
-  </div>
   </div>
 </section>
 

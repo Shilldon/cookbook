@@ -51,7 +51,7 @@
           <div class="row">
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
-              <input id="country" class="autocomplete" name="country" type="text"></input>
+              <input id="country" class="autocomplete text-only" name="country" type="text"></input>
             </div>
 
             <div class="col s12 m6 input-field">
@@ -122,7 +122,7 @@
               <label for="ingredient">Ingredient</label>
               <input class="autocomplete" id="ingredient" type="text">
             </div>
-            <div class="col s3 m2 l1 input-field">
+            <div class="col s3 m2 l2 input-field">
               <label for="amount">Quantity</label>
               <input id="amount" type="number" min="0"></input>
             </div>
@@ -184,10 +184,12 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
+
 <script type="text/javascript">
   $(document).ready(function() {
-    var ingredient_list = {{ingredients_list|tojson}}
-    var country_list = {{country_list|tojson}}
+    var ingredient_list = {{ingredients_list|tojson}};
+    var country_list = {{country_list|tojson}};
 
     $('#ingredient').autocomplete({
       data: ingredient_list,
@@ -196,8 +198,9 @@
       data: country_list,
     });
 
+
   })
-  /*
+  $('.text-only').alpha();  /*
     $("#add_ingredient").on("click", function() {
       var totalIngredients = $("#ingredients").data("total_ingredients");
       totalIngredients++;

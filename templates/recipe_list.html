@@ -68,7 +68,7 @@
                     <div class="collapsible-body">
                     <div class="row">
                         <div class="col s10 offset-s1">
-                            <form id="filters_form" action="{{url_for('recipe_list', filter='true')}}" method="POST">
+                            <form id="filters_form" action="{{url_for('recipe_list', filter='true', action=action)}}" method="POST">
                                 <ul>
                                     {% if session["user"] %}
                                     <li>
@@ -79,7 +79,7 @@
                                             <div class="col s7  input-field">
                                                 <select name="favourite">
                                                     <option value="" selected>Not filtered</option>
-                                                    <option value=true {% if filters.favourite==True %}selected="selected" {% endif%} >Filtered by favourites</option>
+                                                    <option value=true {% if filters.favourite %} selected="selected" {% endif%} >Filtered by favourites</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -109,7 +109,7 @@
                                             </div>
                                             <div class="col s7 input-field">
                                                 <select id="allergens_list" name="allergens" multiple>
-                                                    <option value="" id="allergens-unfiltered" {% if allergens|length==0 %}  disabled selected {% endif %}>Not filtered</option>
+                                                    <option value="" id="allergens-unfiltered" {% if allergens|length==0 %} selected {% endif %} disabled>Not filtered</option>
                                                     <option value="dairy" {% if 'dairy' is in allergens %} selected="selected" {%endif%}>No Dairy</option>
                                                     <option value="fish" {% if 'fish' is in allergens %} selected="selected" {%endif%}>No Fish</option>
                                                     <option value="gluten" {% if 'gluten' is in allergens %} selected="selected" {%endif%}>No Gluten</option>
@@ -178,7 +178,7 @@
                                     </li>
                                     {% endif %}
                                     <!-- check if a list of authors has been retrieved, if not do not display this filter -->
-                                    {% if authors[0] is defined and action=="search" %}
+                                    {% if authors[0] is defined and not(action=="delete" or action=="edit") %}
                                     <li>
                                         <div class="row">
                                             <div class="col s5 input-field">
@@ -272,9 +272,10 @@
     <!--display the recipes found-->
     <div class="row">
         <div class="col s12 recipe-book">
-        {% for recipe in recipes %} {% if loop.index % 10 == 1 or loop.first %} {% set page=loop.index/10 %} {% set page=page | round | int %}
+        {% for recipe in recipes %} 
+        {% if loop.index % 10 == 1 or loop.first %} {% set page=loop.index/10 %} {% set page=page | round | int %}
         <div class="recipe-page" id="recipepage{{page+1}}" {%if loop.first %}style="display:block" {%else%} style="display:none" {%endif%}>
-            {%endif%}
+        {%endif%}
             <div class="recipe-list row-effect">
                 <a
                 {% if action=="edit" %}
@@ -348,12 +349,14 @@
         </div>
         {%endif%} {% endfor %}
         </div>
-        
     </div>
+
+    {%if recipes.count()>10 %}
     <div class="row">
         <div id="pagination" class="s12">
         </div>
     </div>
+    {%endif%}
 
     <div class="row">
         <div class="col s4 offset-s4 m2 offset-m5">
@@ -380,8 +383,8 @@
                         <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
                     </div>
                     <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red">Delete</button>
-                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red">Delete</button>
+                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red call-preloader">Delete</button>
+                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red call-preloader">Delete</button>
                     </div>
                 </div>
             </form>
@@ -412,6 +415,7 @@ $(document).ready(function(){
             }, 1000);        
         }
     });     
+
 </script>
 
 {% endblock %}

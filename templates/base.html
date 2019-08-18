@@ -23,8 +23,8 @@
   <header>
     <nav>
       <ul id="search-options" class="dropdown-content">
-        <li class="highlight3-background valign-wrapper" style="height:63px"><a href="{{ url_for('recipe_list', action='search') }}" style="padding-top:22px; color:white;width:100%; height:100%" href="#!">Recipes</a></li>
-        <li class="highlight3-background valign-wrapper" style="height:63px"><a href="{{ url_for('search')}}" style="padding-top:22px; color:white;width:100%; height:100%" href="#!">Categories</a></li>
+        <li class="highlight3-background valign-wrapper"><a href="{{ url_for('recipe_list', action='search') }}" href="#!">Recipes</a></li>
+        <li class="highlight3-background valign-wrapper"><a href="{{ url_for('search')}}" href="#!">Categories</a></li>
       </ul>
       <div class="nav-wrapper">
         <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
@@ -44,7 +44,7 @@
           </li>
           {%endif%}
           <li class="highlight3-background">
-            <a class="dropdown-trigger call-preloader" href="#!" data-target="search-options">Search</a>
+            <a class="dropdown-trigger" href="#!" data-target="search-options">Search</a>
           </li>
           {% if session["user"] %}
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
@@ -56,7 +56,7 @@
           <li class="highlight4-background">
             {% if recipe %}
             <a href="#delete_modal" class=" modal-trigger">Delete</a> {% else %}
-            <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
+            <a class="call-preloader" href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
           </li>
           {%else%}
           <li class="highlight2-background">

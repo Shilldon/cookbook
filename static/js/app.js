@@ -37,7 +37,6 @@ $("#favourite").on("click", function() {
 })
 
 $(".call-preloader").on("click", function() {
-  console.log("clickd")
   $(".modal").modal("close");
   $("#loader-modal").modal('open');  
 })
@@ -95,13 +94,15 @@ $(".submit-recipe").on("click", function() {
     $("#error-modal").modal('open');
   }
   else {
+    $(".modal").modal("close");
+    $("#loader-modal").modal('open');    
     $("#recipe-form").submit();
   }
 })
 
 //--recipe list scripts ---//
 $('body').on('click', '.delete_button', function() {
-  //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to flask if deletion is confirmed
+  //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to backend if deletion is confirmed
   recipe_id = $(this).attr("recipe_id");
   $('#recipe_id_input').val(recipe_id)
   $(this).find(".row").addClass("selected-for-deletion")

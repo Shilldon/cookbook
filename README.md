@@ -28,3 +28,5 @@ defensive - category search - prevent entering empty search
 admin edit and delete all recipes
 
 show on medium not work - workaround - hide on small only and hide on large only
+
+text only https://www.jqueryscript.net/form/A-jQuery-Plugin-To-Restrict-Characters-In-Text-Field-Alphanum.html

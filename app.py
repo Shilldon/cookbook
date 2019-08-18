@@ -225,6 +225,7 @@ def insertrecipe():
                     
     #need to remove the favourite, type, amount and unit arrays from the dict having imported them into ingredients objects and favourite array
     #done by error testing because ingredients/favourite may not have been added via the form
+    '''
     try:
         del new_recipe['type']
     except KeyError:
@@ -236,7 +237,8 @@ def insertrecipe():
     try:
         del new_recipe['unit']
     except KeyError:
-        pass          
+        pass  
+    '''
 
     recipes.update({'_id':ObjectId(recipe_id)},new_recipe)
         
@@ -254,15 +256,15 @@ def search():
     for category in categories:
         item_list=[]
         if category=="ingredients":
-            database=mongo.db.ingredientsDB.find().sort("name")
+            coll=mongo.db.ingredientsDB.find().sort("name")
         elif category=="allergens":
-            database=mongo.db.allergensDB.find().sort("name")
+            coll=mongo.db.allergensDB.find().sort("name")
         elif category=="meal":
-            database=mongo.db.mealDB.find().sort("name")
+            coll=mongo.db.mealDB.find().sort("name")
         elif category=="country":
-            database=mongo.db.countriesDB.find().sort("name")
+            coll=mongo.db.countriesDB.find().sort("name")
 
-        for item in database:
+        for item in coll:
             item_list.append(item["name"].capitalize())   
         
         _category_lists[category]=item_list  
@@ -281,7 +283,12 @@ def recipe_list():
         _sort=session["sort"]
     else:
         _sort='none'
-    _filter_dict=session["filters"]
+    
+    if session["filters"]:
+        _filter_dict=session["filters"]
+    else:
+        _filter_dict=request.form.to_dict()
+    print("_filter_dict",_filter_dict)
     if _filter_dict==None:
         _filter_dict={}
     
@@ -290,6 +297,7 @@ def recipe_list():
     
     #get the action request from the page to determine what sort of list is to be displayed and display appropriate title text 
     _todo=request.args.get('action',None)
+    print("_todo",_todo)
     if _todo=="delete":
         title_text_value="Delete recipes"
     elif _todo=="edit":
@@ -304,15 +312,18 @@ def recipe_list():
     list_of_countries=mongo.db.countriesDB.find()
     list_of_authors=mongo.db.authorDB.find()
 
+    print("list_of_authors",list_of_authors)
+
     #define filter author and country for passing to filter list in recipe_list.html.
     #Will check for "" value and if so, not display author/country filter
-    filter_country=""
+    filter_country=request.form.get('country')
     if _todo=="delete" or _todo=="edit":
-        print("todo ",_todo)
         filter_author=session["user"].lower()
         filter='true'
     else:
-        filter_author=""
+        filter_author=request.form.get('author')
+
+    print("filter_author=",filter_author)
 
     if filter=='true':    
         _currentsort=request.form.get('sort_by')
@@ -321,10 +332,11 @@ def recipe_list():
             session["sort"]=_sort
         else:
             filter_favourites=request.form.get('favourite')
-            if filter_favourites=='true':
+            if filter_favourites:
                 user_doc=mongo.db.usersDB.find_one({"name":session["user"]})
                 user_id=str(user_doc["_id"])
                 _filter_dict.update({"favourite" : { "$in" : [user_id]}})
+                print("filter favourites _filter_dict=",_filter_dict)
             else:
                 _filter_dict.pop("favourite",None)            
                     
@@ -364,23 +376,20 @@ def recipe_list():
                 _filter_dict.update({"cook_time" : filter_cooktime})
             else:
                 _filter_dict.pop("cook_time",None)
-            filter_country=request.form.get('country')
+            
             if filter_country!="" and filter_country!=None:
-                _filter_dict.update({"country" : filter_country })
+                _filter_dict.update({"country" : filter_country.lower() })
             else:
                 _filter_dict.pop("country",None)
             
-            if _todo=="search":
-                filter_author=request.form.get('author')
-                if filter_author!="" and filter_author!=None:
-                    _filter_dict.update({"author" : filter_author})
-                else:    
-                    _filter_dict.pop("author",None)
-            else:
-                _filter_dict.update({"author" : filter_author})    
+            if filter_author:
+                _filter_dict.update({"author" : filter_author.lower()})
+            else:    
+                _filter_dict.pop("author",None)
+ 
                 
             session["filters"]=_filter_dict
-    
+    print("After run through _filter_dict=",_filter_dict)
     if filter=='true':
     #do the appropriate search and sort against the mongoDB depending on input from form/session variable
 
@@ -394,14 +403,13 @@ def recipe_list():
         else:      
             _recipe_list=mongo.db.recipeDB.find()
 
-    #remove duplicates from the lists
     _author_list=[]
     for author in list_of_authors:
-        _author_list.append(author["name"][0].capitalize())
-            
+        _author_list.append(author["name"].capitalize())
+    print("_author_list",_author_list)       
     _country_list=[]
     for country in list_of_countries:
-        _country_list.append(country["name"][0].capitalize())    
+        _country_list.append(country["name"].capitalize())    
     
     _total_results=_recipe_list.count()
     return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list,selected_country=filter_country, selected_author=filter_author,countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, allergens=allergen_list, sort=_sort, total_results=_total_results)
@@ -496,13 +504,13 @@ def delete_recipe():
     mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
     return redirect(url_for('.recipe_list',action='delete'))
 
-def check_and_delete_empty_doc(item,database):
+def check_and_delete_empty_doc(item,coll):
     print("item=",item)
-    document=database.find_one({"name" : item})
+    document=coll.find_one({"name" : item})
     #check if the document exists, if so and there are no recipes registered against the document delete it from the collection
     if document!=None:
         if len(document["recipe"])==0:
-            database.remove({"name" : item})                      
+            coll.remove({"name" : item})                      
     
 @app.route('/filter_recipes', methods=['POST'])
 def filter_recipes():
@@ -532,21 +540,21 @@ def display_categories():
     recipes_in_category={}
     search_value="$in"
     if category=="allergens":
-        database=mongo.db.allergensDB
+        coll=mongo.db.allergensDB
         search_value="$nin"
     elif category=="meal":
-        database=mongo.db.mealDB
+        coll=mongo.db.mealDB
     elif category=="ingredients":
-        database=mongo.db.ingredientsDB
+        coll=mongo.db.ingredientsDB
     elif category=="country":
-        database=mongo.db.countriesDB        
+        coll=mongo.db.countriesDB        
     elif category=="author":
-        database=mongo.db.authorDB   
+        coll=mongo.db.authorDB   
     elif category=="difficulty":
-        database=mongo.db.difficultyDB    
+        coll=mongo.db.difficultyDB    
         
     for i in range(0,len(_item_list)):
-        category_objects=database.find({"name" : {'$eq' : _item_list[i]}})
+        category_objects=coll.find({"name" : {'$eq' : _item_list[i]}})
         print("recipe_objects",category_objects)
         recipe_ids=[]
 
