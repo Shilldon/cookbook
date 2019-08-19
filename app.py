@@ -8,9 +8,8 @@ app=Flask(__name__)
 app.secret_key=os.getenv("SECRET","randomstring123")
 
 app.config["MONGO_DBNAME"]='milestone-3'
-#app.config["MONGO_URI"]=os.getenv("MONGO_URI")
+app.config["MONGO_URI"]=os.getenv("MONGO_URI")
 
-app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mongodb.net/milestone-3'
 mongo=PyMongo(app)
 
 
@@ -287,7 +286,6 @@ def insertrecipe():
                     #and create a recipe list in the document containing the ID of this recipe
                     new_category_id=categorydb.insert({"name" : value.lower(), "recipe":[]})
                     new_category_doc=categorydb.find_one({"_id" : new_category_id})
-                    print("new_category_doc",new_category_doc)
                 if recipe_id not in new_category_doc["recipe"]:
                     #check if the recipe is already in the new doc, if it isn't add the recipe ID to this particular category in the DB
                     categorydb.update({"_id" : new_category_id},{"$push":{"recipe":recipe_id}})
@@ -620,5 +618,5 @@ def display_categories():
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":
-    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True)    
+    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=False)    
     
