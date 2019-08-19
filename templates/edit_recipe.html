@@ -210,11 +210,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
 
-
 <script type="text/javascript">
   $(document).ready(function() {
-    var ingredient_list = { { ingredients_list | tojson } }
-    var country_list = { { country_list | tojson } }
+    //initialisation for autocomplete fields taken from ingredients, and country collections
+    var ingredient_list = {{ingredients_list|tojson}};
+    var country_list = {{country_list|tojson}};
 
     $('#ingredient').autocomplete({
       data: ingredient_list,
@@ -223,9 +223,8 @@
       data: country_list,
     });
   })
-
-  $('.text-only').alpha();
-
+  //initialisation for text-only input box (ingredient name)
+  $('.text-only').alpha();  
 </script>
 
 {% endblock %}
