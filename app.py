@@ -8,8 +8,7 @@ app=Flask(__name__)
 app.secret_key=os.getenv("SECRET","randomstring123")
 
 app.config["MONGO_DBNAME"]='milestone-3'
-#app.config["MONGO_URI"]=os.getenv("MONGO_URI")
-app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mongodb.net/milestone-3'
+app.config["MONGO_URI"]=os.getenv("MONGO_URI")
 
 mongo=PyMongo(app)
 
@@ -468,7 +467,6 @@ def recipe_list():
         #once the dictionary has been set up save it to the session variable.
         #session variable is required for moving between pages so that, when returning to the search page the filter criteria are retained.
         session["filters"]=_filter_dict
-        print("filter dict",_filter_dict)
 
     if _sort:
         _recipe_list=mongo.db.recipeDB.find(_filter_dict).sort(_sort,1) 
@@ -578,14 +576,17 @@ def display_categories():
     #get the categories against which the user is searching
     category=list(selected_categories.keys())[0]    
     _item_list=[]
-    
+
+    #iterate through the categories selected for filtering and create lists of the items in each category that have been selected.    
     for key in selected_categories:
         for item in selected_categories[key]:
-            print("item=",item)
             _item_list.append(item.lower())
 
     i=0
+    #initialise a dictionary of recipes that are in each selected category
     recipes_in_category={}
+    #set a search value, for all categories except allergens the recipes returned need to contain the element searched against
+    #in the case of allergens the recipes returned must not contain the specific element.
     search_value="$in"
     if category=="allergens":
         coll=mongo.db.allergensDB
@@ -600,7 +601,8 @@ def display_categories():
         coll=mongo.db.authorDB   
     elif category=="difficulty":
         coll=mongo.db.difficultyDB    
-        
+    
+    #perform mongo search against each category item and crate list of recipes to display for each category.
     for i in range(0,len(_item_list)):
         category_objects=coll.find({"name" : {'$eq' : _item_list[i]}})
         recipe_ids=[]
@@ -611,10 +613,9 @@ def display_categories():
 
         recipes=mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})
         recipes_in_category[_item_list[i]]=list(recipes)
-    print("ha2")
-    print("item_list",_item_list)
+
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":
-    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True)    
+    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=False)    
     
