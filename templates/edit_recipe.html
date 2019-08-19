@@ -55,13 +55,13 @@
           <div class="row">
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
-              <input id="country" class="autocomplete text-only" name="country" type="text" value="{{recipe.country}}"></input>
+              <input id="country" class="autocomplete text-only" name="country" type="text" value="{{recipe.country[0]|upper}}{{recipe.country[1:]|lower}}"></input>
             </div>
           </div>
 
           <div class="row">
             <div class="col s12 m6 input-field">
-              <label for="pictire">Picture</label>
+              <label for="picture">Picture</label>
               <input id="picture" name="picture" type="text" value="{{recipe.picture}}" placeholder="type in full URL of image"></input>
             </div>
           </div>
@@ -136,36 +136,39 @@
               </div>
             </div>
             {%endfor%}
-          </div>            
+          </div>   
+
+
           <div class="row">
-            <div class="col s10 m5 l4 input-field">
+            <div class="col s12 m5 l4 input-field">
+              <input class="autocomplete text-only" id="ingredient" type="text">
               <label for="ingredient">Ingredient</label>
-              <input id="ingredient" class="autocomplete text-only" type="text"></input>
             </div>
             <div class="col s3 m2 l2 input-field">
+              <input id="amount" type="number" min="0"></input>
               <label for="amount">Quantity</label>
-              <input id="amount" type="number" min="0">
             </div>
-            <div id="unit" class="col s3 m2 l1 input-field">
+            <!--dropdown list of units of measurement-->
+            <div id="unit" class="col s3 m2 l1 input-field" >
               <select id="select-unit">
-                  <option value=""> </option>
-                  <option value="g">g</option>
-                  <option value="kg">kg</option>
-                  <option value="ml">ml</option>
-                  <option value="ltr">ltr</option>
-                  <option value="tsp">tsp</option>
-                  <option value="tbsp">tbsp</option>
-                </select>
+                <option value="" selected="selected"> </option>
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+                <option value="oz">oz</option>
+                <option value="lb">lb</option>
+                <option value="ml">ml</option>
+                <option value="ltr">ltr</option>
+                <option value="tsp">tsp</option>
+                <option value="tbsp">tbsp</option>
+              </select>
               <label for="select-unit">Unit</label>
             </div>
-            <div class="add-ingredient-button">
+            <!--add ingredient button-->
+            <div class="col s1 add-ingredient-button">
               <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
-            </div>
+            </div>              
           </div>
-
-
-
-
+          
           <div class="row">
             <div class="col s12 input-field">
               <label for="method">Method</label>

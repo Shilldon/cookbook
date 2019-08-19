@@ -15,8 +15,16 @@ Photo by Brooke Lark on Unsplash
 Change re: edit and delete - input on display
 
 defensive - list of authors and countries tested before displaying filter
+defensive - ingredients cannot be added without amount or name
+defensive - ingredient name cannot contain number 
+defensive - ingredient amount cannot contain letters
+defensive - recipe needs to have a name, at least one ingredient and a method
+defensive - dropdown selection lists
+defensive - hour and minute input max 59, min 0 and number only
+defensive - drop down list of units
 
 
+flask jinja python
 materialize pagination plugin in https://mirjamsk.github.io/materialize-pagination/
 search buttons:
 meal: https://c.pxhere.com/photos/5b/df/blue_plate_breakfast_cuisine_dairy_product_delicious_dining_dining_room_dinner-1516443.jpg!d
@@ -30,3 +38,6 @@ admin edit and delete all recipes
 show on medium not work - workaround - hide on small only and hide on large only
 
 text only https://www.jqueryscript.net/form/A-jQuery-Plugin-To-Restrict-Characters-In-Text-Field-Alphanum.html
+
+beta - errors
+unable to add recipe - error checking favourite
