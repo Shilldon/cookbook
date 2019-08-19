@@ -329,6 +329,8 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 .recipe-form .add-ingredient-button {
   position: relative;
   top: 5px; }
+.recipe-form label {
+  white-space: nowrap; }
 
 .display-recipe-button-container {
   position: fixed; }

@@ -68,7 +68,7 @@
                     <div class="collapsible-body">
                     <div class="row">
                         <div class="col s10 offset-s1">
-                            <form id="filters_form" action="{{url_for('recipe_list', filter='true', action=action)}}" method="POST">
+                            <form id="filters_form" action="{{url_for('recipe_list', filter='new', action=action)}}" method="POST">
                                 <ul>
                                     {% if session["user"] %}
                                     <li>
@@ -93,10 +93,11 @@
                                             <div class="col s7  input-field">
                                                 <select name="meal">
                                                     <option value="" selected>Not filtered</option>
-                                                    <option value="SNACK" {% if filters.meal=="SNACK" %}selected="selected" {% endif%}>Snack</option>
-                                                    <option value="BREAKFAST" {% if filters.meal=="BREAKFAST" %}selected="selected" {% endif%}>Breakfast</option>
-                                                    <option value="LUNCH" {% if filters.meal=="LUNCH" %}selected="selected" {% endif%}>Lunch</option>
-                                                    <option value="DINNER" {% if filters.meal=="DINNER" %}selected="selected" {% endif%}>Dinner</option>
+                                                    <option value="snack" {% if filters.meal=="snack" %}selected="selected" {% endif%}>Snack</option>
+                                                    <option value="breakfast" {% if filters.meal=="breakfast" %}selected="selected" {% endif%}>Breakfast</option>
+                                                    <option value="lunch" {% if filters.meal=="lunch" %}selected="selected" {% endif%}>Lunch</option>
+                                                    <option value="dinner" {% if filters.meal=="dinner" %}selected="selected" {% endif%}>Dinner</option>
+                                                    <option value="dessert" {% if filters.meal=="dessert" %}selected="selected" {% endif%}>Dessert</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -107,16 +108,17 @@
                                             <div class="col s5 input-field">
                                                 <p>Allergens</p>
                                             </div>
+                                            {% if filters.allergens %}{% set list_of_allergens=filters.allergens['$nin']%}{%endif%}
                                             <div class="col s7 input-field">
                                                 <select id="allergens_list" name="allergens" multiple>
-                                                    <option value="" id="allergens-unfiltered" {% if allergens|length==0 %} selected {% endif %} disabled>Not filtered</option>
-                                                    <option value="dairy" {% if 'dairy' is in allergens %} selected="selected" {%endif%}>No Dairy</option>
-                                                    <option value="fish" {% if 'fish' is in allergens %} selected="selected" {%endif%}>No Fish</option>
-                                                    <option value="gluten" {% if 'gluten' is in allergens %} selected="selected" {%endif%}>No Gluten</option>
-                                                    <option value="nuts" {% if 'nuts' is in allergens %} selected="selected" {%endif%}>No Nuts</option>
-                                                    <option value="shellfish" {% if 'shellfish' is in allergens %} selected="selected" {%endif%}>No Shellfish</option>
-                                                    <option value="eggs" {% if 'eggs' is in allergens %} selected="selected" {%endif%}>No Eggs</option>                                        
-                                                    <option value="meat" {% if 'meat' is in allergens %} selected="selected" {%endif%}>Vegetarian</option>  
+                                                    <option value="" id="allergens-unfiltered" {% if list_of_allergens|length==0 %} selected {% endif %} disabled>Not filtered</option>
+                                                    <option value="dairy" {% if 'dairy' is in list_of_allergens %} selected="selected" {%endif%}>No Dairy</option>
+                                                    <option value="fish" {% if 'fish' is in list_of_allergens %} selected="selected" {%endif%}>No Fish</option>
+                                                    <option value="gluten" {% if 'gluten' is in list_of_allergens %} selected="selected" {%endif%}>No Gluten</option>
+                                                    <option value="nuts" {% if 'nuts' is in list_of_allergens %} selected="selected" {%endif%}>No Nuts</option>
+                                                    <option value="shellfish" {% if 'shellfish' is in list_of_allergens %} selected="selected" {%endif%}>No Shellfish</option>
+                                                    <option value="eggs" {% if 'eggs' is in list_of_allergens %} selected="selected" {%endif%}>No Eggs</option>                                        
+                                                    <option value="meat" {% if 'meat' is in list_of_allergens %} selected="selected" {%endif%}>Vegetarian</option>  
                                                 </select>
                                             </div>
                                         </div>
@@ -129,13 +131,13 @@
                                             <div class="col s7  input-field">
                                                 <select name="calories">
                                                 <option value=""  selected>Not filtered</option>
-                                                <option value=100 {% if filters.calories=={'$lt' : '100'} %} selected="selected" {% endif%}>< 100</option>
-                                                <option value=200 {% if filters.calories=={'$lt' : '200'} %} selected="selected" {% endif%}>< 200</option>
-                                                <option value=300 {% if filters.calories=={'$lt' : '300'} %} selected="selected" {% endif%}>< 300</option>
-                                                <option value=500 {% if filters.calories=={'$lt' : '500'} %} selected="selected" {% endif%}>< 500</option>
-                                                <option value=750 {% if filters.calories=={'$lt' : '750'} %} selected="selected" {% endif%}>< 750</option>
-                                                <option value=1000 {% if filters.calories=={'$lt' : '1000'} %} selected="selected" {% endif%}>< 1000</option>
-                                                <option value=999 {% if filters.calories=={'$gt' : '999'} %}selected="selected" {% endif%}>> 1000</option>
+                                                <option value=100 {% if filters.calories=={'$lt' : 100} %} selected="selected" {% endif%}>< 100</option>
+                                                <option value=200 {% if filters.calories=={'$lt' : 200} %} selected="selected" {% endif%}>< 200</option>
+                                                <option value=300 {% if filters.calories=={'$lt' : 300} %} selected="selected" {% endif%}>< 300</option>
+                                                <option value=500 {% if filters.calories=={'$lt' : 500} %} selected="selected" {% endif%}>< 500</option>
+                                                <option value=750 {% if filters.calories=={'$lt' : 750} %} selected="selected" {% endif%}>< 750</option>
+                                                <option value=1000 {% if filters.calories=={'$lt' : 1000} %} selected="selected" {% endif%}>< 1000</option>
+                                                <option value=999 {% if filters.calories=={'$gt' : 999} %}selected="selected" {% endif%}>> 1000</option>
                                             </select>
                                             </div>
                                         </div>
@@ -168,9 +170,9 @@
                                             </div>
                                             <div class="col s7  input-field">
                                                 <select name="country">
-                                                <option value="" selected>Not filtered</option>
+                                                <option value="" {%if not filters.country %} selected="selected" {%endif%}>Not filtered</option>
                                                 {% for country in countries %}
-                                                <option value="{{country}}" {% if selected_country==country %} selected="selected" {% endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
+                                                <option value="{{country}}"{% if filters.country==country|lower %} selected="selected" {%endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
                                                 {%endfor%}
                                                 </select>
                                             </div>
@@ -186,9 +188,9 @@
                                             </div>
                                             <div class="col s7  input-field">
                                                 <select name="author">
-                                                <option value="" selected>Not filtered</option>
+                                                <option value="" {%if not filters.author %}selected="selected"{%endif%}>Not filtered</option>
                                                 {% for author in authors %}
-                                                <option value="{{author}}" {% if selected_author==author %} selected="selected" {% endif%}>{{author}}</option>
+                                                <option value="{{author}}" {% if filters.author==author|lower %} selected="selected" {% endif%}>{{author}}</option>
                                                 {%endfor%}
                                                 </select>
                                             </div>

@@ -486,6 +486,9 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         position: relative;
         top: 5px;
     }
+    label {
+        white-space:nowrap;
+    }
 }
 
 //----- DISPLAY RECIPE PAGE -----//

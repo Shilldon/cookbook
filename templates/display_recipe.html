@@ -182,8 +182,8 @@
       {% if session["category_form"] is defined %}
       <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Back</a>
       <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a> {%else%}
-      <a href="{{ url_for('recipe_list', filter='true') }}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Back</a>
-      <a href="{{ url_for('recipe_list', filter='true') }}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a> {%endif%}
+      <a href="{{ url_for('recipe_list',filter='existing') }}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Back</a>
+      <a href="{{ url_for('recipe_list',filter='existing') }}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a> {%endif%}
     </div>
     {% else %}
     <div class="col s4 offset-s1 m2 offset-m3 ">

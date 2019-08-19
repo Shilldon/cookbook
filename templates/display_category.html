@@ -50,6 +50,9 @@
     <div class="row">
       <div class="col s10 offset-s1">
         <p class="center-align">Below you will find all the recipes in the Cookbook categorised according to your custom search.</h5>
+        {%if category=="allergens" %}
+        <p class="center-align flow-text">See recipes below that do not contain the following allergens</p>  
+        {%endif%}
       </div>
     </div>
   </div>
