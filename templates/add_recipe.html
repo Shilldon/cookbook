@@ -42,6 +42,7 @@
               <label for="name">Name</label>
               <input id="name" name="name" type="text" label="Name" required></input>
             </div>
+            <!--button for user to select to mark recipe as one of their favourites-->
             <div class="col s1 offset-s1 valign-wrapper">
               <p id="favourite"><i id="star" class=" material-icons">star_border</i></p>
               <input type="hidden" id="favourite_input" name="favourite" value=false></input>
@@ -49,6 +50,7 @@
           </div>
 
           <div class="row">
+            <!--user can enter a new country or pick from autocomplete list, retrieved from country collection-->
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
               <input id="country" class="autocomplete text-only" name="country" type="text"></input>
@@ -61,6 +63,7 @@
           </div>
 
           <div class="row">
+            <!--drop down selection list of allergens-->
             <div class="col s12 m4 l3 input-field">
               <select name="allergens" id="select_allergens" multiple>
                 <option value="dairy">DAIRY</option>
@@ -76,6 +79,7 @@
             
             
             <div class="col s6 m3 input-field">
+              <!--drop down selection list of meals-->
               <select name="meal">
                 <option value="" disabled selected>Select</option>
                 <option value="breakfast">BREAKFAST</option>
@@ -87,6 +91,7 @@
             </div>
 
             <div class="col s6 m3 input-field">
+              <!--drop down selection list of difficulty ratings-->
               <select name="difficulty">
                 <option value="" disabled selected>Select</option>
                 <option value="easy">EASY</option>
@@ -97,11 +102,12 @@
             </div>
 
             <div class="col s3 l1 input-field">
-              <input name="hours" type="number" placeholder="hours"></input>
+              <!--input fields for time and calories - number only input-->
+              <input name="hours" type="number" min="0" placeholder="hours"></input>
               <label for="hours">Cooking Time</label>
             </div>
             <div class="col m2 s3 l1 input-field">
-              <input name="minutes" type="number" placeholder="minutes"></input>
+              <input name="minutes" type="number" min="0" max="59" placeholder="minutes"></input>
             </div>
             <div class="col s3 m2 l1 input-field">
               <input name="calories" type="number" placeholder="calories"></input>
@@ -110,26 +116,31 @@
           </div>
 
           <div class="row">
+            <!--ingredients input form-->
             <div class="col s12">
               <p>Ingredients</p>
             </div>
           </div>
+          <!--empty div to be populated by ingredients list as user adds ingredients-->
           <div id="ingredients">
           </div>          
           <div class="row">
             <div class="col s12 m5 l4 input-field">
               <label for="ingredient">Ingredient</label>
-              <input class="autocomplete" id="ingredient" type="text">
+              <input class="autocomplete text-only" id="ingredient" type="text">
             </div>
             <div class="col s3 m2 l2 input-field">
               <label for="amount">Quantity</label>
               <input id="amount" type="number" min="0"></input>
             </div>
+            <!--dropdown list of units of measurement-->
             <div id="unit" class="col s3 m2 l1 input-field" >
               <select id="select-unit">
                 <option value="" selected="selected"> </option>
                 <option value="g">g</option>
                 <option value="kg">kg</option>
+                <option value="oz">oz</option>
+                <option value="lb">lb</option>
                 <option value="ml">ml</option>
                 <option value="ltr">ltr</option>
                 <option value="tsp">tsp</option>
@@ -137,6 +148,7 @@
               </select>
               <label for="select-unit">Unit</label>
             </div>
+            <!--add ingredient button-->
             <div class="col s1 add-ingredient-button">
               <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
             </div>              
@@ -144,6 +156,7 @@
           </div>
         
           <div class="row">
+            <!--text area to set out method for making recipe-->
             <div class="col s12 input-field">
               <label for="method">Method</label>
               <textarea id="method" name="method" class="materialize-textarea" label="method" required></textarea>
@@ -153,6 +166,7 @@
         </div>
       </div>
       <div class="row">
+        <!--return and submit options-->
         <div class="col s4 offset-s1 m2 offset-m3 ">
           <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
           <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
@@ -162,13 +176,13 @@
           <button type="button" class="submit-recipe waves-effect waves-light btn-large btn-block hide-on-small-only hide-on-med-and-down highlight4-background">Add</button>
         </div>
       </div>
-      <!--author field - takes value of user logged in - not displayed -->
+      <!--hidden author field - takes value of user logged in - not displayed -->
       <input id="author" type="hidden" name="author" type="text" value="{{session['user']}}"></input>
     </form>
   </div>
 </section>
 
-<!--Error modal -->
+<!--Error modal - detail completed from jquery script once error is estabished-->
 <section>
   <div id="error-modal" class="modal">
     <div class="modal-content">
@@ -187,6 +201,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+    //initialisation for autocomplete fields taken from ingredients, and country collections
     var ingredient_list = {{ingredients_list|tojson}};
     var country_list = {{country_list|tojson}};
 
@@ -196,79 +211,9 @@
     $('#country').autocomplete({
       data: country_list,
     });
-
-
   })
-  $('.text-only').alpha();  /*
-    $("#add_ingredient").on("click", function() {
-      var totalIngredients = $("#ingredients").data("total_ingredients");
-      totalIngredients++;
-      $("#ingredients").data("total_ingredients", totalIngredients);
-      var currentIngredient = $("#ingredient").val();
-      var currentAmount = $("#amount").val();
-      var currentUnit = $("#unit option:selected").val()
-      var currentIngredients = $("#ingredients").html()
-      //build an array of current ingredients, to check against the current ingredient being entered to throw an error if a duplicate ingredient is added.
-      var ingredientList=[];
-      $(".ingredient-type").each(function(i,object) {
-        ingredientList[i]=$(object).attr("value");
-      })
-      
-      //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
-      if (isNaN(currentAmount) || currentAmount.length == 0 || currentAmount == undefined) {
-        //display error modal
-        $("#error-modal p").text("Please enter amount of ingredients")
-        $("#error-modal").modal('open');
-      }
-      else if (currentIngredient.length == 0 || currentIngredient == undefined) {
-        //display error modal
-        $("#error-modal p").text("Please enter ingredient name")
-        $("#error-modal").modal('open');
-      }
-      //check the ingredient being added against the current ingredients. If duplicate, display error modal.
-      else if(ingredientList.indexOf(currentIngredient)!=-1) {
-        $("#error-modal p").text("You have entered a duplicate ingredient. Check and try again.")
-        $("#error-modal").modal('open');      
-      }
-      else {
-        if (currentUnit === "0") { currentUnit = "" }
-        console.log(currentIngredient)
-        $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 valign-wrapper'><p>" + currentAmount + "</p></div><div class='col s2 valign-wrapper'><p>" + currentUnit + "</p></div><div class='col s7'><p>" + currentIngredient + " </p></div><div class='col s1'><a id='remove_ingredient' class='btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a></div></div><input id='ingredd' class='ingredient-type' type='hidden' name='type' value='" + currentIngredient + "'></input><input type='hidden' name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input>")
-        $("#ingredient").val('');
-        $("#amount").val('');
-        $("#select-unit").val('');
-        $('#select-unit').formSelect();
-        console.log("value ",$("#ingredd").val())
-      }
-    });
-
-    $('body').on("click", "#remove_ingredient", function() {
-      $(this).parent().parent().slideUp(500);
-      setTimeout(function() { $(this).parent().parent().remove(); }, 500);
-    });
-    
-    $("#submit-recipe").on("click", function() {
-      var name=$("#name").val();
-      var ingredient=$('#ingredients').find('input').filter(':hidden:first').val();
-      var method=$('#method').val();
-      if(name=="") {
-        $("#error-modal p").text("You need to name your recipe")
-        $("#error-modal").modal('open');
-      }
-      else if(ingredient==undefined || ingredient==""){
-        $("#error-modal p").text("You need at least one ingredient for your recipe")
-        $("#error-modal").modal('open');      
-      }
-      else if(method==""){
-        $("#error-modal p").text("You need to provide instructions as to how to make your recipe")
-        $("#error-modal").modal('open');      
-      }
-      else {
-        $("#recipe-form").submit();  
-      }
-    })
-    
-      */
+  //initialisation for text-only input box (ingredient name)
+  $('.text-only').alpha();  
 </script>
 
 {% endblock %}

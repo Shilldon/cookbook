@@ -33,7 +33,7 @@ def check_user():
         session["user"]=user['username']
         #check if the user exists in the userDB - if not (by counting results = 0) create user
         if usersdb.find({"name" : user['username']}).count()==0: 
-            usersdb.insert({'name':user['username'],'favourites':[], 'liked':[]})  
+            usersdb.insert({'name':user['username'],'favourites':[]})  
     
     #return to the index page. This is important to ensure recipes are only added or deleted when the user is logged in.
     return redirect(url_for('index'))
@@ -136,6 +136,7 @@ def insertrecipe():
                 #get the list of users for whom this is a favourite recipe from the recipe document 'favourite' list element
                 favourites=recipe_doc["favourite"]                   
                 #check whether a user is logged in and if this user has marked this recipe as a favourite
+                
                 if "user" in session:
                     user_doc=usersdb.find_one({"name":session["user"]})
                     if new_recipe[key].lower() =='true':
@@ -396,7 +397,7 @@ def recipe_list():
     #otherwise get the filter_author from the form
     if _todo=="delete" or _todo=="edit":
         filter_author=session["user"].lower()
-        filter='true'
+        _filter_dict.update({"author" : filter_author.lower()})
     else:
         filter_author=request.form.get('author')
 

@@ -11,9 +11,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto: 300,400,600,700" rel="stylesheet">
-  <link rel="stylesheet" href="../static/css/style.css" type="text/css" />
-
-  <!-- <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" /> -->
+  <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" />
 
 </head>
 
@@ -22,6 +20,7 @@
   <!-- Nav Bar -->
   <header>
     <nav>
+      <!--dropdown content for search options - can search against recipes directly or within categories-->
       <ul id="search-options" class="dropdown-content">
         <li class="highlight3-background valign-wrapper"><a href="{{ url_for('recipe_list', action='search') }}" href="#!">Recipes</a></li>
         <li class="highlight3-background valign-wrapper"><a href="{{ url_for('search')}}" href="#!">Categories</a></li>
@@ -30,11 +29,14 @@
         <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
         <a href="#" data-target="menu-list" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
         <a href="{{ url_for('recipe_list', action='search') }}" class="hide-on-large-only right"><i class="material-icons">search</i></a>
-        <a href="#login-modal" class="right modal-trigger hide-on-large-only" style="padding-right:15px">            
-         {% if session['user'] %}
-            <i class="material-icons">person</i></a> {%else%}
-        <i class="material-icons">person_outline</i></a>
-        {%endif%}
+        <a href="#login-modal" class="right modal-trigger hide-on-large-only" style="padding-right:15px">   
+        <!--check if the user is logged in-->
+          {% if session['user'] %}
+           <!--if so display logged in icon otherwise 'blank' person icon-->
+          <i class="material-icons">person</i></a> 
+          {%else%}
+          <i class="material-icons">person_outline</i></a>
+          {%endif%}
         <ul class="right hide-on-med-and-down right">
           <li><a href="#login-modal" class=" modal-trigger">
           {% if session['user'] %}
