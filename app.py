@@ -8,7 +8,8 @@ app=Flask(__name__)
 app.secret_key=os.getenv("SECRET","randomstring123")
 
 app.config["MONGO_DBNAME"]='milestone-3'
-app.config["MONGO_URI"]=os.getenv("MONGO_URI")
+#app.config["MONGO_URI"]=os.getenv("MONGO_URI")
+app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mongodb.net/milestone-3'
 
 mongo=PyMongo(app)
 
@@ -17,7 +18,7 @@ mongo=PyMongo(app)
 #user - the username of the user currently logged in
 #sort - a check to determine if the recipes returned in the search, delete or edit requests should be sorted into order
 #filters - a list of the filters currently applied to the recipe results returned. Needed to ensure the filter is applied after leaving the search page. 
-#category-form - 
+#category-form - the categories against which the user is searching
 
 @app.route("/check_user",methods=['POST','GET'])
 def check_user():
@@ -68,6 +69,30 @@ def add_recipe():
         _countries.update(new_country)
 
     return render_template("add_recipe.html", title_text='Add recipe',ingredients_list=_ingredients, country_list=_countries)
+
+@app.route('/edit_recipe/<recipe_id>')
+def edit_recipe(recipe_id):
+    #called on selecting 'edit recipe' from the menu options
+    
+    _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+    
+    #get a list of ingredients from ingredients collection to display in the auto complete input field 
+    ingredientsdb=mongo.db.ingredientsDB
+    ingredients=ingredientsdb.find()
+    _ingredients={}
+    for ingredient in ingredients:
+        new_ingredient={ingredient["name"][0].capitalize():None}
+        _ingredients.update(new_ingredient)
+        
+    #get a list of countries from countries collection to display in the auto complete input field 
+    countrydb=mongo.db.countriesDB
+    countries=countrydb.find()
+    _countries={}
+    for country in countries:
+        new_country={country["name"][0].capitalize():None}
+        _countries.update(new_country)
+        
+    return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe,ingredients_list=_ingredients, country_list=_countries)
 
 @app.route("/insertrecipe/", methods=['POST'])
 def insertrecipe():
@@ -312,7 +337,9 @@ def search():
             coll=mongo.db.mealDB.find().sort("name")
         elif category=="country":
             coll=mongo.db.countriesDB.find().sort("name")
-
+        elif category=="author":
+            coll=mongo.db.authorDB.find().sort("name")
+            
         for item in coll:
             item_list.append(item["name"].capitalize())   
         
@@ -465,7 +492,12 @@ def recipe_list():
 
 @app.route('/display_recipe/<recipe_id>')
 def display_recipe(recipe_id):
+    #called from selecting a recipe in the recipe list, display category or after submitting add/edit input forms
+    
+    #get the recipe documentment from the recipe collection
     _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+    
+    #check request came from add or edit recipe to ensure clicking back will render the edit recipe page correctly
     _added=request.args.get('added_recipe',None)
     #check if the user is logged on, if not pass false value for favourite so no star is shown on display_recipe.html
     if "user" in session:
@@ -480,33 +512,19 @@ def display_recipe(recipe_id):
     title_text='Your recipe'
     return render_template('display_recipe.html',title_text='Your recipe',recipe=_recipe,added=_added)
 
-@app.route('/edit_recipe/<recipe_id>')
-def edit_recipe(recipe_id):
-    _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
-    #get list of ingredients to display in auto complete form for ingredients in add_recipe.html
-    ingredientsdb=mongo.db.ingredientsDB
-    ingredients=ingredientsdb.find()
-    _ingredients={}
-    for ingredient in ingredients:
-        new_ingredient={ingredient["name"][0].capitalize():None}
-        _ingredients.update(new_ingredient)
-        
-    #get list of countries to display in auto complete form for countries in add_recipe.html
-    countrydb=mongo.db.countriesDB
-    countries=countrydb.find()
-    _countries={}
-    for country in countries:
-        new_country={country["name"][0].capitalize():None}
-        _countries.update(new_country)
-    return render_template('edit_recipe.html',title_text="Edit your recipes",recipe=_recipe,ingredients_list=_ingredients, country_list=_countries)
-
 @app.route('/delete_recipe',methods=['POST'])
 def delete_recipe():
+    
+    #called from confirming deletion of recipe on delete modal
+    #get the ID of the recipe being deleted
     recipe_id=request.form.get('recipe_id')
-    print("recipe_id",recipe_id)
+    #get the recipe document from the recipe collection
     recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+
+    #iterate through the elements in the document and remove the recipe ID from each element in each category for which the recipe has an entry
     for key in recipe:
         if key=='favourite':
+            #need to iterate through the complete list of users who have marked this recipe as favourite and remove it from their favourite recipe list elements in the relevant user doc
             for value in recipe[key]:
                 mongo.db.usersDB.update({"_id" : ObjectId(value)},{"$pull" : {"favourites" : ObjectId(recipe_id)}})
         if key=="meal":
@@ -514,70 +532,58 @@ def delete_recipe():
         if key=="difficulty":
             mongo.db.difficultyDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
         if key=="allergens":
+            #need to iterate through all allergens and remove the recipe ID from each allergen document recipe list
             for value in recipe[key]:
                 mongo.db.allergensDB.update({"name" : value},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
         if key=="country":
             mongo.db.countriesDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
-            #check if there are any recipes stored against this country. If not delete the country from the collection 
+            #check if there are any recipes stored against this country. If not delete the country doc from the country collection 
             check_and_delete_empty_doc(recipe[key].lower(),mongo.db.countriesDB) 
-            #if len(country_doc["recipe"])==0:
-            #    mongo.db.countriesDB.remove({"name" : recipe[key].lower()})            
         if key=="author":
             mongo.db.authorDB.update({"name" : recipe[key].lower()},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
-            #author_doc=mongo.db.authorDB.find_one({"name" : recipe[key].lower()})
-            #check if there are any recipes stored against this author. If not delete the author from the collection
+            #check if there are any recipes stored against this author. If not delete the author doc from the author collection
             check_and_delete_empty_doc(recipe[key].lower(),mongo.db.authorDB)            
-            #if len(author_doc["recipe"])==0:
-            #    mongo.db.authorDB.remove({"name" : recipe[key].lower()})
         if key=="ingredients":
             for value in recipe[key]:
-                print("value=",value)
-                print("value[type]=", value["type"])
                 mongo.db.ingredientsDB.update({"name" : value["type"]},{"$pull" : {"recipe" : ObjectId(recipe_id)}})
-                #check if there are any recipes stored against this ingredient. If not delete the ingredient from the collection
-                print("ingredient=",value["type"])
+                #check if there are any recipes stored against this ingredient. If not delete the ingredient doc from the ingredient collection
                 check_and_delete_empty_doc(value["type"],mongo.db.ingredientsDB)
-                #ingredient_doc=mongo.db.ingredientsDB.find_one({"name" : ingredient})
-                #if len(ingredient_doc["recipe"])==0:
-                #    mongo.db.ingredientsDB.remove({"name" : ingredient})                      
-        
+               
+    #finally relete the recipe doc from the recipe collection
     mongo.db.recipeDB.remove({"_id":ObjectId(recipe_id)})
+    
+    #return to the recipe list page
     return redirect(url_for('.recipe_list',action='delete'))
 
 def check_and_delete_empty_doc(item,coll):
-    print("item=",item)
+    #called from the delete_recipe function.
     document=coll.find_one({"name" : item})
     #check if the document exists, if so and there are no recipes registered against the document delete it from the collection
     if document!=None:
         if len(document["recipe"])==0:
             coll.remove({"name" : item})                      
 
-'''
-@app.route('/filter_recipes', methods=['POST'])
-def filter_recipes():
-    session["filters"]=request.form.to_dict()
-    calories=request.form["calories"]
-    if calories:
-        session["filters"]["calories"]=calories
-    return redirect('recipe_list')
-'''    
-
 @app.route('/display_categories', methods=['POST','GET'])
 def display_categories():
+    #called from the search page after user selects filters to determine which categories are to be displayed
+    #check if the user has already submitted the form listing the categories to be displayed.
+    #This session variable ensures, after displaying a recipe, the selected categories are correctly displayed again
     try:
         selected_categories=session["category_form"]  
     except KeyError:
+        #if no session variable exists get the categories from the user submitted form.
         selected_categories=request.form.to_dict(flat=False)
         session["category_form"]=selected_categories        
   
+    #get the categories against which the user is searching
     category=list(selected_categories.keys())[0]    
     _item_list=[]
+    
     for key in selected_categories:
         for item in selected_categories[key]:
-            if category!="country" and category!="author":
-                _item_list.append(item.lower())
-            else:
-                _item_list.append(item)    
+            print("item=",item)
+            _item_list.append(item.lower())
+
     i=0
     recipes_in_category={}
     search_value="$in"
@@ -597,22 +603,18 @@ def display_categories():
         
     for i in range(0,len(_item_list)):
         category_objects=coll.find({"name" : {'$eq' : _item_list[i]}})
-        print("recipe_objects",category_objects)
         recipe_ids=[]
 
         for object in category_objects:
-            print("category=",category)
             for recipe in object["recipe"]:
-                print("recipe=",recipe)    
                 recipe_ids.append(ObjectId(recipe))
 
-        print("recipe ids=",recipe_ids)
-        #recipes_in_category[_item_list[i]]={"recipe":list(mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})) }  
         recipes=mongo.db.recipeDB.find({'_id' : {search_value : recipe_ids}})
         recipes_in_category[_item_list[i]]=list(recipes)
-    
+    print("ha2")
+    print("item_list",_item_list)
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":
-    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=False)    
+    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True)    
     
