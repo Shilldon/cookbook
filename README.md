@@ -40,4 +40,6 @@ show on medium not work - workaround - hide on small only and hide on large only
 text only https://www.jqueryscript.net/form/A-jQuery-Plugin-To-Restrict-Characters-In-Text-Field-Alphanum.html
 
 beta - errors
-unable to add recipe - error checking favourite
+unable to add recipe - error checking favourite and new_category_doc (error in database structure)
+labels not moving on edit recipe - odd diuplicate code worked fine
+beverage

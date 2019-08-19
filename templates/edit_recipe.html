@@ -86,6 +86,8 @@
                 <option value="breakfast" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
                 <option value="lunch" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
                 <option value="dinner" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
+                <option value="dessert" {% if recipe.meal|upper=="DESSERT" %} selected="selected" {% endif %}>DESSERT</option>                    
+                <option value="beverage" {% if recipe.meal|upper=="BEVERAGE" %} selected="selected" {% endif %}>BEVERAGE</option>                    
                 <option value="snack" {% if recipe.meal|upper=="SNACK" %} selected="selected" {% endif %}>SNACK</option>
               </select>
               <label for="meal">Meal</label>
@@ -160,6 +162,7 @@
                 <option value="ltr">ltr</option>
                 <option value="tsp">tsp</option>
                 <option value="tbsp">tbsp</option>
+                <option value="unit">unit</option>                     
               </select>
               <label for="select-unit">Unit</label>
             </div>

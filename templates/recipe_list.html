@@ -371,30 +371,6 @@
     </div>
 </section>
 
-<!--Deletion modal -->
-<section>
-    <div id="delete_modal" class="modal">
-        <div class="modal-content">
-            <h4>Confirm deletion</h4>
-            <p>Are you sure you want to delete this recipe?</p>
-            <form action="{{url_for('delete_recipe') }}" method="POST">
-                <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
-                <div class="row">
-                    <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</button>
-                        <button type="reset" id="modal_reset" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
-                    </div>
-                    <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red call-preloader">Delete</button>
-                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red call-preloader">Delete</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
-</section>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="/static/js/materialize-pagination.js"></script>
 
