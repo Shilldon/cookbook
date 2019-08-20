@@ -27,7 +27,7 @@
   </div>
   <div class="row">
     <div class="col s10 offset-s1">
-      <p class="left-align">Made a mistake? Found some better ingredients? Want to change the cooking instructions? Just fill out the form below to edit your own creation in the Cookbook.</h5>
+      <p class="left-align">Made a mistake? Found some better ingredients? Want to change the cooking instructions? Just fill out the form below to edit your own creation in the Cookbook.</p>
     </div>
   </div>
 </div>
@@ -42,17 +42,17 @@
           <div class="row">
             <div class="col s10 input-field">
               <!--format text - capitalise first letter-->
-              <input id="name" name="name" type="text" label="Name" value="{{recipe.name[0]|upper}}{{recipe.name[1:]|lower}}" required></input>
+              <input id="name" name="name" type="text" value="{{recipe.name[0]|upper}}{{recipe.name[1:]|lower}}" required>
               <label for="name">Name</label>
             </div>
             <div class="col s1 offset-s1 valign-wrapper">
               <!--check if the recipe is marked as the user's favourite - if so show a gold star-->
               {%if recipe.favourite %}
               <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
-              <input type="hidden" id="favourite_input" name="favourite" value="true"></input>
+              <input type="hidden" id="favourite_input" name="favourite" value="true">
               {% else %}
               <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
-              <input type="hidden" id="favourite_input" name="favourite" value="false"></input>
+              <input type="hidden" id="favourite_input" name="favourite" value="false">
               {% endif %}
             </div>
           </div>
@@ -62,14 +62,14 @@
               <label for="country">Country of origin</label>
               <!--format text - capitalise first letter-->
               <!--text-only class calls alphanum jquery to ensure only text and no numbers can be input-->
-              <input id="country" class="autocomplete text-only" name="country" type="text" value="{{recipe.country[0]|upper}}{{recipe.country[1:]|lower}}"></input>
+              <input id="country" class="autocomplete text-only" name="country" type="text" value="{{recipe.country[0]|upper}}{{recipe.country[1:]|lower}}">
             </div>
           </div>
 
           <div class="row">
             <div class="col s12 m6 input-field">
               <label for="picture">Picture</label>
-              <input id="picture" name="picture" type="text" value="{{recipe.picture}}" placeholder="type in full URL of image"></input>
+              <input id="picture" name="picture" type="text" value="{{recipe.picture}}" placeholder="type in full URL of image">
             </div>
           </div>
 
@@ -117,14 +117,14 @@
             </div>
 
             <div class="col m2 s3 l1 input-field" style="white-space:nowrap">
-              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours"></input>
+              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours">
               <label for="hours">Cooking Time</label>
             </div>
             <div class="col m2 s3 l1 input-field">
-              <input name="minutes" type="number" value="{{recipe.minutes}}" placeholder="minutes"></input>
+              <input name="minutes" type="number" value="{{recipe.minutes}}" placeholder="minutes">
             </div>
             <div class="col s3 m2 l1 input-field">
-              <input name="calories" type="number" value="{{recipe.calories}}" placeholder="calories"></input>
+              <input name="calories" type="number" value="{{recipe.calories}}" placeholder="calories">
               <label for="calories">Calories</label>
             </div>
           </div>
@@ -142,7 +142,9 @@
             <div class="row">
               <div class="col s1 offset-s1 l1">
                 <a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a>
-                <input type='hidden' name='type' value="{{ingredient.type}}"></input><input type='hidden' name='amount' value="{{ingredient.amount}}"></input><input type='hidden' name='unit' value="{{ingredient.unit}}"></input>
+                <input type='hidden' name='type' value="{{ingredient.type}}">
+                <input type='hidden' name='amount' value="{{ingredient.amount}}">
+                <input type='hidden' name='unit' value="{{ingredient.unit}}">
               </div>
               <div class="col s10 l5 valign-wrapper">
                 <p>
@@ -160,13 +162,13 @@
               <label for="ingredient">Ingredient</label>
             </div>
             <div class="col s3 m2 l2 input-field">
-              <input id="amount" type="number" min="0"></input>
+              <input id="amount" type="number" min="0">
               <label for="amount">Quantity</label>
             </div>
             <!--dropdown list of units of measurement-->
             <div id="unit" class="col s3 m2 l1 input-field">
               <select id="select-unit">
-                <option value="" selected="selected"> </option>
+                <option value="" selected="selected">N/A</option>
                 <option value="g">g</option>
                 <option value="kg">kg</option>
                 <option value="oz">oz</option>
@@ -189,7 +191,7 @@
             <!--text area to input recipe method-->
             <div class="col s12 input-field">
               <label for="method">Method</label>
-              <textarea name="method" class="materialize-textarea" label="method" required>{{recipe.method}}</textarea>
+              <textarea name="method" class="materialize-textarea" required>{{recipe.method}}</textarea>
             </div>
           </div>
         </div>
@@ -207,15 +209,15 @@
         </div>
       </div>
       <!--author field - takes value of user logged in - not displayed -->
-      <input id="author" type="hidden" name="author" type="text" value="{{recipe.author}}"></input>
+      <input id="author" type="hidden" name="author" value="{{recipe.author}}">
     </form>
   </div>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript" src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
+<script src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
 
-<script type="text/javascript">
+<script>
   $(document).ready(function() {
     //initialisation for autocomplete fields taken from ingredients, and country collections
     var ingredient_list = {{ ingredients_list | tojson }};

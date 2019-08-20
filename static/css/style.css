@@ -21,7 +21,7 @@ main {
 
 form {
   margin-top: 10px;
-  font-family: "Roboto", sans; }
+  font-family: "Roboto", sans-serif; }
   form .row {
     margin-bottom: 0; }
   form #add_ingredient {
@@ -35,14 +35,14 @@ form {
     color: #0339A6; }
   form input {
     border-bottom: 1px solid #0339A6 !important;
-    font-family: "Roboto", sans !important;
+    font-family: "Roboto", sans-serif !important;
     font-size: 14px !important; }
   form input:focus {
     border-bottom: 1px solid #0339A6 !important;
     box-shadow: 0 1px 0 0 #0339A6 !important; }
   form .input-field label {
     color: #0339A6;
-    font-family: "Roboto", sans; }
+    font-family: "Roboto", sans-serif; }
 
 input[type="checkbox"]:checked + span:not(.lever):before {
   border-right: 2px solid #033E8C;
@@ -94,14 +94,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 .nav-wrapper {
   background-color: #0339A6; }
   .nav-wrapper .brand-logo {
-    font-family: "Abril Fatface", sans;
+    font-family: "Abril Fatface", cursive;
     padding-left: 15px !important; }
   .nav-wrapper .selected {
     background-color: white; }
     .nav-wrapper .selected a {
       color: #0339A6; }
   .nav-wrapper li {
-    font-family: "Roboto", sans;
+    font-family: "Roboto", sans-serif;
     font-weight: 500;
     text-align: center;
     width: 120px; }
@@ -137,7 +137,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   background: url("https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") no-repeat center;
   background-size: cover; }
   .title-container .title-text {
-    font-family: "Abril Fatface", sans;
+    font-family: "Abril Fatface", cursive;
     color: white;
     background-color: rgba(3, 57, 166, 0.75);
     margin: auto; }
@@ -147,7 +147,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 
 .splash-container {
   background-color: #034AA6;
-  font-family: "Roboto";
+  font-family: "Roboto",sans-serif;
   color: white; }
   .splash-container .row {
     margin-bottom: 0; }
@@ -171,7 +171,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
     font-size: 2.5rem; }
 
 .search-button-container {
-  font-family: "Roboto";
+  font-family: "Roboto",sans-serif;
   color: white; }
   .search-button-container .col {
     color: #034AA6;
@@ -259,7 +259,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   margin-top: 20px; }
 
 .recipe-list-header {
-  font-family: "Roboto", sans;
+  font-family: "Roboto", sans-serif;
   padding-top: 10px;
   font-size: 0.75rem; }
   .recipe-list-header .col {
@@ -302,7 +302,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 .recipe-list-results .row {
   margin-bottom: 0; }
 .recipe-list-results .recipe-list {
-  font-family: "Roboto", sans; }
+  font-family: "Roboto", sans-serif; }
   .recipe-list-results .recipe-list .col {
     padding: 0 5px 0 5px; }
   .recipe-list-results .recipe-list .row {
@@ -325,7 +325,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 
 .recipe-form textarea {
   border-bottom: 1px solid #0339A6 !important;
-  font-family: "Roboto", sans !important;
+  font-family: "Roboto", sans-serif !important;
   font-size: 14px !important; }
 .recipe-form textarea:focus {
   border-bottom: 1px solid #0339A6 !important;
@@ -381,7 +381,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 
 .modal {
   max-width: 600px;
-  font-family: "Roboto", sans;
+  font-family: "Roboto", sans-serif;
   color: #5A6978; }
   .modal h4 {
     color: #0339A6; }

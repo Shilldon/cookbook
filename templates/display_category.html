@@ -51,7 +51,7 @@
     </div>
     <div class="row">
       <div class="col s10 offset-s1">
-        <p class="center-align">Below you will find all the recipes in the Cookbook categorised according to your custom search.</h5>
+        <p class="center-align">Below you will find all the recipes in the Cookbook categorised according to your custom search.</p>
           {%if category=="allergens" %}
           <p class="center-align flow-text">See recipes below that do not contain the following allergens</p>
           {%endif%}
@@ -80,7 +80,7 @@
                     <div class="col s6">
                       <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
                     </div>
-                    <div class="col s5" class="right-align">
+                    <div class="col s5">
                       <!--display number of recipes found in category-->
                       <p>Recipes found: {{recipes[item]|length}}</p>
                     </div>
@@ -110,7 +110,7 @@
                           <div class="col s3 valign-wrapper">
                             <!--if recipe has a picture display it, else show holder icon-->
                             {% if recipe.picture %}
-                            <img src="{{recipe.picture}}" class="circle responsive-image ">{% else %}
+                            <img src="{{recipe.picture}}" class="circle responsive-image " alt="picture of dish">{% else %}
                             <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i> {% endif %}
                           </div>
                           <div class="col s8">
@@ -152,7 +152,7 @@
                         <div class="row valign-wrapper">
                           <div class="col m2 valign-wrapper">
                             {% if recipe.picture %}
-                            <img src="{{recipe.picture}}" class="circle responsive-image ">{% else %}
+                            <img src="{{recipe.picture}}" class="circle responsive-image " alt="picture of dish">{% else %}
                             <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i> {% endif %}
                           </div>
                           <div class="col m3">

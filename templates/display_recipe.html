@@ -52,12 +52,12 @@
       <div class="col s2">
         {% if userid in recipe.favourite %}
         <button type="button" id="mark-favourite">
-          <input type="hidden" name="mark-favourite" value="true"></input>
-          <i class="material-icons gold-star" value=true>star</i> 
+          <input type="hidden" name="mark-favourite" value="true">
+          <i class="material-icons gold-star">star</i> 
         </button>
         {%else%}
         <button type="button" id="mark-favourite">
-          <input type="hidden" name="mark-favourite" value="false"></input>
+          <input type="hidden" name="mark-favourite" value="false">
           <i class="material-icons">star_border</i>
         </button>
         {% endif %}
@@ -70,7 +70,7 @@
     <div class="row">
       <div class="col s6 offset-s3">
         <p class="center-align">
-          <img class="recipe-image" src="{{ recipe.picture }}"></img>
+          <img class="recipe-image" src="{{ recipe.picture }}" alt="picture of dish">
         </p>
       </div>
     </div>
@@ -208,6 +208,7 @@
       </div>
     </div>
   </div>
+  
   <div class="row">
     <!--check if the user has just added or edited this recipe - if not the page was called from the recipe list or category display. set up links to return to those pages-->
     {% if added!="true" %}
@@ -231,6 +232,7 @@
       <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
       <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
     </div>
+  </div>  
 </section>
 
 {% endblock %}

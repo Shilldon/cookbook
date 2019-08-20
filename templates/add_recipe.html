@@ -25,7 +25,7 @@
   </div>
   <div class="row">
     <div class="col s10 offset-s1">
-      <p class="left-align">Fill out the form below to add your own creation to the Cookbook. Make sure you name it, add your ingredients and the instructions.</h5>
+      <p class="left-align">Fill out the form below to add your own creation to the Cookbook. Make sure you name it, add your ingredients and the instructions.</p>
     </div>
   </div>
 </div>
@@ -40,12 +40,12 @@
           <div class="row">
             <div class="col s10 input-field">
               <label for="name">Name</label>
-              <input id="name" name="name" type="text" label="Name" required></input>
+              <input id="name" name="name" type="text" required>
             </div>
             <!--button for user to select to mark recipe as one of their favourites-->
             <div class="col s1 offset-s1 valign-wrapper">
               <p id="favourite"><i id="star" class=" material-icons">star_border</i></p>
-              <input type="hidden" id="favourite_input" name="favourite" value=false></input>
+              <input type="hidden" id="favourite_input" name="favourite" value=false>
             </div>
           </div>
 
@@ -53,12 +53,12 @@
             <!--user can enter a new country or pick from autocomplete list, retrieved from country collection-->
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
-              <input id="country" class="autocomplete text-only" name="country" type="text"></input>
+              <input id="country" class="autocomplete text-only" name="country" type="text">
             </div>
 
             <div class="col s12 m6 input-field">
               <label for="picture">Picture</label>
-              <input id="picture" name="picture" type="text" placeholder="type in full URL of image"></input>
+              <input id="picture" name="picture" type="text" placeholder="type in full URL of image">
             </div>
           </div>
 
@@ -105,14 +105,14 @@
 
             <div class="col s3 l1 input-field">
               <!--input fields for time and calories - number only input-->
-              <input name="hours" type="number" min="0" placeholder="hours"></input>
+              <input name="hours" type="number" min="0" placeholder="hours">
               <label for="hours">Cooking Time</label>
             </div>
             <div class="col m2 s3 l1 input-field">
-              <input name="minutes" type="number" min="0" max="59" placeholder="minutes"></input>
+              <input name="minutes" type="number" min="0" max="59" placeholder="minutes">
             </div>
             <div class="col s3 m2 l1 input-field">
-              <input name="calories" type="number" placeholder="calories"></input>
+              <input name="calories" type="number" placeholder="calories">
               <label for="calories">Calories</label>
             </div>
           </div>
@@ -133,13 +133,13 @@
               <label for="ingredient">Ingredient</label>
             </div>
             <div class="col s3 m2 l2 input-field">
-              <input id="amount" type="number" min="0"></input>
+              <input id="amount" type="number" min="0">
               <label for="amount">Quantity</label>
             </div>
             <!--dropdown list of units of measurement-->
             <div id="unit" class="col s3 m2 l1 input-field" >
               <select id="select-unit">
-                <option value="" selected="selected"> </option>
+                <option value="" selected="selected">N/A</option>
                 <option value="g">g</option>
                 <option value="kg">kg</option>
                 <option value="oz">oz</option>
@@ -162,7 +162,7 @@
             <!--text area to set out method for making recipe-->
             <div class="col s12 input-field">
               <label for="method">Method</label>
-              <textarea id="method" name="method" class="materialize-textarea" label="method" required></textarea>
+              <textarea id="method" name="method" class="materialize-textarea" required></textarea>
             </div>
           </div>
 
@@ -180,15 +180,15 @@
         </div>
       </div>
       <!--hidden author field - takes value of user logged in - not displayed -->
-      <input id="author" type="hidden" name="author" type="text" value="{{session['user']}}"></input>
+      <input id="author" type="hidden" name="author" value="{{session['user']}}">
     </form>
   </div>
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript" src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
+<script src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
 
-<script type="text/javascript">
+<script>
   $(document).ready(function() {
     //initialisation for autocomplete fields taken from ingredients, and country collections
     var ingredient_list = {{ingredients_list|tojson}};

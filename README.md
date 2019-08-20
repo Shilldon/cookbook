@@ -46,3 +46,11 @@ beverage
 editting recipes not own - from menu bar
 added favourite ability at user request
 remove options for edit, dlete and add if not logged in - defensive
+
+jigsaw.w3.org used for css validation
+validator.w3.org 
+    errors re: for labels - however required for materialize
+    error re: google font but link provided
+    error: Element ul not allowed as child of element ul in this context.  - but required for materialize
+    error: duplicate ID error thrown but use of jinja id only appears once
+https://codebeautify.org/jsvalidate - for jquery validation

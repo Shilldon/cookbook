@@ -41,7 +41,7 @@
         </div>
         <div class="row">
             <div class="col s10 offset-s1">
-            <p class="left-align">Below you will find recipes at your fingertips. Use the filter options to narrow your search and sort options to sort the results into order that suits you.</h5>
+            <p class="left-align">Below you will find recipes at your fingertips. Use the filter options to narrow your search and sort options to sort the results into order that suits you.</p>
         </div>
         </div>
     </div>
@@ -185,7 +185,7 @@
                                                                 <option value="" {%if not filters.country %} selected="selected" {%endif%}>Not filtered</option>
                                                                 {% for country in countries %}
                                                                 <!--iterate through the countries list and display each - capitalizing the first letter-->
-                                                                <option value="{{country}}"{% if filters.country==country|lower %} selected="selected" {%endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
+                                                                <option value="{{country}}" {% if filters.country==country|lower %} selected="selected" {%endif%}>{{country[0]|upper}}{{country[1:]|lower}}</option>
                                                                 {%endfor%}
                                                             </select>
                                                         </div>
@@ -205,7 +205,7 @@
                                                             <!--drop down list of authors in collection-->
                                                             <select name="author">
                                                                 <!--check if a particular author has already been selected as a filter, if so select in drop down list-->
-                                                                <option value="" {%if not filters.author %}selected="selected"{%endif%}>Not filtered</option>
+                                                                <option value="" {%if not filters.author %} selected="selected"{%endif%}>Not filtered</option>
                                                                 {% for author in authors %}
                                                                 <option value="{{author}}" {% if filters.author==author|lower %} selected="selected" {% endif%}>{{author}}</option>
                                                                 {%endfor%}
@@ -328,7 +328,7 @@
                                 <div class="col s2">
                                     <!--check if the recipe doc contains a picture, if so display, otherwise display holder icon-->
                                     {% if recipe.picture %}
-                                    <p class="center-align"><img class="circle responsive-image" src="{{recipe.picture}}"></p>
+                                    <p class="center-align"><img class="circle responsive-image" src="{{recipe.picture}}" alt="picture of dish"></p>
                                     {% else %}
                                     <p class="center-align"><i class="fa fa-cutlery fa-2x" aria-hidden="true"></i></p>
                                     {% endif %}
@@ -401,28 +401,28 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/materialize-pagination.js"></script>
+<script src="/static/js/materialize-pagination.js"></script>
 
 <script>
 //materialize initilisation for pagination and form selection
-$(document).ready(function(){
-      $('select').formSelect();
-})
-    $('#pagination').materializePagination({
-        align: 'center',
-        lastPage:  $(".recipe-book").children(".recipe-page").length,
-        firstPage:  1,
-        urlParameter: 'page',
-        useUrlParameter: true,
-        onClickCallback: function(requestedPage){
-            $(".recipe-book").children(".recipe-page").hide();
-            gotoPage="#recipepage"+requestedPage;
-            $(gotoPage).show();
-            $('html, body').animate({
-                scrollTop: $("body").offset().top
-            }, 1000);        
-        }
-    });     
+$(document).ready(function () {
+    $('select').formSelect();
+});
+$('#pagination').materializePagination({
+    align: 'center',
+    lastPage:  $(".recipe-book").children(".recipe-page").length,
+    firstPage:  1,
+    urlParameter: 'page',
+    useUrlParameter: true,
+    onClickCallback: function (requestedPage) {
+        $(".recipe-book").children(".recipe-page").hide();
+        gotoPage="#recipepage"+requestedPage;
+        $(gotoPage).show();
+        $('html, body').animate({
+            scrollTop: $("body").offset().top
+        }, 1000);        
+    }
+});     
 
 </script>
 

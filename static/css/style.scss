@@ -32,7 +32,7 @@ main {
 //----- GENERAL STYLES -----//
 form {
     margin-top: 10px;
-    font-family: "Roboto", sans;
+    font-family: "Roboto", sans-serif;
     .row {
         margin-bottom: 0;
     }
@@ -51,7 +51,7 @@ form {
     }
     input {
         border-bottom: 1px solid $base-color !important;
-        font-family: "Roboto", sans !important;
+        font-family: "Roboto", sans-serif !important;
         font-size: 14px !important;
     }
 
@@ -64,7 +64,7 @@ form {
         //margin-top: 0;
         label {
             color: $base-color;
-            font-family: "Roboto", sans;
+            font-family: "Roboto", sans-serif;
         }
     }
 
@@ -136,7 +136,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 .nav-wrapper {
     background-color: $base-color;
     .brand-logo {
-        font-family: "Abril Fatface", sans;
+        font-family: "Abril Fatface", cursive;
         padding-left: 15px !important;
     }
     .selected {
@@ -146,7 +146,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         }
     }
     li {
-        font-family: "Roboto", sans;
+        font-family: "Roboto", sans-serif;
         font-weight: 500;
         text-align: center;
         width: 120px;
@@ -197,7 +197,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     background: url('https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80') no-repeat center;
     background-size: cover;
     .title-text {
-        font-family: "Abril Fatface", sans;
+        font-family: "Abril Fatface", cursive;
         color: white;
         background-color: $base-color-opaque;
         margin: auto;
@@ -211,7 +211,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 //----- SPLASH SECTION -----//
 .splash-container {
     background-color: $highlight1-color;
-    font-family: "Roboto";
+    font-family: "Roboto",sans-serif;
     color: white;
     .row {
         margin-bottom: 0;
@@ -246,7 +246,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 
 //----- SEARCH PAGE -----//
 .search-button-container {
-    font-family: "Roboto";
+    font-family: "Roboto",sans-serif;
     color: white;
     .col {
         color: $highlight1-color;
@@ -373,7 +373,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 
 //----- RECIPE RESULTS PAGE -----//
 .recipe-list-header {
-    font-family: "Roboto", sans;
+    font-family: "Roboto", sans-serif;
     padding-top: 10px;
     font-size: 0.75rem;
     .col {
@@ -438,7 +438,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         margin-bottom: 0;
     }
     .recipe-list {
-        font-family: "Roboto", sans;
+        font-family: "Roboto", sans-serif;
         .col {
             padding: 0 5px 0 5px;
         }
@@ -477,7 +477,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 .recipe-form {
     textarea {
         border-bottom: 1px solid $base-color !important;
-        font-family: "Roboto", sans !important;
+        font-family: "Roboto", sans-serif !important;
         font-size: 14px !important;
 
     }
@@ -562,7 +562,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 //----- MODAL STYLES -----//
 .modal {
     max-width: 600px;
-    font-family: "Roboto", sans;
+    font-family: "Roboto", sans-serif;
     color: $font-color;
     h4 {
         color: $base-color;
