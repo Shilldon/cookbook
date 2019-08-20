@@ -49,10 +49,11 @@
               <!--check if the recipe is marked as the user's favourite - if so show a gold star-->
               {%if recipe.favourite %}
               <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
+              <input type="hidden" id="favourite_input" name="favourite" value="true"></input>
               {% else %}
               <p id="favourite"><i id="star" class="material-icons">star_border</i></p>
+              <input type="hidden" id="favourite_input" name="favourite" value="false"></input>
               {% endif %}
-              <input type="hidden" id="favourite_input" name="favourite" value={{recipe.favourite}}></input>
             </div>
           </div>
 

@@ -318,7 +318,7 @@
                                     {% elif action=="delete" %}
                                     <p><i class="material-icons">delete_forever</i></p>  
                                     {% elif session["user"] %}
-                                        {%if recipe.favourite %}
+                                        {%if userid in recipe.favourite %}
                                         <p><i class="material-icons gold-star">star</i></p>
                                         {% else %}
                                         <p><i class="material-icons">star_border</i></p>

@@ -524,7 +524,14 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     }
     i {
         padding-top: 16px;
+        font-size: 30px;
     }
+}
+
+#mark-favourite {
+    border: none;
+    background-color: transparent;
+    color: $highlight1-color;
 }
 
 .recipe-contents-list {
@@ -776,6 +783,16 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     .display-recipe-button-container {
         .dropdown-trigger {
             margin: 10px 0 0 30px;
+        }
+    }
+    .recipe-details {
+        color: $base-color;
+        .row {
+            margin: 0;
+        }
+        i {
+            padding-top: 16px;
+            font-size: 50px;
         }
     }
 

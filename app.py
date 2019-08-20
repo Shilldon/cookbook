@@ -8,8 +8,9 @@ app=Flask(__name__)
 app.secret_key=os.getenv("SECRET","randomstring123")
 
 app.config["MONGO_DBNAME"]='milestone-3'
-app.config["MONGO_URI"]=os.getenv("MONGO_URI")
+#app.config["MONGO_URI"]=os.getenv("MONGO_URI")
 
+app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mongodb.net/milestone-3'
 mongo=PyMongo(app)
 
 
@@ -368,6 +369,13 @@ def recipe_list():
     else:
         _sort=request.form.get('sort_by')
         session["sort"]=_sort
+
+    #initialise user_id variable to pass to front end to check, when displaying recipe list, if a recipe is a favourite of the user's
+    _user_id=""
+    if "user" in session:
+        user_doc=mongo.db.usersDB.find_one({"name":session["user"]})
+        _user_id=str(user_doc["_id"])
+
     
     #the user can select various filters on the recipe_list page.
     #if returning to the recipe list page from the display recipe page the results will need to be pre-filtered, based on the filter criteria the user
@@ -416,9 +424,7 @@ def recipe_list():
         #favourites are filtered by the recipe ID held in the user doc favourites element
         filter_favourites=request.form.get('favourite')
         if filter_favourites:
-            user_doc=mongo.db.usersDB.find_one({"name":session["user"]})
-            user_id=str(user_doc["_id"])
-            _filter_dict.update({"favourite" : { "$in" : [user_id]}})
+            _filter_dict.update({"favourite" : { "$in" : [_user_id]}})
         else:
             _filter_dict.pop("favourite",None)            
                 
@@ -489,29 +495,44 @@ def recipe_list():
     #find the total number of results returned to display to the user.
     _total_results=_recipe_list.count()
     
-    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list, countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, sort=_sort, total_results=_total_results)
+    return render_template("recipe_list.html",title_text=title_text_value,recipes=_recipe_list, countries=_country_list,authors=_author_list,action=_todo,filters=_filter_dict, sort=_sort, total_results=_total_results, userid=_user_id)
 
-@app.route('/display_recipe/<recipe_id>')
+@app.route('/display_recipe/<recipe_id>',methods=['POST','GET'])
 def display_recipe(recipe_id):
     #called from selecting a recipe in the recipe list, display category or after submitting add/edit input forms
-    
+
     #get the recipe documentment from the recipe collection
-    _recipe=mongo.db.recipeDB.find_one({"_id":ObjectId(recipe_id)})
+    recipedb=mongo.db.recipeDB
+    _recipe=recipedb.find_one({"_id":ObjectId(recipe_id)})
     
     #check request came from add or edit recipe to ensure clicking back will render the edit recipe page correctly
     _added=request.args.get('added_recipe',None)
+    
+    #initialise user_id variable to pass to front end to check if the displayed recipe is a favourite of the user
+    _user_id=""
+    
     #check if the user is logged on, if not pass false value for favourite so no star is shown on display_recipe.html
     if "user" in session:
+        usersdb=mongo.db.usersDB
         user_doc=mongo.db.usersDB.find_one({"name" : session["user"]})
-        #check if this recipe is stored in this user's favourite list. If so mark pass value to mark with a star on display_recipe.html
-        if ObjectId(recipe_id) in user_doc["favourites"]:
-            _recipe["favourite"]=True
-        else:
-            _recipe["favourite"]=False    
-    else:
-        _recipe["favourite"]=False               
+        _user_id=str(user_doc["_id"])
+        #first check whether the user has toggled the favourite button
+        mark_favourite=request.form.get('mark-favourite')
+        if mark_favourite=='true':
+            if ObjectId(recipe_id) not in user_doc["favourites"]:
+                usersdb.update({"name": session["user"]},{"$push":{"favourites" : ObjectId(recipe_id)}})
+                recipedb.update({"_id":ObjectId(recipe_id)},{"$push":{"favourite" : _user_id}})
+                _recipe=recipedb.find_one({"_id":ObjectId(recipe_id)})
+        elif mark_favourite=='false':
+            #if the user has not marked this recipe as a favourite and the user ID is in the favourites list for the recipe document
+            #then remove the user id  from the favourites list and remove the recipe ID from the user document favourites list                     
+            if ObjectId(recipe_id) in user_doc["favourites"]:
+                print("pull recipe")
+                usersdb.update({"name": session["user"]},{"$pull":{"favourites" : ObjectId(recipe_id)}}) 
+                recipedb.update({"_id":ObjectId(recipe_id)},{"$pull":{"favourite" : _user_id}})
+                _recipe=recipedb.find_one({"_id":ObjectId(recipe_id)})
     title_text='Your recipe'
-    return render_template('display_recipe.html',title_text='Your recipe',recipe=_recipe,added=_added)
+    return render_template('display_recipe.html',title_text='Your recipe',recipe=_recipe,added=_added,userid=_user_id)
 
 @app.route('/delete_recipe',methods=['POST'])
 def delete_recipe():
@@ -620,5 +641,5 @@ def display_categories():
     return render_template('display_category.html',category=category,items=_item_list,recipes=recipes_in_category, title_text="Your recipes")
     
 if __name__ =="__main__":
-    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=False)    
+    app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")), debug=True)    
     

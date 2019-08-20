@@ -47,10 +47,23 @@
           {% for word in name %} {{ word[0]|upper }}{{ word[1:]|lower}} {% endfor %}
         </h4>
       </div>
+      {%if session["user"]%}
+      <form id="favourite-button" action="{{url_for('display_recipe', recipe_id=recipe._id,added_recipe=added) }}" method="POST">  
       <div class="col s2">
-        {% if recipe.favourite %}
-        <i class="material-icons gold-star">star</i> {% endif %}
+        {% if userid in recipe.favourite %}
+        <button type="button" id="mark-favourite">
+          <input type="hidden" name="mark-favourite" value="true"></input>
+          <i class="material-icons gold-star" value=true>star</i> 
+        </button>
+        {%else%}
+        <button type="button" id="mark-favourite">
+          <input type="hidden" name="mark-favourite" value="false"></input>
+          <i class="material-icons">star_border</i>
+        </button>
+        {% endif %}
       </div>
+      </form>
+      {%endif%}
     </div>
     <!--check and display the information contained in the recipe document-->
     {% if recipe.picture %}

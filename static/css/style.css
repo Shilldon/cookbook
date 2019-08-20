@@ -355,7 +355,13 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   .recipe-details .row {
     margin: 0; }
   .recipe-details i {
-    padding-top: 16px; }
+    padding-top: 16px;
+    font-size: 30px; }
+
+#mark-favourite {
+  border: none;
+  background-color: transparent;
+  color: #034AA6; }
 
 .recipe-contents-list {
   margin-bottom: 20px; }
@@ -513,6 +519,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 
   .display-recipe-button-container .dropdown-trigger {
     margin: 10px 0 0 30px; }
+
+  .recipe-details {
+    color: #0339A6; }
+    .recipe-details .row {
+      margin: 0; }
+    .recipe-details i {
+      padding-top: 16px;
+      font-size: 50px; }
 
   #star {
     font-size: 2.5rem; }

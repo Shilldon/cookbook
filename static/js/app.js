@@ -32,19 +32,17 @@ $(".call-preloader").on("click", function() {
 $("#favourite").on("click", function() {
   //ensure the favourite variable is a boolean value
   var favourite = $("#favourite_input").val();
-  if (typeof(favourite) != Boolean) {
-    favourite = (favourite.toLowerCase() === "true");
-  }
+  console.log(favourite)
   //toggle favourite status - appearance and value
-  if (favourite === false) {
+  if (favourite === "false") {
     $("i", this).text("star");
     $("i", this).addClass("gold-star");
-    $("#favourite_input").val(true);
+    $("#favourite_input").val("true");
   }
   else {
     $("i", this).text("star_border");
     $("i", this).removeClass("gold-star");
-    $("#favourite_input").val(false);
+    $("#favourite_input").val("false");
     favourite = $("#favourite_input").val();
   }
 })
@@ -227,4 +225,23 @@ $(".search-button").on("click", function() {
       $(this).addClass("search-button-clicked");
     }
   }
+})
+
+//----display recipe page scripts ----//
+//favourite button function
+$("#mark-favourite").on("click", function() {
+  var favourite = $("input", this).val();
+  //toggle favourite status - appearance and value
+  if (favourite === "false") {
+    $("i", this).text("star");
+    $("i", this).addClass("gold-star");
+    $("input", this).val("true");
+  }
+  else {
+    $("i", this).text("star_border");
+    $("i", this).removeClass("gold-star");
+    $("input", this).val("false");
+  }
+  $("#favourite-button").submit();
+  
 })
