@@ -1,276 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Recipebook</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto: 300,400,600,700" rel="stylesheet">
-  <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" />
-
-</head>
-
-<body>
-
-  <!-- Nav Bar -->
-  <header>
-    <nav>
-      <!--dropdown content for search options - can search against recipes directly or within categories-->
-      <ul id="search-options" class="dropdown-content">
-        <li class="highlight3-background valign-wrapper"><a href="{{ url_for('recipe_list', action='search') }}" href="#!">Recipes</a></li>
-        <li class="highlight3-background valign-wrapper"><a href="{{ url_for('search')}}" href="#!">Categories</a></li>
-      </ul>
-      <div class="nav-wrapper">
-        <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
-        <a href="#" data-target="menu-list" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
-        <a href="{{ url_for('recipe_list', action='search') }}" class="hide-on-large-only right"><i class="material-icons">search</i></a>
-        <a href="#login-modal" class="right modal-trigger hide-on-large-only" style="padding-right:15px">   
-        <!--check if the user is logged in-->
-          {% if session['user'] %}
-           <!--if so display logged in icon otherwise 'blank' person icon-->
-          <i class="material-icons">person</i></a> 
-          {%else%}
-          <i class="material-icons">person_outline</i></a>
-          {%endif%}
-        <ul class="right hide-on-med-and-down right">
-          <li><a href="#login-modal" class=" modal-trigger">
-          {% if session['user'] %}
-            <i class="material-icons">person</i></a></li>
-          {%else%}
-          <i class="material-icons">person_outline</i></a>
-          </li>
-          {%endif%}
-          <li class="highlight3-background">
-            <a class="dropdown-trigger" href="#!" data-target="search-options">Search</a>
-          </li>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Recipebook</title>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Roboto: 300,400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" type="text/css" />
+  
+  </head>
+  
+  <body>
+  
+    <!-- Nav Bar -->
+    <header>
+      <nav>
+        <!--desktop devices - dropdown content for search options - can search against recipes directly or within categories-->
+        <ul id="search-options" class="dropdown-content">
+          <li class="highlight3-background valign-wrapper"><a href="{{ url_for('recipe_list', action='search') }}" href="#!">Recipes</a></li>
+          <li class="highlight3-background valign-wrapper"><a href="{{ url_for('search')}}" href="#!">Categories</a></li>
+        </ul>
+  
+        <div class="nav-wrapper">
+          <a href="{{ url_for('index') }}" class="brand-logo left">Cookbook</a>
+          <a href="#" data-target="menu-list" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
+          <a href="{{ url_for('recipe_list', action='search') }}" class="hide-on-large-only right navbar-icon"><i class="material-icons">search</i></a>
+  
+          <!--user is logged in icon-->
+          <!--mobile and tabletview-->
+          <a href="#login-modal" class="right modal-trigger hide-on-large-only navbar-icon">
+            <!--check if user is logged in -->
+            {% if session['user'] %}
+            <!--if so display logged in icon otherwise 'blank' person icon-->
+            <i class="material-icons">person</i> {%else%}
+            <i class="material-icons">person_outline</i> {%endif%}
+          </a>
+  
+          <!--user logged in icon-->
+          <!--desktop view-->
+          <ul class="right hide-on-med-and-down right">
+            <li>
+              <a href="#login-modal" class=" modal-trigger">
+                <!--check if user is logged in -->
+                {% if session['user'] %}
+                <i class="material-icons">person</i> {%else%}
+                <i class="material-icons">person_outline</i> {%endif%}
+              </a>
+            </li>
+            <li class="highlight3-background">
+              <a class="dropdown-trigger" href="#!" data-target="search-options">Search</a>
+            </li>
+            <!--user can only add, edit or delete recipes if logged in. Check if logged in, if so make options available-->
+            {% if session["user"] %}
+            <!--add recipe option-->
+            <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
+            <!--edit recipe option-->
+            <li class="highlight2-background">
+              <!--check if already displaying a recipe - if so edit option redirects to page to edit that recipe-->
+              {% if recipe %}
+              <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
+              <!--if not displaying a specific recipe edit option redirects to a list of all recipes to choose one to edit-->
+              <a href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
+            </li>
+            <!--delete recipe option-->
+            <li class="highlight4-background">
+              <!--check if already displaying a recipe - if so delete option opens the deletion modal to confirm deletion of that recipe-->
+              {% if recipe %}
+              <a href="#delete_modal" class=" modal-trigger">Delete</a> {% else %}
+              <!--if not displaying a specific recipe delete option redirects to a list of all recipes to choose one to delete-->
+              <a class="call-preloader" href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
+            </li>
+            <!--if the user is not logged in - grey out options and call error modal on clicking on the options-->
+            {%else%}
+            <li class="highlight2-background">
+              <div class="navbar-disabled-option">
+                <a href="#user-error-modal" class="modal-trigger ">Add</a>
+              </div>
+            </li>
+            <li class="highlight1-background">
+              <div class="navbar-disabled-option">
+                <a href="#user-error-modal" class="modal-trigger navbar-disabled-option">Edit</a>
+              </div>
+            </li>
+            <li class="highlight4-background">
+              <div class="navbar-disabled-option">
+                <a href="#user-error-modal" class="modal-trigger navbar-disabled-option">Delete</a>
+              </div>
+            </li>
+            {%endif%}
+          </ul>
+        </div>
+  
+        <!-- side navbar for mobile and tablet devices-->
+        <ul class="sidenav center-align " id="menu-list">
+          <!--search option is collapsible to reveal options to search against recipes or categories-->
+          <ul class="collapsible">
+            <li>
+              <a class="highlight3-background collapsible-header">Search</a>
+              <div class="collapsible-body">
+                <ul>
+                  <li>
+                    <a class="highlight3-background" href="{{ url_for('recipe_list', action='search') }}">Recipes</a>
+                  </li>
+                  <li>
+                    <a class="highlight3-background" href="{{ url_for('search') }}">Categories</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+          <!--as above check if user is logged in - if so provide options to Add, edit or delete recipes, else disable those options-->
           {% if session["user"] %}
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
           <li class="highlight2-background">
+            <!--as above, check if displaying recipe and, if so redirect to edit that recipe, else provide list of recipes to choose-->
             {% if recipe %}
             <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
             <a href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
           </li>
           <li class="highlight4-background">
+            <!--as above, check if displaying recipe and, if so display modal to delete that recipe, else provide list of recipes to choose-->
             {% if recipe %}
-            <a href="#delete_modal" class=" modal-trigger">Delete</a> {% else %}
-            <a class="call-preloader" href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
+            <a href="#delete_modal" class="modal-trigger">Delete</a> {% else %}
+            <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
           </li>
+          <!--if not logged in, disable add, edit and delete options-->
           {%else%}
           <li class="highlight2-background">
-            <a href="#user-error-modal" class="modal-trigger" style="background-color:rgba(200,200,200,0.3); color: rgba(200,200,200,0.5); padding:0 !important">Add</a>
-          </li>
-          <li class="highlight1-background">
-            <div style="background-color:rgba(200,200,200,0.3); ">
-              <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Edit</a>
+            <div class="navbar-disabled-option">
+              <a href="#user-error-modal" class="modal-trigger">Add</a>
             </div>
           </li>
-          <li class="highlight4-background">
-            <div style="background-color:rgba(200,200,200,0.3); ">
-              <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Delete</a>
+          <li class="highlight1-background">
+            <div class="navbar-disabled-option">
+              <a href="#user-error-modal" class="modal-trigger">Edit</a>
+            </div>
+          </li>
+          <li class="highlight4-background navbar-disabled-option">
+            <div class="navbar-disabled-option">
+              <a href="#user-error-modal" class="modal-trigger">Delete</a>
             </div>
           </li>
           {%endif%}
         </ul>
-      </div>
-    </nav>
-
-    <ul class="sidenav center-align " id="menu-list">
-      <ul class="collapsible ">
-        <li>
-
-          <a style="border-bottom:solid 1px grey" class="highlight3-background collapsible-header">Search</a>
-          <div class="collapsible-body">
-            <ul>
-              <li>
-            <a class="highlight3-background" href="{{ url_for('recipe_list', action='search') }}" style="color:white">Recipes</a>
-            </li>
-            <li>
-            <a class="highlight3-background" href="{{ url_for('search') }}" style="color:white">Categories</a>
-            </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-      {% if session["user"] %}
-      <li class="highlight1-background"><a style="padding:0 !important" href="{{ url_for('add_recipe') }}">Add</a></li>
-      <li class="highlight2-background">
-        {% if recipe %}
-        <a style="padding:0 !important" href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
-        <a style="padding:0 !important" href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
-      </li>
-      <li class="highlight4-background">
-        {% if recipe %}
-        <a href="#delete_modal" class="modal-trigger">Delete</a> {% else %}
-        <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
-      </li>
-      {%else%}
-      <li class="highlight2-background">
-        <a href="#user-error-modal" class="modal-trigger" style="background-color:rgba(200,200,200,0.3); color: rgba(200,200,200,0.5); padding:0 !important">Add</a>
-      </li>
-      <li class="highlight1-background">
-        <div style="background-color:rgba(200,200,200,0.3); ">
-          <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Edit</a>
-        </div>
-      </li>
-      <li class="highlight4-background">
-        <div style="background-color:rgba(200,200,200,0.3); ">
-          <a href="#user-error-modal" class="modal-trigger" style="color: rgba(200,200,200,0.5); padding:0 !important">Delete</a>
-        </div>
-      </li>
-      {%endif%}
-    </ul>
-  </header>
-
-<main>
-  <!--Main page title and background image-->
-  <section>
-    <div class="title-container valign-wrapper">
-      <div class="row">
-        <div class="title-text col s12">
-          <h5 class="center-align">{{title_text}}</h5>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  {% block content %} {% endblock %}
-
-  <!--Modals-->
-<section>
-  <div id="loader-modal" class="modal">
-    <div class="modal-content">
-    <div class="preloader-wrapper big active loader">
-    <div class="spinner-layer spinner-blue-only">
-      <div class="circle-clipper left">
-        <div class="circle"></div>
-      </div><div class="gap-patch">
-        <div class="circle"></div>
-      </div><div class="circle-clipper right">
-        <div class="circle"></div>
-      </div>
-    </div>
-  </div>
-  <p class="center-align">Please wait a moment</p>
-  </div>
-  </div>
+      </nav>
+    </header>
   
-  <div id="login-modal" class="modal">
-    <div class="modal-content">
-      <form id="user-form" action="{{url_for('check_user') }}" method="POST">
-        {%if session['user'] %}
-        <h4>Logout</h4>
-        <h6>Currently logged in as {{session['user']}}</h6>
-        <div class="input-field">
-          <input id="username" type="hidden" name="username" type="text" label="User Name" value="logout"></input>
-        </div>
-        <div class="modal-footer">
-        <div class="row">
-          <div class="col s6 m3 offset-m2 ">
-            <button type="reset" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Cancel</button>
-            <button type="reset" class="modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Cancel</button>
-          </div>
-          <div class="col s6 m3 offset-m2">
-            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Logout</button>
-            <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Logout</button>
+    <main>
+      <!--Main page title and background image-->
+      <section>
+        <div class="title-container valign-wrapper">
+          <div class="row">
+            <div class="title-text col s12">
+              <h5 class="center-align">{{title_text}}</h5>
+            </div>
           </div>
         </div>
-        </div>
-        {%else%}
-        <h4>Login</h4>
-        <p>Enter your username</p>
-        <div class="input-field">
-          <input id="username" name="username" type="text" label="User Name" required></input>
-        </div>
-        <div class="modal-footer">
-        <div class="row">
-          <div class="col s6 m3 offset-m2 ">
-            <button type="reset" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Cancel</button>
-            <button type="reset" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Cancel</button>
-          </div>
-          <div class="col s6 m3 offset-m2">
-            <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Login</button>
-            <button type="submit" class="modal-close waves-effect waves-light btn-large btn-large btn-block hide-on-med-and-down highlight1-background">Login</button>
-          </div>
-        </div>
-        </div>
-        {%endif%}
-      </form>
-    </div>
-  </div>
-
-  <div id="user-error-modal" class="modal">
-    <div class="modal-content">
-      <h4>Error</h4>
-      <p>You need to log in</p>
-      <div class="input-field">
-        <div class="row">
-        <div class="col s6 offset-s3 m4 offset-m4">
-          <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large highlight1-background">OK</button>
-          <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">OK</button>
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      </section>
   
-<!--Deletion modal -->
-
-    <div id="delete_modal" class="modal">
-        <div class="modal-content">
+      {% block content %} {% endblock %}
+  
+      <!--Modals-->
+      <section>
+        <!--preloader modal displayed while waiting for collection access-->
+        <div id="loader-modal" class="modal">
+          <div class="modal-content">
+            <div class="preloader-wrapper big active loader">
+              <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+            <p class="center-align">Please wait a moment</p>
+          </div>
+        </div>
+  
+        <!--login/out modal-->
+        <div id="login-modal" class="modal">
+          <div class="modal-content">
+            <form id="user-form" action="{{url_for('check_user') }}" method="POST">
+              <!--check if user logged in, if so give option to log out-->
+              {%if session['user'] %}
+              <h4>Logout</h4>
+              <h6>Currently logged in as {{session['user']}}</h6>
+              <div class="input-field">
+                <input id="username" type="hidden" name="username" type="text" label="User Name" value="logout"></input>
+              </div>
+              <div class="modal-footer">
+                <div class="row">
+                  <div class="col s6 m3 offset-m2 ">
+                    <button type="reset" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Cancel</button>
+                    <button type="reset" class="modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Cancel</button>
+                  </div>
+                  <div class="col s6 m3 offset-m2">
+                    <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Logout</button>
+                    <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Logout</button>
+                  </div>
+                </div>
+              </div>
+              {%else%}
+              <!--if not logged in give option to log in-->
+              <h4>Login</h4>
+              <p>Enter your username</p>
+              <div class="input-field">
+                <input id="username" name="username" type="text" label="User Name" required></input>
+              </div>
+              <div class="modal-footer">
+                <div class="row">
+                  <div class="col s6 m3 offset-m2 ">
+                    <button type="reset" class=" modal-action modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Cancel</button>
+                    <button type="reset" class=" modal-action modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Cancel</button>
+                  </div>
+                  <div class="col s6 m3 offset-m2">
+                    <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Login</button>
+                    <button type="submit" class="modal-close waves-effect waves-light btn-large btn-large btn-block hide-on-med-and-down highlight1-background">Login</button>
+                  </div>
+                </div>
+              </div>
+              {%endif%}
+            </form>
+          </div>
+        </div>
+  
+        <!--user log in error modal-->
+        <div id="user-error-modal" class="modal">
+          <div class="modal-content">
+            <h4>Error</h4>
+            <p>You need to log in</p>
+            <div class="input-field">
+              <div class="row">
+                <div class="col s6 offset-s3 m4 offset-m4">
+                  <button type="submit" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">OK</button>
+                  <button type="submit" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!--deletion modal - user to confirm whether to delete specific recipe-->
+        <div id="delete_modal" class="modal">
+          <div class="modal-content">
             <h4>Confirm deletion</h4>
             <p>Are you sure you want to delete this recipe?</p>
             <form action="{{url_for('delete_recipe') }}" method="POST">
-                <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
-                <div class="row">
-                    <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</button>
-                        <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
-                    </div>
-                    <div class="col s5 offset-s1 m3 offset-m2 ">
-                        <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red call-preloader">Delete</button>
-                        <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red call-preloader">Delete</button>
-                    </div>
+              <!--if on edit or display recipe page - modal call will delete that specific recipe from the recipe_id passed from backend-->
+              {% if recipe %}
+              <input type="hidden" name="recipe_id" value="{{recipe._id}}"></input>
+              {%else%}
+              <!--if recipe selected from list of recipes - id provided by jquery-->
+              <input type="hidden" name="recipe_id" id="recipe_id_input"></input>
+              {%endif%}
+              <div class="row">
+                <div class="col s5 offset-s1 m3 offset-m2 ">
+                  <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</button>
+                  <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
                 </div>
+                <div class="col s5 offset-s1 m3 offset-m2 ">
+                  <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red call-preloader">Delete</button>
+                  <button type="submit" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down red call-preloader">Delete</button>
+                </div>
+              </div>
             </form>
+          </div>
         </div>
-    </div>
-
+        
+        <!--add/edit error modal - to ensure user provides name, at least one ingredient and method for recipe-->
+        <!--error is populated by jquery depending on error encountered-->
+        <div id="error-modal" class="modal">
+          <div class="modal-content">
+            <h4>Error</h4>
+            <p>Please input </p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-light btn-flat background-highlight3">OK</a>
+          </div>
+        </div>        
+        
+      </section>
+    </main>
   
-</section>
-
-</main>
-
-<footer>
-    <div class="hide-on-small-only top-margin-page-divider">
+    <footer>
+      <!--decorative footer only on desktop/tablet devices - fixed to bottom of page-->
+      <div class="hide-on-small-only top-margin-page-divider">
         <div class="row">
-            <div class="col m10 offset-m1">
-                <div class="col center-align m3">
-                    <div class="left-align page-divider highlight3-background"></div>
-                </div>
-                <div class="col center-align m3">
-                    <div class="center-align page-divider highlight1-background"></div>
-                </div>
-                <div class="col center-align m3">
-                    <div class=" center-align page-divider highlight2-background"></div>
-                </div>
-                <div class="col center-align m3">
-                    <div class="center-align page-divider highlight4-background"></div>
-                </div>
+          <div class="col m10 offset-m1">
+            <div class="col center-align m3">
+              <div class="left-align page-divider highlight3-background"></div>
             </div>
+            <div class="col center-align m3">
+              <div class="center-align page-divider highlight1-background"></div>
+            </div>
+            <div class="col center-align m3">
+              <div class=" center-align page-divider highlight2-background"></div>
+            </div>
+            <div class="col center-align m3">
+              <div class="center-align page-divider highlight4-background"></div>
+            </div>
+          </div>
         </div>
-    </div>    
-</footer>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script type="text/javascript" src="{{url_for('static', filename='js/app.js')}}"></script>
-
-</body>
+      </div>
+    </footer>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/app.js')}}"></script>
+  
+  </body>
 
 </html>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
-
-<!-- call to action -->
+<!-- header dividers -->
+<!--decorative header - tablet and desktop only-->
 <div class="hide-on-small-only top-margin-page-divider">
   <div class="row">
     <div class="col m10 offset-m1">
@@ -19,6 +19,8 @@
     </div>
   </div>
 </div>
+
+<!-- call to action -->
 <div class="row hide-on-small-only information-container">
   <div class="col s12">
     <h5 class="center-align">Edit your recipe</h5>
@@ -33,16 +35,18 @@
 <!-- Edit recipe form -->
 <section class="recipe-form">
   <div class="row">
-    <!--set the edit variable to true to tell flask this is an existing recipe being editted and pass the id of the recipe-->
+    <!--set the edit variable to true to tell backend this is an existing recipe being editted and pass the id of the recipe-->
     <form id="recipe-form" action="{{url_for('insertrecipe',recipe_id=recipe._id,edit='True') }}" method="POST" class="col s12">
       <div class="row">
         <div class="col s10 offset-s1">
           <div class="row">
             <div class="col s10 input-field">
+              <!--format text - capitalise first letter-->
               <input id="name" name="name" type="text" label="Name" value="{{recipe.name[0]|upper}}{{recipe.name[1:]|lower}}" required></input>
               <label for="name">Name</label>
             </div>
             <div class="col s1 offset-s1 valign-wrapper">
+              <!--check if the recipe is marked as the user's favourite - if so show a gold star-->
               {%if recipe.favourite %}
               <p id="favourite"><i id="star" class="material-icons gold-star">star</i></p>
               {% else %}
@@ -55,6 +59,8 @@
           <div class="row">
             <div class="col s12 m6 input-field">
               <label for="country">Country of origin</label>
+              <!--format text - capitalise first letter-->
+              <!--text-only class calls alphanum jquery to ensure only text and no numbers can be input-->
               <input id="country" class="autocomplete text-only" name="country" type="text" value="{{recipe.country[0]|upper}}{{recipe.country[1:]|lower}}"></input>
             </div>
           </div>
@@ -68,7 +74,9 @@
 
           <div class="row">
             <div class="col s12 m4 l3 input-field">
+              <!--dropdown multiple select list of allergens-->
               <select name="allergens" id="select_allergens" multiple>
+                <!--check if each allergen is listed in the recipe doc, if so, mark the drop down for that allergen as selected-->
                 <option value="dairy" {% if recipe.allergens and 'dairy' in recipe.allergens|lower %} selected="selected" {% endif %}>DAIRY</option>
                 <option value="fish" {% if recipe.allergens and 'fish' in recipe.allergens|lower %} selected="selected" {% endif %}>FISH</option>
                 <option value="gluten" {% if recipe.allergens and 'gluten' in recipe.allergens|lower %} selected="selected" {% endif %}>GLUTEN</option>
@@ -81,8 +89,10 @@
             </div>
 
             <div class="col s6 m3 input-field">
+              <!--dropdown list of meals-->
               <select name="meal">
                 <option value="" disabled selected>Select</option>
+                <!--check which meal is listed in the recipe doc, if so, mark the drop down for that meal as selected-->
                 <option value="breakfast" {% if recipe.meal|upper=="BREAKFAST" %} selected="selected" {% endif %}>BREAKFAST</option>
                 <option value="lunch" {% if recipe.meal|upper=="LUNCH" %} selected="selected" {% endif %}>LUNCH</option>
                 <option value="dinner" {% if recipe.meal|upper=="DINNER" %} selected="selected" {% endif %}>DINNER</option>
@@ -94,7 +104,9 @@
             </div>
 
             <div class="col s6 m3 input-field">
+                <!--dropdown list of difficulty levels-->
               <select name="difficulty">
+                <!--check which difficulty level is listed in the recipe doc, if so, mark the drop down for that difficulty level as selected-->
                 <option value="" disabled selected>Select</option>
                 <option value="easy" {% if recipe.difficulty|upper=="EASY" %} selected="selected" {% endif %}>EASY</option>
                 <option value="medium" {% if recipe.difficulty|upper=="MEDIUM" %} selected="selected" {% endif %}>MEDIUM</option>
@@ -116,21 +128,21 @@
             </div>
           </div>
 
-
-
           <div class="row ">
+            <!--ingredients input form-->
             <div class="col s12">
               <p><strong>Ingredients</strong></p>
             </div>
           </div>
-          
+
           <div id="ingredients">
+            <!--iterate through ingredients in recipe and display-->
             {% for ingredient in recipe.ingredients %}
             <div class="row">
               <div class="col s1 offset-s1 l1">
                 <a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background'><i class='material-icons'>delete</i></a>
                 <input type='hidden' name='type' value="{{ingredient.type}}"></input><input type='hidden' name='amount' value="{{ingredient.amount}}"></input><input type='hidden' name='unit' value="{{ingredient.unit}}"></input>
-              </div>              
+              </div>
               <div class="col s10 l5 valign-wrapper">
                 <p>
                   {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} {% endif %} {{ingredient.type[0]|upper}}{{ingredient.type[1:]|lower}}
@@ -138,11 +150,11 @@
               </div>
             </div>
             {%endfor%}
-          </div>   
-
+          </div>
 
           <div class="row">
             <div class="col s12 m5 l4 input-field">
+              <!--text-only class calls alphanum jquery to ensure only text and no numbers can be input-->
               <input class="autocomplete text-only" id="ingredient" type="text">
               <label for="ingredient">Ingredient</label>
             </div>
@@ -151,7 +163,7 @@
               <label for="amount">Quantity</label>
             </div>
             <!--dropdown list of units of measurement-->
-            <div id="unit" class="col s3 m2 l1 input-field" >
+            <div id="unit" class="col s3 m2 l1 input-field">
               <select id="select-unit">
                 <option value="" selected="selected"> </option>
                 <option value="g">g</option>
@@ -169,10 +181,11 @@
             <!--add ingredient button-->
             <div class="col s1 add-ingredient-button">
               <a id="add_ingredient" class="btn-floating btn-small waves-effect waves-light highlight3-background"><i class="material-icons">add</i></a>
-            </div>              
+            </div>
           </div>
-          
+
           <div class="row">
+            <!--text area to input recipe method-->
             <div class="col s12 input-field">
               <label for="method">Method</label>
               <textarea name="method" class="materialize-textarea" label="method" required>{{recipe.method}}</textarea>
@@ -182,6 +195,7 @@
       </div>
 
       <div class="row">
+        <!--return and submit options-->
         <div class="col s4 offset-s1 m2 offset-m3 ">
           <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
           <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
@@ -197,27 +211,14 @@
   </div>
 </section>
 
-<!--Error modal -->
-<section>
-  <div id="error-modal" class="modal">
-    <div class="modal-content">
-      <h4>Error</h4>
-      <p>Please input </p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-light btn-flat background-highlight3">OK</a>
-    </div>
-  </div>
-</section>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
     //initialisation for autocomplete fields taken from ingredients, and country collections
-    var ingredient_list = {{ingredients_list|tojson}};
-    var country_list = {{country_list|tojson}};
+    var ingredient_list = {{ ingredients_list | tojson }};
+    var country_list = {{ country_list | tojson }};
 
     $('#ingredient').autocomplete({
       data: ingredient_list,
@@ -227,7 +228,7 @@
     });
   })
   //initialisation for text-only input box (ingredient name)
-  $('.text-only').alpha();  
+  $('.text-only').alpha();
 </script>
 
 {% endblock %}

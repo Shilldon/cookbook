@@ -107,6 +107,8 @@ input[type="checkbox"]:checked + span:not(.lever):before {
     width: 120px; }
     .nav-wrapper li a {
       font-size: 1.2rem; }
+  .nav-wrapper .navbar-icon {
+    padding: 0 0px 0 15px; }
 
 .sidenav {
   padding-bottom: 0;
@@ -116,6 +118,14 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   .sidenav li a {
     height: 100%;
     color: white;
+    padding: 0 !important; }
+  .sidenav .collapsible > li > a {
+    border-bottom: solid 1px grey; }
+
+.navbar-disabled-option {
+  background-color: rgba(200, 200, 200, 0.3); }
+  .navbar-disabled-option a {
+    color: rgba(200, 200, 200, 0.5) !important;
     padding: 0 !important; }
 
 #search-options li {

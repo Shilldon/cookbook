@@ -1,5 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 <!-- header dividers -->
+<!--decorative header - tablet and desktop only-->
+
 <section class="hide-on-small-only">
   <div class="row top-margin-page-divider">
     <div class="col m10 offset-m1">
@@ -21,6 +23,7 @@
 
 <!-- details and information -->
 <section>
+  <!--check if the author of the recipe is the user who is logged in - if so give dropdown option to edit or delete the recipe -->
   {%if recipe.author|lower==session["user"]|lower %}
   <div class="display-recipe-button-container">
     <!-- Dropdown Trigger -->
@@ -35,7 +38,7 @@
     </ul>
   </div>
   {%endif%}
-  <!--  <div class="information-container">-->
+
   <div class="recipe-details">
     <div class="row">
       <div class="col s8 offset-s2">
@@ -49,7 +52,7 @@
         <i class="material-icons gold-star">star</i> {% endif %}
       </div>
     </div>
-
+    <!--check and display the information contained in the recipe document-->
     {% if recipe.picture %}
     <div class="row">
       <div class="col s6 offset-s3">
@@ -86,16 +89,20 @@
               <p class="recipe-subject">Meal</p>
             </div>
             <div class="col s8 m2 l2">
+              <!--format - capitalise first letter-->
               <p>{{ recipe.meal[0]|upper }}{{recipe.meal[1:]|lower}}</p>
             </div>
-            {% endif %} {% if recipe.difficulty %}
+            {% endif %} 
+            {% if recipe.difficulty %}
             <div class="col s4 m3 offset-m1 l2">
               <p class="recipe-subject">Difficulty</p>
             </div>
             <div class="col s8 m2 l2">
+              <!--format - capitalise first letter-->
               <p>{{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
             </div>
-            {% endif %} {% if recipe.calories %}
+            {% endif %} 
+            {% if recipe.calories %}
             <div class="col s4 m3 l2">
               <p class="recipe-subject">Calories</p>
             </div>
@@ -113,31 +120,36 @@
               <p>{% if recipe.hours>0 %} {{ recipe.hours }} hour {% endif %} {% if recipe.minutes>0 %} {{ recipe.minutes }} minutes{% endif %}</p>
             </div>          
           </div>
-            {% endif %}          
+          {% endif %}          
           {% if recipe.allergens %}
           <div class=" recipe-contents-list">
             <div class="row">
               <div class="col s4 m3 l2">
                 <p class="recipe-subject">Allergens</p>
               </div>
-              {% for allergen in recipe.allergens %} {% if loop.first %}
+              <!-- recipe may have more than one allergen - loop through list and display all allergens-->
+              {% for allergen in recipe.allergens %}
+              <!-- for first allergen in loop format display so allergen name follows title-->
+              {% if loop.first %}
               <div class="col s8 m9 l10">
+                <!--format - capitalise first letter-->
                 <p>{{ allergen[0]|upper }}{{ allergen[1:]|lower }}</p>
               </div>
-  
               {% else %}
               <div class="row">
+                <!-- for all other allergens in the list indent so they line up with top-->
                 <div class="col s8 offset-s4 m9 offset-m3 l10 offset-l2">
                   <p>{{ allergen[0]|upper }}{{ allergen[1:]|lower }}</p>
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endif %} 
+              {% endfor %}
             </div>
           </div>
           {% endif %}
   
           <!-- check to see if ingredients is populated in the dictionary, if so lay out ingredients.
-        NB ingredients is highly unlikely to be unpopulated -->
+        NB defensive - ingredients is highly unlikely to be unpopulated as input form cannot be submitted without at least one ingredient-->
   
           {% if recipe.ingredients %}
           <div class="recipe-contents-list">
@@ -145,7 +157,10 @@
               <div class="col s4 m3 l2">
                 <p class="recipe-subject">Ingredients</p>
               </div>
-              {% for ingredient in recipe.ingredients %} {% if loop.first %}
+              <!--iterate through all ingredients in recipe-->
+              {% for ingredient in recipe.ingredients %} 
+              <!--as with allergens for first ingredient line up after title-->
+              {% if loop.first %}
               <div class="col s8 m9 l10">
                 <p>
                   {{ingredient.amount}}{% if ingredient.unit %} {{ingredient.unit}} of {% endif %} {{ ingredient.type[0]|upper}}{{ingredient.type[1:] }}
@@ -153,16 +168,20 @@
               </div>
               {% else %}
               <div class="row">
+                <!--for all other ingredients offset to line up under first row-->
                 <div class="col s8 offset-s4 m9 offset-m3 l10 offset-l2">
                   <p>
                     {{ingredient.amount}}{% if ingredient.unit %}{{ingredient.unit}} of {% endif %} {{ ingredient.type[0]|upper}}{{ingredient.type[1:] }}
                   </p>
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endif %} 
+              {% endfor %}
             </div>
           </div>
-          {% endif %} {% if recipe.method %}
+          {% endif %} 
+          <!--check if recipe contains a method - NB - defensive - highly unlikely the recipe will not contain a method as the input form cannot be submitted without one-->
+          {% if recipe.method %}
           <div class="row">
             <div class="col s4 m3 l2">
               <p class="recipe-subject">Method</p>
@@ -177,14 +196,18 @@
     </div>
   </div>
   <div class="row">
+    <!--check if the user has just added or edited this recipe - if not the page was called from the recipe list or category display. set up links to return to those pages-->
     {% if added!="true" %}
     <div class="col s4 offset-s1 m2 offset-m3 ">
+      <!-- if the session variable category form is defined the user redirected to display recipe from the category search. Set up links to return to category search-->
       {% if session["category_form"] is defined %}
       <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Back</a>
       <a href="{{url_for('display_categories')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a> {%else%}
+      <!--otherwise set links to return user to recipe list page. Filter variable 'existing' denotes the user may have set up a filter on the recipe list results and alerts back end to check for session variable filters-->
       <a href="{{ url_for('recipe_list',filter='existing') }}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Back</a>
       <a href="{{ url_for('recipe_list',filter='existing') }}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight4-background">Back</a> {%endif%}
     </div>
+    <!--if the recipe was just added or editted set up link 'back' to return to edit the recipe-->
     {% else %}
     <div class="col s4 offset-s1 m2 offset-m3 ">
       <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight4-background">Back</a>
@@ -195,8 +218,6 @@
       <a href="{{url_for('index')}}" class="waves-effect waves-light btn btn-block hide-on-large-only highlight2-background">Home</a>
       <a href="{{url_for('index')}}" class="waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight2-background">Home</a>
     </div>
-    <!--  </div> -->
 </section>
-
 
 {% endblock %}

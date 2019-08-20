@@ -1,5 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 <!-- header dividers -->
+<!--decorative header - tablet and desktop only-->
 <section class="hide-on-small-only">
   <div class="row top-margin-page-divider">
     <div class="col m10 offset-m1">
@@ -26,6 +27,7 @@
       <div class="col s12 ">
         <div class="row valign-wrapper">
           <div class="col s12">
+            <!--check if displaying allergens category - if so add additional text confirming the listed recipes do not contain the allergens listed-->
             {%if category=="allergens" %}
             <h5 class="center-align flow-text">Browse by dietary requirements</h5>
             <p class="center-align flow-text">Recipes that do not contain:</p>
@@ -50,9 +52,9 @@
     <div class="row">
       <div class="col s10 offset-s1">
         <p class="center-align">Below you will find all the recipes in the Cookbook categorised according to your custom search.</h5>
-        {%if category=="allergens" %}
-        <p class="center-align flow-text">See recipes below that do not contain the following allergens</p>  
-        {%endif%}
+          {%if category=="allergens" %}
+          <p class="center-align flow-text">See recipes below that do not contain the following allergens</p>
+          {%endif%}
       </div>
     </div>
   </div>
@@ -66,7 +68,9 @@
         <div class="row">
           <div class="col s12">
             <ul class="collapsible">
+              <!--iterate through list of categories and create collapsibles containing recipes within that category-->
               {%for item in items %}
+              <!--for first category open collapsible by default-->
               <li {%if loop.index==1 %}class='active' {%endif%}>
                 <div class="collapsible-header category-result-header">
                   <div class="row valign-wrapper">
@@ -77,12 +81,14 @@
                       <strong>{{item[0]|upper}}{{item[1:]|lower}}</strong>
                     </div>
                     <div class="col s5" class="right-align">
+                      <!--display number of recipes found in category-->
                       <p>Recipes found: {{recipes[item]|length}}</p>
                     </div>
                   </div>
                 </div>
                 <div class="collapsible-body">
                   <ul class="collapsible">
+                    <!--if no recipes found in category-->
                     {%if recipes[item]|length==0 %}
                     <li>
                       <div class='collapsible-header'>
@@ -91,7 +97,10 @@
                         </div>
                       </div>
                     </li>
-                    {%endif%} {%for recipe in recipes[item]%}
+                    {%endif%}
+                    <!--iterate through recipes in category and create collapsibles with recipe name as header and details as body-->
+                    <!--mobile device view-->
+                    {%for recipe in recipes[item]%}
                     <li class="hide-on-med-and-up">
                       <div class="collapsible-header">
                         <div class="row valign-wrapper">
@@ -99,6 +108,7 @@
                             <i class="material-icons expand-nested">expand_more</i>
                           </div>
                           <div class="col s3 valign-wrapper">
+                            <!--if recipe has a picture display it, else show holder icon-->
                             {% if recipe.picture %}
                             <img src="{{recipe.picture}}" class="circle responsive-image ">{% else %}
                             <i class="fa fa-cutlery fa-2x" aria-hidden="true"></i> {% endif %}
@@ -111,19 +121,24 @@
                       <div class="collapsible-body">
                         <div class="row">
                           <div class="col s11 offset-s1">
+                            <!--display cook time, difficulty and calories - not all recipes will contain this information, therefore do check-->
                             {%if recipe.cook_time%}
                             <p>Cooking time: {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}
                             </p>
-                            {%endif%} {%if recipe.calories%}
+                            {%endif%} 
+                            {%if recipe.calories%}
                             <p>Calories: {{recipe.calories}} kCal</p>
-                            {%endif%} {%if recipe.difficulty%}
+                            {%endif%} 
+                            {%if recipe.difficulty%}
                             <p>Difficulty: {{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
                             {%endif%}
+                            <!-- style final row of recipe list - if not cook time, calories or difficult add top and bottom margins to row for better display-->
                             <div class="row" {% if not (recipe.cook_time and recipe.calories and recipe.difficulty) %} style="margin-top:20px; margin-bottom:20px" {%else%} style="padding-bottom:20px;" {%endif%}>
                               <div class="col s5 offset-s1">
                                 <a href="{{url_for('display_recipe', recipe_id=recipe._id)}}">View recipe</a>
                               </div>
                               <div class="col s5">
+                                <!--give link to display the recipe-->
                                 <a class="valign-wrapper" href="{{url_for('display_recipe', recipe_id=recipe._id)}}"><i class="material-icons">remove_red_eye</i></a>
                               </div>
                             </div>
@@ -131,6 +146,7 @@
                         </div>
                       </div>
                     </li>
+                    <!--tablet and desktop view-->
                     <li class="hide-on-small-only">
                       <div class="collapsible-header">
                         <div class="row valign-wrapper">
@@ -143,7 +159,7 @@
                             <strong>{{recipe.name}}</strong>
                           </div>
                           <div class="col m6">
-                          {%if recipe.cook_time%}
+                            {%if recipe.cook_time%}
                             <p><strong>Cooking time:</strong> {%if recipe.hours %}{{recipe.hours}} hours{%endif%} {%if recipe.minutes %}{{recipe.minutes}} minutes{%endif%}</p>
                             {%endif%} {%if recipe.calories%}
                             <p><strong>Calories:</strong> {{recipe.calories}} kCal</p>

@@ -33,10 +33,10 @@ $("#favourite").on("click", function() {
   //ensure the favourite variable is a boolean value
   var favourite = $("#favourite_input").val();
   if (typeof(favourite) != Boolean) {
-    favourite = (favourite.toLowerCase() == "true");
+    favourite = (favourite.toLowerCase() === "true");
   }
   //toggle favourite status - appearance and value
-  if (favourite == false) {
+  if (favourite === false) {
     $("i", this).text("star");
     $("i", this).addClass("gold-star");
     $("#favourite_input").val(true);
@@ -60,12 +60,12 @@ $("#add_ingredient").on("click", function() {
   var currentIngredients = $("#ingredients").html()
   
   //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
-  if (isNaN(currentAmount) || currentAmount.length == 0 || currentAmount == undefined) {
+  if (isNaN(currentAmount) || currentAmount.length === 0 || currentAmount === undefined) {
     //display error modal
     $("#error-modal p").text("Please enter amount of ingredients")
     $("#error-modal").modal('open');
   }
-  else if (currentIngredient.length == 0 || currentIngredient == undefined) {
+  else if (currentIngredient.length === 0 || currentIngredient === undefined) {
     //display error modal
     $("#error-modal p").text("Please enter ingredient name")
     $("#error-modal").modal('open');
@@ -96,17 +96,17 @@ $(".submit-recipe").on("click", function() {
   var method = $('#method').val();
   
   //ensure the recipe has a name
-  if (name == "") {
+  if (name === "") {
     $("#error-modal p").text("You need to name your receipe")
     $("#error-modal").modal('open');
   }
   //ensure the recipe has at least one ingredient
-  else if (ingredient == undefined || ingredient == "") {
+  else if (ingredient === undefined || ingredient === "") {
     $("#error-modal p").text("You need at least one ingredient for your recipe")
     $("#error-modal").modal('open');
   }
   //ensure the user has entered instructions on how to make the recipe
-  else if (method == "") {
+  else if (method === "") {
     $("#error-modal p").text("You need to provide instructions as to how to make your recipe")
     $("#error-modal").modal('open');
   }
@@ -181,7 +181,8 @@ $(".category-search-button").on("click", function() {
       return false;
     }
   })
-  if (inputValid == false) {
+  if (inputValid === false) {
+    $("#error-modal p").text("You need to select at least one option")
     $("#error-modal").modal('open');
   }
   else {

@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
-
 <!-- header dividers -->
+<!--decorative header - tablet and desktop only-->
 <section class="hide-on-small-only">
   <div class="row top-margin-page-divider">
     <div class="col m10 offset-m1">
@@ -31,6 +31,7 @@
     </div>
 </section>
 
+<!--information and details tablet and desktop devices only-->
 <section class="hide-on-small-only">
     <div class="information-container">
         <div class="row hide-on-small-only">
@@ -53,10 +54,15 @@
         <div class="col s12 m8 offset-m2">
             <ul>
                 <li>
+                    <!--category search options-->
                     <div>Search Category:&nbsp<span id="category-to-search"></span></div>
                     <div>
                         <form action="{{url_for('display_categories')}}" id="categories" method="POST">
+                            <!--each category is a collection - ingredients, authors, allergens, meal type, country -->
+                            <!--category lists populated at backend from documents in each collection-->
+                            <!--for each category display a list of the elements in that category in a multiple select dropdown list. User can select multiple elements - e.g. several ingredients, some or all difficulty levels, one or more meal types-->
                             <div class="list-category input-field" id="list-element-ingredients">
+                                <!--dropdown list of ingredients-->
                                 <select name="ingredients" multiple>
                                     {%for ingredient in category_list["ingredients"] %}
                                     <option value="{{ingredient}}">{{ingredient}}</option>
@@ -66,6 +72,7 @@
                             </div>
 
                             <div class="list-category input-field" id="list-element-dietary">
+                                <!--dropdown list of allergens-->
                                 <select name="allergens" multiple>
                                     {%for allergy in category_list["allergens"] %}
                                     {%if allergy=="Meat"%}
@@ -80,15 +87,17 @@
                             </div>
 
                             <div class="list-category input-field" id="list-element-difficulty">
+                                <!--dropdown list of difficulty levels-->
                                 <select name="difficulty" multiple>
-                                    <option value="hard">Hard</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="easy">Easy</option>
+                                    {%for difficulty in category_list["difficulty"] %}
+                                    <option value="{{difficulty}}">{{difficulty}}</option>
+                                    {%endfor%}
                                 </select>
                                 <label for="difficulty" data-error="Select a difficulty level">Select at least one difficulty level</label>
                             </div>
 
                             <div class="list-category input-field" id="list-element-meal">
+                                <!--dropdown list of meal types-->
                                 <select name="meal" multiple>
                                     {%for meal in category_list["meal"] %}
                                     <option value="{{meal}}">{{meal}}</option>
@@ -99,23 +108,23 @@
                             </div>
 
                             <div class="list-category input-field" id="list-element-country">
+                                <!--dropdown list of countries-->
                                 <select name="country" multiple>
                                     {%for country in category_list["country"] %}
                                     <option value="{{country}}">{{country}}</option>
                                     {%endfor%}
                                 </select>
                                 <label for="country" data-error="Select a country">Select at least one country</label>
-
                             </div>
 
                             <div class="list-category input-field" id="list-element-author">
+                                <!--dropdown list of authors-->
                                 <select name="author" multiple>
                                     {%for author in category_list["author"] %}
                                     <option value="{{author}}">{{author}}</option>
                                     {%endfor%}
                                 </select>
                                 <label for="author" data-error="Select an author">Select at least one author</label>
-
                             </div>
 
                             <div class="row">
@@ -138,10 +147,10 @@
 
 <!-- category search buttons -->
 <section>
+    <!--user can select one category to search by - display list of category buttons-->
     <div class="row">
         <div class="col s12 m8 offset-m2">
             <div class="search-button-container">
-
                 <div class="row">
                     <div class="col s4 valign-wrapper waves-effect waves-light search-button" id="search-ingredients">
                         <p class="center-align flow-text"><strong>Ingredients</strong></p>
@@ -173,21 +182,6 @@
             </div>
         </div>
     </div>
-
 </section>
-
-<!--Error modal -->
-<section>
-    <div id="error-modal" class="modal">
-        <div class="modal-content">
-            <h4>Error</h4>
-            <p>Please select at least one item in the category</p>
-        </div>
-        <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-light btn-flat background-highlight3">OK</a>
-        </div>
-    </div>
-</section>
-
 
 {% endblock %}

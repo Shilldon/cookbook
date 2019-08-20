@@ -128,6 +128,7 @@
           </div>          
           <div class="row">
             <div class="col s12 m5 l4 input-field">
+              <!--text-only class calls alphanum jquery to ensure only text and no numbers can be input-->
               <input class="autocomplete text-only" id="ingredient" type="text">
               <label for="ingredient">Ingredient</label>
             </div>
@@ -147,6 +148,7 @@
                 <option value="ltr">ltr</option>
                 <option value="tsp">tsp</option>
                 <option value="tbsp">tbsp</option>
+                <option value="unit">unit</option>                
               </select>
               <label for="select-unit">Unit</label>
             </div>
@@ -182,20 +184,6 @@
     </form>
   </div>
 </section>
-
-<!--Error modal - detail completed from jquery script once error is estabished-->
-<section>
-  <div id="error-modal" class="modal">
-    <div class="modal-content">
-      <h4>Error</h4>
-      <p>Please input </p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-light btn-flat background-highlight3">OK</a>
-    </div>
-  </div>
-</section>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{url_for('static', filename='js/jquery.alphanum.js')}}"></script>

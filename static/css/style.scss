@@ -22,7 +22,7 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    overflow-y: overlay;    
+    overflow-y: overlay;
 }
 
 main {
@@ -124,12 +124,12 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 }
 
 .loader {
-  position: absolute;
-  margin: auto;
-  top: 50vh;
-  bottom: 50vh;
-  left: 0;
-  right: 0;
+    position: absolute;
+    margin: auto;
+    top: 50vh;
+    bottom: 50vh;
+    left: 0;
+    right: 0;
 }
 
 //----- NAV BAR ----- //
@@ -154,33 +154,47 @@ input[type="checkbox"]:checked+span:not(.lever):before {
             font-size: 1.2rem;
         }
     }
+    .navbar-icon {
+        padding: 0 0px 0 15px;
+    }
 }
 
 .sidenav {
-    //margin-top: 57px;
     padding-bottom: 0;
     background-color: transparent;
     box-shadow: none; //    max-height: 192px;
     width: 25vw;
     li {
         a {
-            height: 100%; //text-shadow: 0px 0px 10px #000000;
+            height: 100%;
             color: white;
             padding: 0 !important;
         }
+    }
+    .collapsible>li>a {
+        border-bottom: solid 1px grey;
+    }
+}
+
+.navbar-disabled-option {
+    background-color: rgba(200, 200, 200, 0.3);
+    a {
+        //important - to override standard white font on sidenave
+        color: rgba(200, 200, 200, 0.5) !important;
+        padding: 0 !important;
     }
 }
 
 #search-options {
     li {
-        height:63px;
+        height: 63px;
         a {
-            padding-top:22px; 
-            color:white;
-            width:100%; 
-            height:100%;
-            padding-left:0;
-            padding-right:0;
+            padding-top: 22px;
+            color: white;
+            width: 100%;
+            height: 100%;
+            padding-left: 0;
+            padding-right: 0;
         }
     }
 }
@@ -487,7 +501,7 @@ input[type="checkbox"]:checked+span:not(.lever):before {
         top: 5px;
     }
     label {
-        white-space:nowrap;
+        white-space: nowrap;
     }
 }
 
@@ -563,9 +577,9 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 
 #loader-modal {
     .modal-content {
-        height:25vh;
+        height: 25vh;
         p {
-            margin-top:17vh;
+            margin-top: 17vh;
         }
     }
 }
@@ -786,5 +800,5 @@ input[type="checkbox"]:checked+span:not(.lever):before {
             font-size: 1.2rem !important;
 
         }
-    }    
+    }
 }
