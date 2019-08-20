@@ -43,3 +43,5 @@ beta - errors
 unable to add recipe - error checking favourite and new_category_doc (error in database structure)
 labels not moving on edit recipe - odd diuplicate code worked fine
 beverage
+editting recipes not own - from menu bar
+added favourite ability at user request

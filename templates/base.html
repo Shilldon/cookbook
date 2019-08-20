@@ -61,16 +61,16 @@
             <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
             <!--edit recipe option-->
             <li class="highlight2-background">
-              <!--check if already displaying a recipe - if so edit option redirects to page to edit that recipe-->
-              {% if recipe %}
+              <!--check if already displaying a recipe  and the user is the author of the recipe - if so edit option redirects to page to edit that recipe-->
+              {% if recipe and session["user"]|lower==recipe.author %}
               <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
               <!--if not displaying a specific recipe edit option redirects to a list of all recipes to choose one to edit-->
               <a href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
             </li>
             <!--delete recipe option-->
             <li class="highlight4-background">
-              <!--check if already displaying a recipe - if so delete option opens the deletion modal to confirm deletion of that recipe-->
-              {% if recipe %}
+              <!--check if already displaying a recipe and the user is the author of the recipe - if so delete option opens the deletion modal to confirm deletion of that recipe-->
+              {% if recipe and session["user"]|lower==recipe.author%}
               <a href="#delete_modal" class=" modal-trigger">Delete</a> {% else %}
               <!--if not displaying a specific recipe delete option redirects to a list of all recipes to choose one to delete-->
               <a class="call-preloader" href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
@@ -118,14 +118,14 @@
           {% if session["user"] %}
           <li class="highlight1-background"><a href="{{ url_for('add_recipe') }}">Add</a></li>
           <li class="highlight2-background">
-            <!--as above, check if displaying recipe and, if so redirect to edit that recipe, else provide list of recipes to choose-->
-            {% if recipe %}
+            <!--as above, check if displaying recipe and user is author, if so redirect to edit that recipe, else provide list of recipes to choose-->
+            {% if recipe and session["user"]|lower==recipe.author%}
             <a href="{{url_for('edit_recipe', recipe_id=recipe._id)}}">Edit</a> {% else %}
             <a href="{{url_for('recipe_list', action='edit')}}">Edit</a> {% endif %}
           </li>
           <li class="highlight4-background">
-            <!--as above, check if displaying recipe and, if so display modal to delete that recipe, else provide list of recipes to choose-->
-            {% if recipe %}
+            <!--as above, check if displaying recipe and user is author, if so display modal to delete that recipe, else provide list of recipes to choose-->
+            {% if recipe and session["user"]|lower==recipe.author%}
             <a href="#delete_modal" class="modal-trigger">Delete</a> {% else %}
             <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
           </li>
