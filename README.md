@@ -45,3 +45,4 @@ labels not moving on edit recipe - odd diuplicate code worked fine
 beverage
 editting recipes not own - from menu bar
 added favourite ability at user request
+remove options for edit, dlete and add if not logged in - defensive

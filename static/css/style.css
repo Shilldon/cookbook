@@ -122,12 +122,6 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   .sidenav .collapsible > li > a {
     border-bottom: solid 1px grey; }
 
-.navbar-disabled-option {
-  background-color: rgba(200, 200, 200, 0.3); }
-  .navbar-disabled-option a {
-    color: rgba(200, 200, 200, 0.5) !important;
-    padding: 0 !important; }
-
 #search-options li {
   height: 63px; }
   #search-options li a {
@@ -471,6 +465,9 @@ input[type="checkbox"]:checked + span:not(.lever):before {
   form input,
   form label {
     font-size: 0.9rem !important; }
+
+  .nav-wrapper {
+    padding-right: 20px; }
 
   .title-container {
     height: 350px; }

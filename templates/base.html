@@ -75,23 +75,7 @@
               <!--if not displaying a specific recipe delete option redirects to a list of all recipes to choose one to delete-->
               <a class="call-preloader" href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
             </li>
-            <!--if the user is not logged in - grey out options and call error modal on clicking on the options-->
-            {%else%}
-            <li class="highlight2-background">
-              <div class="navbar-disabled-option">
-                <a href="#user-error-modal" class="modal-trigger ">Add</a>
-              </div>
-            </li>
-            <li class="highlight1-background">
-              <div class="navbar-disabled-option">
-                <a href="#user-error-modal" class="modal-trigger navbar-disabled-option">Edit</a>
-              </div>
-            </li>
-            <li class="highlight4-background">
-              <div class="navbar-disabled-option">
-                <a href="#user-error-modal" class="modal-trigger navbar-disabled-option">Delete</a>
-              </div>
-            </li>
+
             {%endif%}
           </ul>
         </div>
@@ -129,23 +113,7 @@
             <a href="#delete_modal" class="modal-trigger">Delete</a> {% else %}
             <a href="{{url_for('recipe_list', action='delete')}}">Delete</a> {% endif %}
           </li>
-          <!--if not logged in, disable add, edit and delete options-->
-          {%else%}
-          <li class="highlight2-background">
-            <div class="navbar-disabled-option">
-              <a href="#user-error-modal" class="modal-trigger">Add</a>
-            </div>
-          </li>
-          <li class="highlight1-background">
-            <div class="navbar-disabled-option">
-              <a href="#user-error-modal" class="modal-trigger">Edit</a>
-            </div>
-          </li>
-          <li class="highlight4-background navbar-disabled-option">
-            <div class="navbar-disabled-option">
-              <a href="#user-error-modal" class="modal-trigger">Delete</a>
-            </div>
-          </li>
+
           {%endif%}
         </ul>
       </nav>

@@ -176,15 +176,6 @@ input[type="checkbox"]:checked+span:not(.lever):before {
     }
 }
 
-.navbar-disabled-option {
-    background-color: rgba(200, 200, 200, 0.3);
-    a {
-        //important - to override standard white font on sidenave
-        color: rgba(200, 200, 200, 0.5) !important;
-        padding: 0 !important;
-    }
-}
-
 #search-options {
     li {
         height: 63px;
@@ -711,6 +702,9 @@ input[type="checkbox"]:checked+span:not(.lever):before {
 
         }
     }
+    .nav-wrapper {
+        padding-right:20px;        
+    }    
     .title-container {
         height: 350px;
         .title-text {
