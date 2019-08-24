@@ -40,7 +40,7 @@
           <div class="row">
             <div class="col s10 input-field">
               <label for="name">Name</label>
-              <input id="name" name="name" type="text" required>
+              <input id="name" name="name" type="text">
             </div>
             <!--button for user to select to mark recipe as one of their favourites-->
             <div class="col s1 offset-s1 valign-wrapper">
@@ -105,14 +105,14 @@
 
             <div class="col s3 l1 input-field">
               <!--input fields for time and calories - number only input-->
-              <input name="hours" type="number" min="0" placeholder="hours">
-              <label for="hours">Cooking Time</label>
+              <input name="hours" type="number" min="0" placeholder="hours" class="number-only">
+              <label for="hours" data-error="Please enter valid time.">Cooking Time</label>
             </div>
             <div class="col m2 s3 l1 input-field">
-              <input name="minutes" type="number" min="0" max="59" placeholder="minutes">
+              <input name="minutes" id="minutes" type="number" min="0" max="59" placeholder="minutes" class="validate number-only">
             </div>
             <div class="col s3 m2 l1 input-field">
-              <input name="calories" type="number" placeholder="calories">
+              <input name="calories" id="calories" min="0" max="5000" type="number" placeholder="calories" class="validate number-only">
               <label for="calories">Calories</label>
             </div>
           </div>
@@ -133,7 +133,7 @@
               <label for="ingredient">Ingredient</label>
             </div>
             <div class="col s3 m2 l2 input-field">
-              <input id="amount" type="number" min="0">
+              <input id="amount" type="number" min="0" class="number-only">
               <label for="amount">Quantity</label>
             </div>
             <!--dropdown list of units of measurement-->
@@ -201,8 +201,22 @@
       data: country_list,
     });
   })
-  //initialisation for text-only input box (ingredient name)
+  //initialisation for text-only and number-only input boxes (ingredient name, calories and cook time)
   $('.text-only').alpha();  
+  $('.number-only').numeric();
 </script>
 
+<!--Jasmine testing scripts-->
+<!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/jasmine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/jasmine-html.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/boot.js"></script>
+    <script src="{{url_for('static', filename='js/jasmine-jquery.js')}}"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/jasmine.css">
+
+    <script defer src="{{url_for('static',filename='js/spec/addrecipe_testSpec.js')}}"></script>
+-->
 {% endblock %}

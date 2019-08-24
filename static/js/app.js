@@ -25,6 +25,12 @@ $(".call-preloader").on("click", function () {
     $("#loader-modal").modal('open');
 });
 
+$(".collapsible").on("click", function() {
+    $('html, body').animate({
+        scrollTop: $(this).offset().top
+    }, 1000);    
+});
+
 //----EDIT AND ADD RECIPE PAGE SCRIPTS----//
 
 //favourite button function
@@ -52,17 +58,20 @@ $("#add_ingredient").on("click", function () {
     var currentAmount = $("#amount").val();
     var currentUnit = $("#unit option:selected").val();
     var currentIngredients = $("#ingredients").html();
+    var errorText="";
+    var error=false;
 
+    //check if ingredient name has been entered
+    if (currentIngredient.length === 0 || currentIngredient === undefined) {
+        errorText=errorText+("Please enter ingredient name <br>");
+        error=true;
+    }
     //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
     if (isNaN(currentAmount) || currentAmount.length === 0 || currentAmount === undefined) {
-        //display error modal
-        $("#error-modal p").text("Please enter amount of ingredients");
-        $("#error-modal").modal('open');
-    } else if (currentIngredient.length === 0 || currentIngredient === undefined) {
-        //display error modal
-        $("#error-modal p").text("Please enter ingredient name");
-        $("#error-modal").modal('open');
-    } else {
+        errorText=errorText+("Please enter amount of ingredients <br>");
+        error=true;
+    }
+    if (error===false) {
         if (currentUnit === "0") { currentUnit = ""; }
         //on successful completion of ingredients form create line above form with ingredients details and button to click to remove the ingredient if a mistake has been made
         $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 offset-s1 l1'><a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background valign-wrapper'><i class='material-icons'>delete</i></a></div><div class='col s10 l5 valign-wrapper'><p>" + currentAmount + " " + currentUnit + " " + currentIngredient + " </p><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden'name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input></div>");
@@ -72,7 +81,10 @@ $("#add_ingredient").on("click", function () {
         $("#select-unit").val('');
         $('#select-unit').formSelect();
     }
-});
+    else {
+        $("#error-modal p").html(errorText);
+        $("#error-modal").modal('open');
+    }});
 
 //function for remove ingredient button. Created as click function on body of page because it was not possible to bind click event to elements dynamically created through jquery/jinja
 $('body').on("click", "#remove_ingredient", function () {
@@ -86,28 +98,45 @@ $(".submit-recipe").on("click", function() {
     var name = $("#name").val();
     var ingredient = $('#ingredients').find('input').filter(':hidden:first').val();
     var method = $('#method').val();
-
+    var minutes=$("#minutes").val();
+    var calories=$("#calories").val();
+    var errorText="";
+    var error=false;
     //ensure the recipe has a name
     if (name === "") {
-        $("#error-modal p").text("You need to name your receipe")
-        $("#error-modal").modal('open');
+        errorText=errorText+("You need to name your recipe <br>");
+        error=true;
     }
     //ensure the recipe has at least one ingredient
-    else if (ingredient === undefined || ingredient === "") {
-        $("#error-modal p").text("You need at least one ingredient for your recipe")
-        $("#error-modal").modal('open');
+    if (ingredient === undefined || ingredient === "") {
+        errorText=errorText+("You need at least one ingredient <br>");
+        error=true;
     }
     //ensure the user has entered instructions on how to make the recipe
-    else if (method === "") {
-        $("#error-modal p").text("You need to provide instructions as to how to make your recipe")
-        $("#error-modal").modal('open');
+    if (method === "") {
+        errorText=errorText+("You need to provide instructions to make the recipe <br>");
+        error=true;
     }
-    //if all fine close the pre-loader modal and submit the form to back end for adding recipe to collection
-    else {
-        $(".modal").modal("close");
+    //ensure, if minutes are added, they are between 0 and 60
+    if(minutes>59 || minutes<0){
+        errorText=errorText+("Number of minutes needs to be between 0 and 60 <br>");
+        error=true;
+    }
+    //ensure, if calories are added, they are between 0 and 5000
+    if(calories>5000 || calories<0){
+        errorText=errorText+("Number of calories needs to be between 0 and 5000 <br>");
+        error=true;        
+    }
+    //if all fine open the pre-loader modal and submit the form to back end for adding recipe to collection
+    if (error===false) {
         $("#loader-modal").modal('open');
         $("#recipe-form").submit();
     }
+    else {
+        $("#error-modal p").html(errorText);
+        $("#error-modal").modal('open');
+    }
+
 });
 
 //----RECIPE LIST PAGE SCRIPTS ---//

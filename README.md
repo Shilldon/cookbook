@@ -53,4 +53,5 @@ validator.w3.org
     error re: google font but link provided
     error: Element ul not allowed as child of element ul in this context.  - but required for materialize
     error: duplicate ID error thrown but use of jinja id only appears once
-https://codebeautify.org/jsvalidate - for jquery validation
+https://codebeautify.org/jsvalidate - for jquery validation undefined $
+http://pep8online.com/checkresult - no errors

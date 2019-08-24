@@ -117,14 +117,14 @@
             </div>
 
             <div class="col m2 s3 l1 input-field" style="white-space:nowrap">
-              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours">
+              <input name="hours" type="number" value="{{recipe.hours}}" placeholder="hours" class="number-only">
               <label for="hours">Cooking Time</label>
             </div>
             <div class="col m2 s3 l1 input-field">
-              <input name="minutes" type="number" value="{{recipe.minutes}}" placeholder="minutes">
+              <input name="minutes" id="minutes" type="number" min="0" max="59" value="{{recipe.minutes}}" placeholder="minutes" class="validate number-only">
             </div>
             <div class="col s3 m2 l1 input-field">
-              <input name="calories" type="number" value="{{recipe.calories}}" placeholder="calories">
+              <input name="calories" id="calories" type="number" min="0" max="5000" value="{{recipe.calories}}" placeholder="calories" class="validate number-only">
               <label for="calories">Calories</label>
             </div>
           </div>
@@ -162,7 +162,7 @@
               <label for="ingredient">Ingredient</label>
             </div>
             <div class="col s3 m2 l2 input-field">
-              <input id="amount" type="number" min="0">
+              <input id="amount" type="number" min="0" class="number-only">
               <label for="amount">Quantity</label>
             </div>
             <!--dropdown list of units of measurement-->
@@ -191,7 +191,7 @@
             <!--text area to input recipe method-->
             <div class="col s12 input-field">
               <label for="method">Method</label>
-              <textarea name="method" class="materialize-textarea" required>{{recipe.method}}</textarea>
+              <textarea name="method" id="method" class="materialize-textarea" required>{{recipe.method}}</textarea>
             </div>
           </div>
         </div>
@@ -230,8 +230,22 @@
       data: country_list,
     });
   })
-  //initialisation for text-only input box (ingredient name)
-  $('.text-only').alpha();
+  //initialisation for text-only and number-only input boxes (ingredient name, calories and cook time)
+  $('.text-only').alpha();  
+  $('.number-only').numeric();
 </script>
 
+<!--Jasmine testing scripts-->
+<!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/jasmine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/jasmine-html.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/boot.js"></script>
+    <script src="{{url_for('static', filename='js/jasmine-jquery.js')}}"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.4.0/jasmine.css">
+
+    <script defer src="{{url_for('static',filename='js/spec/editrecipe_testSpec.js')}}"></script>
+-->
 {% endblock %}

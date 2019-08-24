@@ -9,7 +9,9 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET", "randomstring123")
 
 app.config["MONGO_DBNAME"] = 'milestone-3'
-app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+#app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+
+app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mongodb.net/milestone-3'
 
 mongo = PyMongo(app)
 
@@ -160,7 +162,11 @@ def insertrecipe():
         # request object
         if key != 'type' and key != 'amount' and key != 'unit' and\
                 key != 'allergens':
-            new_recipe[key] = new_recipe[key][0].lower()
+            if key != 'method':
+                new_recipe[key] = new_recipe[key][0].lower()
+            else:
+                new_recipe[key] = new_recipe[key][0]                    
+            print(new_recipe[key])
             # check if the recipe has been marked as the user's favourite
             if key == 'favourite':
                 # get the list of users for whom this is a favourite recipe
@@ -203,9 +209,11 @@ def insertrecipe():
                     new_recipe[key] = int(new_recipe[key])
                 except ValueError:
                     new_recipe[key] = 0
+
             if key == 'hours':
                 # convert hours to minutes and add to cook time variable
                 cook_time = new_recipe[key]*60
+                
             if key == 'minutes':
                 cook_time = cook_time+new_recipe[key]
 
