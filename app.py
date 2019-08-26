@@ -231,6 +231,11 @@ def insertrecipe():
                 ingredients.append(ingredient)
                 i += 1
 
+    # remove separate arrays of type unit and amount of ingredients from
+    # new_recipe dict - now been added to dict within ingredients.
+    new_recipe.pop('type',None)
+    new_recipe.pop('amount',None)
+    new_recipe.pop('unit',None)
     # update the new_recipe dict with the elements that have been formatted,
     # above.
     # insert the list of user IDs in the favourite lists to the new_recipe dict

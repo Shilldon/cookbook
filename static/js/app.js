@@ -93,13 +93,7 @@ $('body').on("click", "#remove_ingredient", function () {
     setTimeout(function() { ingredientLine.remove(); }, 500);
 });
 
-//error checking on submitting recipe
-$(".submit-recipe").on("click", function() {
-    var name = $("#name").val();
-    var ingredient = $('#ingredients').find('input').filter(':hidden:first').val();
-    var method = $('#method').val();
-    var minutes=$("#minutes").val();
-    var calories=$("#calories").val();
+function errorCheckRecipe(name,ingredient,method,minutes,calories) {
     var errorText="";
     var error=false;
     //ensure the recipe has a name
@@ -135,8 +129,17 @@ $(".submit-recipe").on("click", function() {
     else {
         $("#error-modal p").html(errorText);
         $("#error-modal").modal('open');
-    }
+    }    
+}
 
+//error checking on submitting recipe
+$(".submit-recipe").on("click", function() {
+    var name = $("#name").val();
+    var ingredient = $('#ingredients').find('input').filter(':hidden:first').val();
+    var method = $('#method').val();
+    var minutes=$("#minutes").val();
+    var calories=$("#calories").val();
+    errorCheckRecipe(name,ingredient,method,minutes,calories);
 });
 
 //----RECIPE LIST PAGE SCRIPTS ---//

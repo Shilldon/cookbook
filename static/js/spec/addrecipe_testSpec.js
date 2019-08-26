@@ -1,4 +1,3 @@
-
 describe("test 1 - add recipe form error on providing no input",function() {
     let modal=$("#error-modal");
     beforeEach(function() { 
