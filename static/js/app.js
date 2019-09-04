@@ -5,7 +5,7 @@ function myFunc() {
 
 //----GENERAL SCRIPTS----//
 //initialisation for materialize framework
-$(document).ready(function () {
+$(document).ready(function() {
     $('.sidenav').sidenav({
         edge: "right"
     });
@@ -20,7 +20,7 @@ $(document).ready(function () {
 });
 
 //display a preloader on inserting or deleting recipes as collection query can take some time
-$(".call-preloader").on("click", function () {
+$(".call-preloader").on("click", function() {
     $(".modal").modal("close");
     $("#loader-modal").modal('open');
 });
@@ -28,13 +28,13 @@ $(".call-preloader").on("click", function () {
 $(".collapsible").on("click", function() {
     $('html, body').animate({
         scrollTop: $(this).offset().top
-    }, 1000);    
+    }, 1000);
 });
 
 //----EDIT AND ADD RECIPE PAGE SCRIPTS----//
 
 //favourite button function
-$("#favourite").on("click", function () {
+$("#favourite").on("click", function() {
     //ensure the favourite variable is a boolean value
     var favourite = $("#favourite_input").val();
     //toggle favourite status - appearance and value
@@ -42,15 +42,15 @@ $("#favourite").on("click", function () {
         $("i", this).text("star");
         $("i", this).addClass("gold-star");
         $("#favourite_input").val("true");
-    } else {
+    }
+    else {
         $("i", this).text("star_border");
         $("i", this).removeClass("gold-star");
         $("#favourite_input").val("false");
     }
 });
 
-//function to add to and display ingredients after ingredient input form submitted
-$("#add_ingredient").on("click", function () {
+$("#add_ingredient").on("click", function() {
     var totalIngredients = $("#ingredients").data("total_ingredients");
     totalIngredients++;
     $("#ingredients").data("total_ingredients", totalIngredients);
@@ -58,89 +58,110 @@ $("#add_ingredient").on("click", function () {
     var currentAmount = $("#amount").val();
     var currentUnit = $("#unit option:selected").val();
     var currentIngredients = $("#ingredients").html();
-    var errorText="";
-    var error=false;
-
-    //check if ingredient name has been entered
-    if (currentIngredient.length === 0 || currentIngredient === undefined) {
-        errorText=errorText+("Please enter ingredient name <br>");
-        error=true;
-    }
-    //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
-    if (isNaN(currentAmount) || currentAmount.length === 0 || currentAmount === undefined) {
-        errorText=errorText+("Please enter amount of ingredients <br>");
-        error=true;
-    }
-    if (error===false) {
-        if (currentUnit === "0") { currentUnit = ""; }
-        //on successful completion of ingredients form create line above form with ingredients details and button to click to remove the ingredient if a mistake has been made
-        $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 offset-s1 l1'><a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background valign-wrapper'><i class='material-icons'>delete</i></a></div><div class='col s10 l5 valign-wrapper'><p>" + currentAmount + " " + currentUnit + " " + currentIngredient + " </p><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden'name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input></div>");
-        //reset the form values
-        $("#ingredient").val('');
-        $("#amount").val('');
-        $("#select-unit").val('');
-        $('#select-unit').formSelect();
+    var callErrorModal = errorCheckIngredient(currentIngredient, currentAmount);
+    if (callErrorModal[0] === true) {
+        openErrorModal(callErrorModal[1]);
     }
     else {
-        $("#error-modal p").html(errorText);
-        $("#error-modal").modal('open');
-    }});
+        addIngredient(currentIngredients, currentIngredient, currentAmount, currentUnit);
+    }
+});
+
+//function check ingredients submitted for validity and throw error modal if invalid
+function errorCheckIngredient(ingredient, amount) {
+    var errorText = "";
+    var error = false;
+    //check if ingredient name has been entered
+    if (ingredient.length === 0 || ingredient === undefined || jQuery.type(ingredient)!="string") {
+        errorText = errorText + ("Please enter ingredient name <br>");
+        error = true;
+    }
+    //check if amount of ingredients has been entered - check against whether a number is input and whether string is empty
+    if (isNaN(amount) || amount.length === 0 || amount === undefined) {
+        errorText = errorText + ("Please enter amount of ingredients <br>");
+        error = true;
+    }
+    return [error, errorText];
+}
+
+//function to add to and display ingredients after ingredient input form submitted
+function addIngredient(currentIngredients, currentIngredient, currentAmount, currentUnit) {
+    if (currentUnit === "0") { currentUnit = ""; }
+    //on successful completion of ingredients form create line above form with ingredients details and button to click to remove the ingredient if a mistake has been made
+    $("#ingredients").html(currentIngredients + "<div class='row'><div class='col s1 offset-s1 l1'><a id='remove_ingredient' class='right btn-floating btn-small waves-effect waves-light highlight3-background valign-wrapper'><i class='material-icons'>delete</i></a></div><div class='col s10 l5 valign-wrapper'><p>" + currentAmount + " " + currentUnit + " " + currentIngredient + " </p><input type='hidden' name='type' value=\'" + currentIngredient + "\'></input><input type='hidden'name='amount' value=" + currentAmount + "></input><input type='hidden' name='unit' value=" + currentUnit + "></input></div>");
+    //reset the form values
+    $("#ingredient").val('');
+    $("#amount").val('');
+    $("#select-unit").val('');
+    $('#select-unit').formSelect();
+}
 
 //function for remove ingredient button. Created as click function on body of page because it was not possible to bind click event to elements dynamically created through jquery/jinja
-$('body').on("click", "#remove_ingredient", function () {
+$('body').on("click", "#remove_ingredient", function() {
     $(this).parent().parent().slideUp(500);
     var ingredientLine = $(this).parent().parent();
     setTimeout(function() { ingredientLine.remove(); }, 500);
 });
 
-function errorCheckRecipe(name,ingredient,method,minutes,calories) {
-    var errorText="";
-    var error=false;
-    //ensure the recipe has a name
-    if (name === "") {
-        errorText=errorText+("You need to name your recipe <br>");
-        error=true;
-    }
-    //ensure the recipe has at least one ingredient
-    if (ingredient === undefined || ingredient === "") {
-        errorText=errorText+("You need at least one ingredient <br>");
-        error=true;
-    }
-    //ensure the user has entered instructions on how to make the recipe
-    if (method === "") {
-        errorText=errorText+("You need to provide instructions to make the recipe <br>");
-        error=true;
-    }
-    //ensure, if minutes are added, they are between 0 and 60
-    if(minutes>59 || minutes<0){
-        errorText=errorText+("Number of minutes needs to be between 0 and 60 <br>");
-        error=true;
-    }
-    //ensure, if calories are added, they are between 0 and 5000
-    if(calories>5000 || calories<0){
-        errorText=errorText+("Number of calories needs to be between 0 and 5000 <br>");
-        error=true;        
-    }
-    //if all fine open the pre-loader modal and submit the form to back end for adding recipe to collection
-    if (error===false) {
-        $("#loader-modal").modal('open');
-        $("#recipe-form").submit();
-    }
-    else {
-        $("#error-modal p").html(errorText);
-        $("#error-modal").modal('open');
-    }    
-}
-
-//error checking on submitting recipe
 $(".submit-recipe").on("click", function() {
     var name = $("#name").val();
     var ingredient = $('#ingredients').find('input').filter(':hidden:first').val();
     var method = $('#method').val();
-    var minutes=$("#minutes").val();
-    var calories=$("#calories").val();
-    errorCheckRecipe(name,ingredient,method,minutes,calories);
+    var minutes = $("#minutes").val();
+    var calories = $("#calories").val();
+    var callErrorModal = errorCheckRecipe(name, ingredient, method, minutes, calories);
+    if (callErrorModal[0] === true) {
+        openErrorModal(callErrorModal[1]);
+    }
+    else {
+        $("#loader-modal").modal('open');
+        $("#recipe-form").submit();
+    }
 });
+
+//Function to check the data submitted for the recipe for validity and throw error modal if invalid.
+function errorCheckRecipe(name, ingredient, method, minutes, calories) {
+    var errorText = "";
+    var error = false;
+    //ensure the recipe has a name
+    if (name === undefined || name === "") {
+        errorText = errorText + ("You need to name your recipe <br>");
+        error = true;
+    }
+    //ensure the recipe has at least one ingredient
+    if (ingredient === undefined || ingredient === "") {
+        errorText = errorText + ("You need at least one ingredient <br>");
+        error = true;
+    }
+    //ensure the user has entered instructions on how to make the recipe
+    if (method === undefined || method === "") {
+        errorText = errorText + ("You need to provide instructions to make the recipe <br>");
+        error = true;
+    }
+    //ensure, if minutes are added, they are between 0 and 60
+    if (minutes != undefined) {
+        if (minutes > 59 || minutes < 0 || isNaN(minutes)) {
+            errorText = errorText + ("Number of minutes needs to be between 0 and 59 <br>");
+            error = true;
+        }
+    }
+    //ensure, if calories are added, they are between 0 and 5000
+    if (calories != undefined) {
+        if (calories > 5000 || calories < 0 || isNaN(calories)) {
+            errorText = errorText + ("Number of calories needs to be between 0 and 5000 <br>");
+            error = true;
+        }
+    }
+    return [error, errorText];
+}
+
+//open an error modal with appropriate error
+function openErrorModal(errorText) {
+    $("#error-modal").modal('open');
+    $("#error-modal p").html(errorText);
+}
+
+
 
 //----RECIPE LIST PAGE SCRIPTS ---//
 //function called on clicking delete icon on list of recipes. Bound to page body because it was not possible to bind a click event to an element created dynamically through flask
@@ -206,8 +227,7 @@ $(".category-search-button").on("click", function() {
         }
     })
     if (inputValid === false) {
-        $("#error-modal p").text("You need to select at least one option")
-        $("#error-modal").modal('open');
+        openErrorModal("You need to select at least one option");
     }
     else {
         $("#categories").submit();

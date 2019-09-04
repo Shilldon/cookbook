@@ -361,7 +361,7 @@ $ git add .
 $ git commit -m "commit message"
 $ git push heroku master
 
-THere are no differences between the development and deployed versions.
+There are no differences between the development and deployed versions.
 Other than a standard browser no further software or implementation is required and the site can be accessed at 'https://milestone-3-recipebook.herokuapp.com/'.
 To run the app through IDE input bash terminal ensure all requirements are installed:
 $ sudo pip3 install –r requirements.txt
@@ -387,22 +387,33 @@ python3 app.py
 ### Credits
 
 #### Images
+Images used under creative commons licence CC0
 Main background image - https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80 by Brooke Lark on Unsplash
-Burger - https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/recipe-image-legacy-id--1035715_11.jpg?itok=urba2zbd
-Fish and chips - https://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/recipe_images/recipe-image-legacy-id--484507_11.jpg?itok=f_dpqnqm
-Toast - https://storage.needpix.com/rsynced_images/burnt-toast.jpg
+Burger - https://c.pxhere.com/photos/e4/cb/bread_bun_burger_cheese_cheeseburger_close_up_delicious_fast_food-1556449.jpg!d
+Fish and chips - https://c.pxhere.com/photos/a0/1b/beef_chips_diet_dinner_dish_eat_food_french-1153129.jpg!d
+Lamb Curry - https://c.pxhere.com/images/e6/3f/2384e87f95318077922edc6b9f79-1430223.jpg!d
+Vegetarian Fajitas - https://c.pxhere.com/photos/1b/62/tortillas_white_mexican_food_taco_lunch_dinner_traditional-1330790.jpg!d
+Pizza - https://c.pxhere.com/photos/71/8e/pizza_stone_oven_pizza_stone_oven_salami_cheese-1411428.jpg!d
+Toast - https://c.pxhere.com/photos/8b/2d/toast_toaster_food_white_bread_slices_of_toast_eat_breakfast_discs-670056.jpg!d
+
 Category button images linked from pxhere.com used under Creative Commons CC0 licence
 Category button - Ingredients - https://pxhere.com/en/photo/1433267
-Category button - Dietary - https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d
-Category button - Difficulty - https://c.pxhere.com/photos/45/e6/camping_story_2010365-228377.jpg!d
-Category button - Meal - https://c.pxhere.com/photos/5b/df/blue_plate_breakfast_cuisine_dairy_product_delicious_dining_dining_room_dinner-1516443.jpg!d
-Category button - Country - https://c.pxhere.com/photos/cd/86/art_atlas_ball_shaped_cartography_continent_country_destination_geography-1521383.jpg!d
-Category button - Author - https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document_editorial_information_keyboard-1401823.jpg!d
+Category button - Dietary - https://pxhere.com/en/photo/1435829
+Category button - Difficulty - https://pxhere.com/en/photo/228377
+Category button - Meal - https://pxhere.com/en/photo/1516443
+Category button - Country - https://pxhere.com/en/photo/1521383
+Category button - Author - https://pxhere.com/en/photo/1401823
+
+Images compressed using compressjpeg.com
 
 #### Example recipes
 Sausage and Mash - https://www.bbcgoodfood.com/recipes/1359634/sausage-and-mash
 Burger - https://www.bbcgoodfood.com/recipes/1514/beef-burgers-learn-to-make
 Fish and chips - https://www.bbcgoodfood.com/recipes/5544/the-ultimate-makeover-fish-and-chips
+Lamb Curry - https://www.bbcgoodfood.com/recipes/slow-cooker-lamb-curry
+Vegetarian Fajitas - https://www.bbcgoodfood.com/recipes/veggie-fajitas
+Spaghetti Bolognese - https://www.bbcgoodfood.com/recipes/1502640/the-best-spaghetti-bolognese
+Pizza - https://www.bbcgoodfood.com/recipes/4683/pizza-margherita-in-4-easy-steps
 
 #### Code
 ##### Individual functions:

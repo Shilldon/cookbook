@@ -134,7 +134,7 @@ input[type="checkbox"]:checked + span:not(.lever):before {
 
 .title-container {
   height: 30vh;
-  background: url("https://images.unsplash.com/photo-1496412705862-e0088f16f791?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80") no-repeat center;
+  background: url("/static/images/background.jpg") no-repeat center;
   background-size: cover; }
   .title-container .title-text {
     font-family: "Abril Fatface", cursive;
@@ -201,17 +201,17 @@ input[type="checkbox"]:checked + span:not(.lever):before {
     background-image: none !important;
     background-color: #033E8C; }
   .search-button-container #search-ingredients {
-    background-image: url("https://c.pxhere.com/images/2f/23/aa0d73376be59a4310bb2943515f-1433267.jpg!d"); }
+    background-image: url("/static/images/button-ingredients.jpg"); }
   .search-button-container #search-meal {
-    background-image: url("https://c.pxhere.com/photos/5b/df/blue_plate_breakfast_cuisine_dairy_product_delicious_dining_dining_room_dinner-1516443.jpg!d"); }
+    background-image: url("/static/images/button-meal.jpg"); }
   .search-button-container #search-author {
-    background-image: url("https://c.pxhere.com/photos/f4/26/alphabets_ancient_author_data_document_editorial_information_keyboard-1401823.jpg!d"); }
+    background-image: url("/static/images/button-author.jpg"); }
   .search-button-container #search-difficulty {
-    background-image: url("https://c.pxhere.com/photos/45/e6/camping_story_2010365-228377.jpg!d"); }
+    background-image: url("/static/images/button-difficulty.jpg"); }
   .search-button-container #search-dietary {
-    background-image: url("https://c.pxhere.com/images/30/d8/1114ac791573938512d436cfd697-1435829.jpg!d"); }
+    background-image: url("/static/images/button-dietary.jpg"); }
   .search-button-container #search-country {
-    background-image: url("https://c.pxhere.com/photos/cd/86/art_atlas_ball_shaped_cartography_continent_country_destination_geography-1521383.jpg!d"); }
+    background-image: url("/static/images/button-country.jpg"); }
 
 #category-search-form-container {
   margin-top: 20px;

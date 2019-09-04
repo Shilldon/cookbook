@@ -96,21 +96,22 @@
     <div class="container">
       <div class="row">
         <div class="col s12">
-          {% if recipe.meal %}
+          {% if recipe.meal or recipe.difficulty or recipe.calories %}
           <div class="row">
+            {% if recipe.meal %}
             <div class="col s4 m3 l2">
               <p class="recipe-subject">Meal</p>
             </div>
-            <div class="col s8 m2 l2">
+            <div class="col s8 m3 l2">
               <!--format - capitalise first letter-->
               <p>{{ recipe.meal[0]|upper }}{{recipe.meal[1:]|lower}}</p>
             </div>
             {% endif %} 
             {% if recipe.difficulty %}
-            <div class="col s4 m3 offset-m1 l2">
+            <div class="col s4 m3 l2">
               <p class="recipe-subject">Difficulty</p>
             </div>
-            <div class="col s8 m2 l2">
+            <div class="col s8 m3 l2">
               <!--format - capitalise first letter-->
               <p>{{recipe.difficulty[0]|upper}}{{recipe.difficulty[1:]|lower}}</p>
             </div>
@@ -119,11 +120,12 @@
             <div class="col s4 m3 l2">
               <p class="recipe-subject">Calories</p>
             </div>
-            <div class="col s8 m2 l2">
+            <div class="col s8 m3 l2">
               <p>{{ recipe.calories }} kCal</p>
             </div>
             {% endif %}
           </div>
+          {% endif %}
           {% if recipe.hours>0 or recipe.minutes>0%}
           <div class="row">
             <div class="col s4 m3 l2">
