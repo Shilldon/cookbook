@@ -9,9 +9,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET", "randomstring123")
 
 app.config["MONGO_DBNAME"] = 'milestone-3'
-#app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-
-app.config["MONGO_URI"]='mongodb+srv://Shilldon:Palad1n1@myfirstcluster-gzjbi.mongodb.net/milestone-3'
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 
 mongo = PyMongo(app)
 
@@ -821,4 +819,4 @@ def display_categories():
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"), port=int(os.environ.get("PORT")),
-            debug=True)
+            debug=False)
