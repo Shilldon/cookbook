@@ -164,7 +164,6 @@ def insertrecipe():
                 new_recipe[key] = new_recipe[key][0].lower()
             else:
                 new_recipe[key] = new_recipe[key][0]                    
-            print(new_recipe[key])
             # check if the recipe has been marked as the user's favourite
             if key == 'favourite':
                 # get the list of users for whom this is a favourite recipe

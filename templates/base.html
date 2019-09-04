@@ -23,7 +23,7 @@
         <!--desktop devices - dropdown content for search options - can search against recipes directly or within categories-->
         <ul id="search-options" class="dropdown-content">
           <li class="highlight3-background valign-wrapper"><a href="{{ url_for('recipe_list', action='search') }}">Recipes</a></li>
-          <li class="highlight3-background valign-wrapper"><a href="{{ url_for('search')}}" href="#!">Categories</a></li>
+          <li class="highlight3-background valign-wrapper"><a href="{{ url_for('search')}}">Categories</a></li>
         </ul>
   
         <div class="nav-wrapper">
@@ -228,13 +228,13 @@
               {% if recipe %}
               <input type="hidden" name="recipe_id" value="{{recipe._id}}">
               {%else%}
-              <!--if recipe selected from list of recipes - id provided by jquery-->
+              <!--if recipe selected from list of recipes - id provided to backend by jquery-->
               <input type="hidden" name="recipe_id" id="recipe_id_input">
               {%endif%}
               <div class="row">
                 <div class="col s6 m3 offset-m2 ">
-                  <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</button>
-                  <button type="reset" id="modal_reset" class="modal-close waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
+                  <button type="reset" class="modal-close modal_reset waves-effect waves-light btn btn-block hide-on-large-only highlight1-background">Cancel</button>
+                  <button type="reset" class="modal-close modal_reset waves-effect waves-light btn-large btn-block hide-on-med-and-down highlight1-background">Cancel</button>
                 </div>
                 <div class="col s6 m3 offset-m2 ">
                   <button type="submit" class="waves-effect waves-light btn btn-block hide-on-large-only red call-preloader">Delete</button>

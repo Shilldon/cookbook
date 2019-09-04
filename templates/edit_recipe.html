@@ -220,8 +220,8 @@
 <script>
   $(document).ready(function() {
     //initialisation for autocomplete fields taken from ingredients, and country collections
-    var ingredient_list = {{ ingredients_list | tojson }};
-    var country_list = {{ country_list | tojson }};
+    var ingredient_list = {{ingredients_list|tojson}};
+    var country_list = {{country_list|tojson}};
 
     $('#ingredient').autocomplete({
       data: ingredient_list,

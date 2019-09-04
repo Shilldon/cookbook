@@ -167,11 +167,11 @@ $('body').on('click', '.delete_button', function() {
     //highligh the recipe line selected for deletion
     $(this).find(".row").addClass("selected-for-deletion");
     //need to set the row object on the reset modal button to remove the red highlight if cancelling deletion
-    $('#modal_reset').data("row_to_delete", $(this).find(".row"));
+    $('.modal_reset').data("row_to_delete", $(this).find(".row"));
 });
 
 //on cancelling the deletion modal ensure the recipe selected for deletion is unhighlighted
-$('#modal_reset').on('click', function() {
+$('.modal_reset').on('click', function() {
     var row = $(this).data("row_to_delete");
     //on cancelling deletion remove the red highlight on the row
     //first check if there is a highlighted recipe because the delete modal was called on 'recipe list page' 

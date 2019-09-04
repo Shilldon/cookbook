@@ -141,13 +141,13 @@
                                                             <!--dropdown list of calories values to filter by-->
                                                             <select name="calories">
                                                                 <option value=""  selected>Not filtered</option>
-                                                                <option value=100 {% if filters.calories=={'$lt' : 100} %} selected="selected" {% endif%}>< 100</option>
-                                                                <option value=200 {% if filters.calories=={'$lt' : 200} %} selected="selected" {% endif%}>< 200</option>
-                                                                <option value=300 {% if filters.calories=={'$lt' : 300} %} selected="selected" {% endif%}>< 300</option>
-                                                                <option value=500 {% if filters.calories=={'$lt' : 500} %} selected="selected" {% endif%}>< 500</option>
-                                                                <option value=750 {% if filters.calories=={'$lt' : 750} %} selected="selected" {% endif%}>< 750</option>
-                                                                <option value=1000 {% if filters.calories=={'$lt' : 1000} %} selected="selected" {% endif%}>< 1000</option>
-                                                                <option value=999 {% if filters.calories=={'$gt' : 999} %}selected="selected" {% endif%}>> 1000</option>
+                                                                <option value=100 {% if filters.calories=={'$lt' : 100} %} selected="selected" {% endif%}>&lt; 100</option>
+                                                                <option value=200 {% if filters.calories=={'$lt' : 200} %} selected="selected" {% endif%}>&lt; 200</option>
+                                                                <option value=300 {% if filters.calories=={'$lt' : 300} %} selected="selected" {% endif%}>&lt; 300</option>
+                                                                <option value=500 {% if filters.calories=={'$lt' : 500} %} selected="selected" {% endif%}>&lt; 500</option>
+                                                                <option value=750 {% if filters.calories=={'$lt' : 750} %} selected="selected" {% endif%}>&lt; 750</option>
+                                                                <option value=1000 {% if filters.calories=={'$lt' : 1000} %} selected="selected" {% endif%}>&lt; 1000</option>
+                                                                <option value=999 {% if filters.calories=={'$gt' : 999} %}selected="selected" {% endif%}>&gt; 1000</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -162,13 +162,13 @@
                                                             <select name="cook_time">
                                                                 <!--for each value check if it has been selected as a filter already and, if so, mark as selected in the list below-->
                                                                 <option value="" selected>Not filtered</option>
-                                                                <option value=10 {% if filters.cook_time=={'$lt' : 10} %} selected="selected" {% endif%}>< 10 minutes</option>
-                                                                <option value=20 {% if filters.cook_time=={'$lt' : 20} %} selected="selected" {% endif%}>< 20 minutes</option>
-                                                                <option value=30 {% if filters.cook_time=={'$lt' : 30} %} selected="selected" {% endif%}>< 30 minutes</option>
-                                                                <option value=60 {% if filters.cook_time=={'$lt' : 60} %} selected="selected" {% endif%}>< 1 hour</option>
-                                                                <option value=120 {% if filters.cook_time=={'$lt' : 120} %} selected="selected" {% endif%}>< 2 hours</option>
-                                                                <option value=180 {% if filters.cook_time=={'$lt' : 180} %} selected="selected" {% endif%}>< 3 hours</option>
-                                                                <option value=179 {% if filters.cook_time=={'$gt' : 179} %} selected="selected" {% endif%}>> 3 hours</option>
+                                                                <option value=10 {% if filters.cook_time=={'$lt' : 10} %} selected="selected" {% endif%}>&lt; 10 minutes</option>
+                                                                <option value=20 {% if filters.cook_time=={'$lt' : 20} %} selected="selected" {% endif%}>&lt; 20 minutes</option>
+                                                                <option value=30 {% if filters.cook_time=={'$lt' : 30} %} selected="selected" {% endif%}>&lt; 30 minutes</option>
+                                                                <option value=60 {% if filters.cook_time=={'$lt' : 60} %} selected="selected" {% endif%}>&lt; 1 hour</option>
+                                                                <option value=120 {% if filters.cook_time=={'$lt' : 120} %} selected="selected" {% endif%}>&lt; 2 hours</option>
+                                                                <option value=180 {% if filters.cook_time=={'$lt' : 180} %} selected="selected" {% endif%}>&lt; 3 hours</option>
+                                                                <option value=179 {% if filters.cook_time=={'$gt' : 179} %} selected="selected" {% endif%}>&gt; 3 hours</option>
                                                             </select>
                                                         </div>
                                                     </div>

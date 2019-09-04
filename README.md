@@ -1,6 +1,6 @@
 # Community recipe website
 
-## Overview
+## UX Overview
 
 ### Brief
 This website has been created as a 'community cookbook' to enable users from any location to view recipes and upload their own recipes to a community site to share with others.
@@ -270,8 +270,8 @@ The mealDB collection contains a list of the 6 meal types it is envisaged will a
 
 Although not implemented in this release it is envisaged that users will be able to add to the Allergens and Meal collections to provide further options.
 
-### Features
-#### Existing
+## Features
+### Existing
 * Responsive design for ease of readability on various device sizes
 * Collapsible headers and bodies for search/filter options and recipe results to provide better read format
 * Hidden options to prevent users who are not logged in from editting, deleting or adding recipes
@@ -291,7 +291,7 @@ Although not implemented in this release it is envisaged that users will be able
     * ***jQuery*** validation of category searches prevents user searching against an empty field
     * Backend conversion of user entries to appropriate format for storing in ***MongoDB*** collections
 
-#### Potential
+### Potential
 - Within add/edit recipe forms - A feature that will automatically convert the minutes added to hours and minutes (if greater than 59)
 - Customisable units - A feature that will enable users to add other unit types
 - The potential for users to add to the allergies and meal types collections providing greater options
@@ -299,8 +299,8 @@ Although not implemented in this release it is envisaged that users will be able
 - Creation of unique user profile and password
 - Inclusion of an 'admin' account with privileges to edit and delete all recipes - this would, however, require password protection
 
-#### Tech Used
-Styling:
+### Technologies Used
+#### Styling:
 
 The front-end site is styled using ***Materialize 1.0.0*** framework
 
@@ -310,11 +310,11 @@ The front-end site is styled using ***Materialize 1.0.0*** framework
 
 A combination of ***Materialize 1.0.0*** and ***font-awesome 4.7.0*** icons were used throughout the site.
 
-Languages used:
+#### Languages used:
 
 ***Python3 v 3.6.8*** for back end implementation
 
-***jQuery*** and ***Javascript*** for front end interaction:
+***jQuery*** and ***Javascript*** for front end interaction and DOM manipulation:
 
 - Menu animations
 - Button functionality
@@ -322,19 +322,19 @@ Languages used:
 - Form data validation
 - Modal display
 
-### Testing
+## Testing
 Code was written through the AWS Cloud9 IDE.
 The website has been tested during production on Chrome and then on IE, Safari and Opera browsers.
 See additional README document for specific testing undertaken.
 
-### Initial Wireframes
+## Initial Wireframes
 Wireframes were designed using MarvelApp and can be located here:
 https://marvelapp.com/4b6hce4
 
-### Deployment
+## Deployment
 The Cookbook website is deployed using the Heroku platform and can be viewed at 'https://milestone-3-recipebook.herokuapp.com/'
 
-#### Deployment process
+### Deployment process
 The app and all associated documents were developed through AWS Cloud9 IDE.
 A git respository was created through the bash terminal and the the project was committed to the repository using the standard bash commit command.
 Commits to the respository were made at each major development stage or as issues were identified and fixed.
@@ -412,21 +412,22 @@ $ python3 app.py
 * CSS
     * jigsaw.w3.org was used for validation of css code and did not generate significant errors
 * HTML
-    * validator.w3.org was used for validation of HTML code. Errors were thrown by the use of ***Jinja2*** templating language which was not recognised by the validator.
+    * validator.w3.org was used for validation of HTML code. Errors were thrown on the raw HTML code by the use of ***Jinja2*** templating language which was not recognised by the validator.
+    * Validation was peformed a second time on the code rendered on site by copy and pasting from the 'view source' right click menu option.
+    
         * The only errors of note were:
-            * Labels applying to hidden form element - however the syntax used was required to comply with the requirements of the ***Materialize*** framework
+            * Labels applying to hidden form element - however the syntax used was required to comply with the requirements of the ***Materialize*** framework to label lists correctly
             * Link for google font was rejected by the validator but the link is as provided from Google Fonts
             * Element ul is not allowed as child of ul - again, however, this syntax is required to comply with the requirements of the ***Materialize*** framework
-            * Duplicate ID errors - however these errors were caused by the use of ***Jinja2*** templating. In the rendered versions IDs are not duplicated.
 * jQuery
-    * codebeautify.org/jsvalidate was used for validation of ***jQuery*** code. No significant erros were generated
+    * codebeautify.org/jsvalidate and jshint.com/ were used for validation of ***jQuery*** code. No significant erros were generated
 
 * Python
     * pep8online.com was used to validate ***Python*** code and did not generate any errors.
 
-### Credits
+## Acknowledgements
 
-#### Images
+### Images
 Images used under creative commons licence CC0
 
 Main background image - https://unsplash.com/photos/M4E7X3z80PQ by Brooke Lark on Unsplash
@@ -458,9 +459,11 @@ Category button - Country - https://pxhere.com/en/photo/1521383
 
 Category button - Author - https://pxhere.com/en/photo/1401823
 
-Images compressed using compressjpeg.com
+Images were compressed using compressjpeg.com
 
-#### Example recipes
+### Example recipes
+The text of some of the recipes was copied from BBCGoodFood:
+
 Sausage and Mash - https://www.bbcgoodfood.com/recipes/1359634/sausage-and-mash
 
 Burger - https://www.bbcgoodfood.com/recipes/1514/beef-burgers-learn-to-make
@@ -475,30 +478,30 @@ Spaghetti Bolognese - https://www.bbcgoodfood.com/recipes/1502640/the-best-spagh
 
 Pizza - https://www.bbcgoodfood.com/recipes/4683/pizza-margherita-in-4-easy-steps
 
-#### Code
-##### Individual functions:
+### Code
+#### Individual functions:
 Pagination ***jQuery*** plug in for materialize by Mirjam Skarica mirjamskarica@gmail.com - used under MIT licence (https://github.com/mirjamsk/materialize-pagination/blob/master/LICENSE) - https://github.com/mirjamsk/materialize-pagination
 
 Text/number only input for form fields ***jQuery*** plug in by Kevin Sheedy  - used under MIT licence (https://github.com/KevinSheedy/jquery.alphanum/blob/master/MIT-LICENSE.txt) - https://github.com/KevinSheedy/jquery.alphanum
 
-##### Libraries
+#### Libraries
 Automated testing:
 - Jasmine - https://jasmine.github.io
 
 Python Libraries:
 - Please see requirements.txt
 
-#### Fonts/Icons
+### Fonts/Icons
 Google Fonts - fonts.google.com - Roboto and Abril Fatface
 
 Font Awesome - https://fontawesome.com/v4.7.0/icons/
 
 Materialize css - https://materializecss.com/icons
 
-#### Framework
+### Framework
 Materialize 1.0.0 - https://materializecss.com/
 
 Flask - https://www.fullstackpython.com/flask.html
 
-#### Database
+### Database
 MongoDB - https://www.mongodb.com/

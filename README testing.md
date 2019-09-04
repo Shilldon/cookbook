@@ -58,12 +58,12 @@ Back end testing undertaken during development using ***Python*** try and except
 
 * Add
     * Favourite 'star' automated testing undertaken, see above
-    * Add - automated testing undertaken, see above
+    * Add - automated testing undertaken, see above. Users undertook manual testing, inputting a wide array of entries into the form. Users were encouraged to input non-standard and unexpected responses to form queries.
     * Home - correctly takes the user to the index page
     
 * Edit
     * Favourite 'star' automated testing undertaken, see above
-    * Update - automated testing undertaken, see above
+    * Update - automated testing undertaken, see above. Users undertook manual testing, inputting a wide array of entries into the form. Users were encouraged to input non-standard and unexpected responses to form queries.
     * Home - correctly takes the user to the index page
                     
 * Display recipe  
