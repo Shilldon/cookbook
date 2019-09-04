@@ -1,8 +1,3 @@
-//function to read flask list and convert to format for jquery to access
-function myFunc() {
-    return ingredient_list;
-}
-
 //----GENERAL SCRIPTS----//
 //initialisation for materialize framework
 $(document).ready(function() {
@@ -167,12 +162,12 @@ function openErrorModal(errorText) {
 //function called on clicking delete icon on list of recipes. Bound to page body because it was not possible to bind a click event to an element created dynamically through flask
 $('body').on('click', '.delete_button', function() {
     //need to obtain the id of the recipe selected for deletion and store this on the modal to pass to backend if deletion is confirmed
-    recipe_id = $(this).attr("recipe_id");
-    $('#recipe_id_input').val(recipe_id)
+    var recipe_id = $(this).attr("recipe_id");
+    $('#recipe_id_input').val(recipe_id);
     //highligh the recipe line selected for deletion
-    $(this).find(".row").addClass("selected-for-deletion")
+    $(this).find(".row").addClass("selected-for-deletion");
     //need to set the row object on the reset modal button to remove the red highlight if cancelling deletion
-    $('#modal_reset').data("row_to_delete", $(this).find(".row"))
+    $('#modal_reset').data("row_to_delete", $(this).find(".row"));
 });
 
 //on cancelling the deletion modal ensure the recipe selected for deletion is unhighlighted
@@ -203,16 +198,16 @@ $('.filter-button').on("click", function() {
 
 //called on clicking sort button
 $(".sort_by").change(function() {
-    $("#sort-form").submit()
+    $("#sort-form").submit();
 });
 
 //called to check if no allergens are selected in filter, if so revert to 'not filtered option'
 $("#allergens_list").change(function() {
     if ($("#allergens_list").val() != "") {
-        $("#allergens-unfiltered").prop("selected", false)
+        $("#allergens-unfiltered").prop("selected", false);
     }
     else {
-        $("#allergens-unfiltered").prop("selected", "selected")
+        $("#allergens-unfiltered").prop("selected", "selected");
     }
 });
 
@@ -225,7 +220,7 @@ $(".category-search-button").on("click", function() {
             inputValid = true;
             return false;
         }
-    })
+    });
     if (inputValid === false) {
         openErrorModal("You need to select at least one option");
     }
@@ -267,7 +262,7 @@ $(".search-button").on("click", function() {
             $(categorySearchPane).slideDown();
             $(categorySearchPane).attr("data", category);
             $(listElement).show();
-            $("#category-to-search").text(category)
+            $("#category-to-search").text(category);
             $(this).addClass("search-button-clicked");
         }
     }
